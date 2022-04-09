@@ -1,4 +1,4 @@
-package application.dataset.test.invalidRandomAddresses.todo.hard.completedCorrectly;
+package application.testData.invalidRandomAddresses.hard.completedCorrectly;
 
 public class RandomAddressesWithTwoWrongRandomFieldsWithoutRelationship {
     // primele 2 adrese sunt pt a da valori fieldurilor extrase ca fiind gresite. cele 2 fielduri alese, n au legatura.

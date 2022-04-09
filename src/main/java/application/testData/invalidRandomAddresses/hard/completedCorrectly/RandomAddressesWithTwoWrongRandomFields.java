@@ -1,4 +1,4 @@
-package application.dataset.test.invalidRandomAddresses.todo.hard.completedIncorrectly;
+package application.testData.invalidRandomAddresses.hard.completedCorrectly;
 
 public class RandomAddressesWithTwoWrongRandomFields {
     // se aleg fieldurile in functie de nr random generat
