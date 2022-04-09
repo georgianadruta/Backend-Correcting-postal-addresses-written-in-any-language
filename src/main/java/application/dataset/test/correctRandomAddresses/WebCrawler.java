@@ -104,7 +104,7 @@ public class WebCrawler {
 
     public void insertRandomAddressesInFile(List<TestObject> list, String fileName) {
         try {
-            String filePath = "./dataset/test/correctRandomAddresses/" + fileName;
+            String filePath = "./files/test/correctRandomAddresses/" + fileName;
             File file = new File(filePath);
             new FileWriter(filePath, false).close(); // sterge contentul existent din fisiere
             file.getParentFile().mkdirs();
