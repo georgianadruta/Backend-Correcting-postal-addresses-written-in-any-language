@@ -104,14 +104,16 @@ public class WebCrawler {
 
     public void insertRandomAddressesInFile(List<TestObject> list, String fileName) {
         try {
-            String filePath = "./files/test/correctRandomAddresses/" + fileName;
+            String filePath = "./files/test/correctRandomAddresses/" + fileName.replace("txt", "ser");
             File file = new File(filePath);
             new FileWriter(filePath, false).close(); // sterge contentul existent din fisiere
             file.getParentFile().mkdirs();
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file, true));
-            for (TestObject testObject : list) {
-                fileWriter.write(String.valueOf(testObject.toString()));
-            }
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(list);
+//            }
+            objectOut.close();
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -129,7 +131,7 @@ public class WebCrawler {
             File file = new File(DataStorage.INPUT_DATA_FILE); //RO.txt
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
-                int copyNumber =number;
+                int copyNumber = number;
                 String filePath = reader.nextLine();
                 while (copyNumber > 0) {
                     createTestDataForEachCountry(filePath);

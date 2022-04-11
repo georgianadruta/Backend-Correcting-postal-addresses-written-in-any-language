@@ -2,8 +2,10 @@ package application.testData.correctRandomAddresses;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class TestObject {
+public class TestObject implements Serializable {
     private String street;
     private String city;
     private String state;
