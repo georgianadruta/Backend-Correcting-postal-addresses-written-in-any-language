@@ -1,8 +1,8 @@
-package application.testData.invalidRandomAddresses.easy;
+package application.testData.invalidRandomAddresses.easy.done;
 
 import application.dataset.storage.DataStorage;
 import application.testData.TestUtil;
-import application.testData.correctRandomAddresses.TestObject;
+import application.testData.model.TestObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -10,7 +10,7 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.util.*;
 
-import static application.testData.correctRandomAddresses.TestObjectValues.*;
+import static application.testData.constants.Constants.*;
 
 public class RandomAddressesWithWrongField {
     // se extrage fieldul care trebuie completat gresit si se inlocuieste cu fieldul corespunzator dintr-o alta adresa

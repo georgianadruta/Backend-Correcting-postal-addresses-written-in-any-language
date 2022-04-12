@@ -1,6 +1,6 @@
-package application.testData.correctRandomAddresses;
+package application.testData.constants;
 
-public final class TestObjectValues {
+public final class Constants {
 
     public static final String STREET = "street";
     public static final String CITY = "city";

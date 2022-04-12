@@ -1,4 +1,4 @@
-package application.testData.correctRandomAddresses;
+package application.testData.model;
 
 import lombok.Data;
 

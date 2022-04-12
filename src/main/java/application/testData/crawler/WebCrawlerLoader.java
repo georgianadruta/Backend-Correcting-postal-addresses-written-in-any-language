@@ -1,4 +1,6 @@
-package application.testData.correctRandomAddresses;
+package application.testData.crawler;
+
+import application.testData.crawler.WebCrawler;
 
 public class WebCrawlerLoader {
     public static void main(String[] args) {

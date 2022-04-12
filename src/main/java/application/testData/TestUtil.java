@@ -1,6 +1,6 @@
 package application.testData;
 
-import application.testData.correctRandomAddresses.TestObject;
+import application.testData.model.TestObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,9 +1,8 @@
-package application.testData.correctRandomAddresses;
+package application.testData.crawler;
 
 import application.dataset.storage.DataStorage;
-import application.testData.invalidRandomAddresses.easy.RandomAddressesWithWrongField;
-import application.testData.invalidRandomAddresses.easy.RandomAddressesWithoutAField;
-import application.testData.invalidRandomAddresses.easy.RandomAddressesWithoutTwoFields;
+import application.testData.generator.TestDataGenerator;
+import application.testData.model.TestObject;
 import lombok.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +12,7 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.util.*;
 
-import static application.testData.correctRandomAddresses.TestObjectValues.*;
+import static application.testData.constants.Constants.*;
 
 
 /**
@@ -30,7 +29,7 @@ import static application.testData.correctRandomAddresses.TestObjectValues.*;
 @EqualsAndHashCode
 @ToString
 public class WebCrawler {
-    public void addRandomAddressesFromLinkInFile(String url, String fileName) {
+    public static void addRandomAddressesFromLinkInFile(String url, String fileName) {
         try {
             Document document = Jsoup.connect(url).get();
             Elements countryList = document.select("li.col-sm-6 > span"); //country
@@ -50,7 +49,7 @@ public class WebCrawler {
         }
     }
 
-    private Map<String, ArrayList<String>> getRandomAddressesMap(Elements countryList, Elements addressWithoutCountryList) {
+    private static Map<String, ArrayList<String>> getRandomAddressesMap(Elements countryList, Elements addressWithoutCountryList) {
         Map<String, ArrayList<String>> randomAddressMap = new HashMap<>();
 
         initialiseRandomAddressMap(randomAddressMap);
@@ -81,7 +80,7 @@ public class WebCrawler {
         return randomAddressMap;
     }
 
-    private void initialiseRandomAddressMap(Map<String, ArrayList<String>> randomAddressMap) {
+    private static void initialiseRandomAddressMap(Map<String, ArrayList<String>> randomAddressMap) {
         randomAddressMap.put(STREET, new ArrayList<>());
         randomAddressMap.put(CITY, new ArrayList<>());
         randomAddressMap.put(STATE, new ArrayList<>());
@@ -91,7 +90,7 @@ public class WebCrawler {
         randomAddressMap.put(COUNTRY, new ArrayList<>());
     }
 
-    public void insertRandomAddressesInFile(List<TestObject> list, String fileName) {
+    public static void insertRandomAddressesInFile(List<TestObject> list, String fileName) {
         try {
             String filePath = "./files/test/correctRandomAddresses/" + fileName.replace("txt", "ser");
             File file = new File(filePath);
@@ -108,13 +107,6 @@ public class WebCrawler {
         }
     }
 
-    public void createCorrectAddressesTestDataForEachCountry(String filePath) {
-        String fileName = filePath.split("/")[4];
-        String countryCode = fileName.replace(".txt", "");
-        addRandomAddressesFromLinkInFile("https://www.bestrandoms.com/random-address-in-" + countryCode + "?quantity=20", fileName);
-    }
-
-
     public void createANewSetForEachCountryFromToDoFile(int number) {
         try {
             File file = new File(DataStorage.INPUT_DATA_FILE); //RO.txt
@@ -123,19 +115,13 @@ public class WebCrawler {
                 int copyNumber = number;
                 String filePath = reader.nextLine();
                 while (copyNumber > 0) {
-                    createCorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese corecte
+                    TestDataGenerator.createCorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese corecte
                     copyNumber--;
                 }
-                createIncorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese gresite care sa acopere cazurile din metoda
+                TestDataGenerator.createIncorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese gresite care sa acopere cazurile din metoda
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void createIncorrectAddressesTestDataForEachCountry(String filePath) {
-        RandomAddressesWithoutAField.createRandomAddressesWithoutAFieldForAGivenFilePath(filePath); // unele adrese pot avea 2 nuluri, pt ca le lipsesc deja zip codeul
-        RandomAddressesWithWrongField.createRandomAddressesWithWrongFieldForAGivenFilePath(filePath);
-        RandomAddressesWithoutTwoFields.createRandomAddressesWithoutAFieldForAGivenFilePath(filePath);
     }
 }

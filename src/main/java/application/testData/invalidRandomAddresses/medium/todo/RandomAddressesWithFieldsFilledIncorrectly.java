@@ -1,4 +1,4 @@
-package application.testData.invalidRandomAddresses.medium;
+package application.testData.invalidRandomAddresses.medium.todo;
 
 public class RandomAddressesWithFieldsFilledIncorrectly {
 
