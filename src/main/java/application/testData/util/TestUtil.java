@@ -1,4 +1,4 @@
-package application.testData;
+package application.testData.util;
 
 import application.testData.model.TestObject;
 
@@ -20,20 +20,5 @@ public class TestUtil {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static void displayData(String pathName) {
-        ObjectInputStream objectinputstream;
-        try {
-            FileInputStream streamIn = new FileInputStream(pathName);
-            objectinputstream = new ObjectInputStream(streamIn);
-            List<TestObject> testObjectList = (List<TestObject>) objectinputstream.readObject();
-            objectinputstream.close();
-            for (TestObject testObject : testObjectList) {
-                System.out.println(testObject.toString());
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 }

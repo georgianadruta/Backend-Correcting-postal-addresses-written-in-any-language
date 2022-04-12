@@ -3,7 +3,7 @@ package application.testData.generator;
 import application.testData.crawler.WebCrawler;
 import application.testData.invalidRandomAddresses.easy.done.*;
 import application.testData.invalidRandomAddresses.medium.done.RandomAddressesWithFieldsFilledIncorrectly;
-import application.testData.invalidRandomAddresses.medium.todo.RandomAddressesWithMultipleDataInOneField;
+import application.testData.invalidRandomAddresses.medium.done.RandomAddressesWithMultipleDataInOneField;
 
 public class TestDataGenerator {
     public static void createCorrectAddressesTestDataForEachCountry(String filePath) {

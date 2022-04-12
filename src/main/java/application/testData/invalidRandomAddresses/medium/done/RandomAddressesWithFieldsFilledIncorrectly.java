@@ -1,6 +1,6 @@
 package application.testData.invalidRandomAddresses.medium.done;
 
-import application.testData.TestUtil;
+import application.testData.util.TestUtil;
 import application.testData.model.TestObject;
 
 import java.io.*;
