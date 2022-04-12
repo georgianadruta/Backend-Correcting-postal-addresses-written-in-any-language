@@ -2,6 +2,8 @@ package application.testData.correctRandomAddresses;
 
 import application.dataset.storage.DataStorage;
 import application.testData.invalidRandomAddresses.easy.RandomAddressesWithWrongField;
+import application.testData.invalidRandomAddresses.easy.RandomAddressesWithoutAField;
+import application.testData.invalidRandomAddresses.easy.RandomAddressesWithoutTwoFields;
 import lombok.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -132,7 +134,8 @@ public class WebCrawler {
     }
 
     private static void createIncorrectAddressesTestDataForEachCountry(String filePath) {
-        //  RandomAddressesWithoutAField.createRandomAddressesWithoutAFieldForAGivenFilePath(filePath); // unele adrese pot avea 2 nuluri, pt ca le lipsesc deja zip codeul
+        RandomAddressesWithoutAField.createRandomAddressesWithoutAFieldForAGivenFilePath(filePath); // unele adrese pot avea 2 nuluri, pt ca le lipsesc deja zip codeul
         RandomAddressesWithWrongField.createRandomAddressesWithWrongFieldForAGivenFilePath(filePath);
+        RandomAddressesWithoutTwoFields.createRandomAddressesWithoutAFieldForAGivenFilePath(filePath);
     }
 }

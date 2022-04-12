@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomAddressesWithoutAField {
+    // se extrage un field intamplator si se elimina
+
     public static void createRandomAddressesWithoutAFieldForAGivenFilePath(String filePath) {
         try {
             String countryCode = filePath.replace(".txt", "").split("/")[4];
@@ -32,7 +34,11 @@ public class RandomAddressesWithoutAField {
 
     private static int getRandomNumber() {
         Random rand = new Random();
-        return rand.nextInt(7); // 0, ... , 6
+        int n = rand.nextInt(7); // 0, ... , 6
+        while (n == 3) {
+            n = rand.nextInt(7);
+        }
+        return n;
     }
 
     public static List<TestObject> getListObjectWithoutAField(String pathName) {
@@ -44,7 +50,6 @@ public class RandomAddressesWithoutAField {
                 case 0 -> testObject.setStreet(null);
                 case 1 -> testObject.setCity(null);
                 case 2 -> testObject.setState(null);
-                case 3 -> testObject.setPhoneNumber(null);
                 case 4 -> testObject.setZipCode(null);
                 case 5 -> testObject.setCountryCallingCode(null);
                 case 6 -> testObject.setCountry(null);
