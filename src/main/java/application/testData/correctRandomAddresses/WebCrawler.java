@@ -1,6 +1,7 @@
 package application.testData.correctRandomAddresses;
 
 import application.dataset.storage.DataStorage;
+import application.testData.invalidRandomAddresses.easy.RandomAddressesWithWrongField;
 import lombok.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,6 +10,8 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.util.*;
+
+import static application.testData.correctRandomAddresses.TestObjectValues.*;
 
 
 /**
@@ -25,25 +28,9 @@ import java.util.*;
 @EqualsAndHashCode
 @ToString
 public class WebCrawler {
-    public static final String STREET = "street";
-    public static final String CITY = "city";
-    public static final String STATE = "state";
-    public static final String PHONE_NUMBER = "phoneNumber";
-    public static final String ZIP_CODE = "zipCode";
-    public static final String COUNTRY_CALLING_CODE = "countryCallingCode";
-    public static final String COUNTRY = "country";
-
-    public static final String STREET_KEY = "Street:  ";
-    public static final String CITY_KEY = "City:  ";
-    public static final String STATE_KEY = "State/province/area:   ";
-    public static final String PHONE_NUMBER_KEY = "Phone number  ";
-    public static final String ZIP_CODE_KEY = "Zip code  ";
-    public static final String COUNTRY_CALLING_CODE_KEY = "Country calling code  ";
-    public static final String COUNTRY_KEY = "Country  ";
-
-    public void addRandomAddressesFromLinkInFile(String URL, String fileName) {
+    public void addRandomAddressesFromLinkInFile(String url, String fileName) {
         try {
-            Document document = Jsoup.connect(URL).get();
+            Document document = Jsoup.connect(url).get();
             Elements countryList = document.select("li.col-sm-6 > span"); //country
             Elements addressWithoutCountryList = document.select("li.col-sm-6 > p > span"); //street,city,state,phoneNumber,[zipCode],countryCallingCode
 
@@ -57,7 +44,7 @@ public class WebCrawler {
             }
             insertRandomAddressesInFile(testObjectList, fileName);
         } catch (IOException e) {
-            System.err.println("For '" + URL + "': " + e.getMessage());
+            System.err.println("For '" + url + "': " + e.getMessage());
         }
     }
 
@@ -112,7 +99,6 @@ public class WebCrawler {
             FileOutputStream fileOut = new FileOutputStream(filePath);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(list);
-//            }
             objectOut.close();
             fileWriter.close();
         } catch (IOException e) {
@@ -120,11 +106,12 @@ public class WebCrawler {
         }
     }
 
-    public void createTestDataForEachCountry(String filePath) {
+    public void createCorrectAddressesTestDataForEachCountry(String filePath) {
         String fileName = filePath.split("/")[4];
         String countryCode = fileName.replace(".txt", "");
         addRandomAddressesFromLinkInFile("https://www.bestrandoms.com/random-address-in-" + countryCode + "?quantity=20", fileName);
     }
+
 
     public void createANewSetForEachCountryFromToDoFile(int number) {
         try {
@@ -134,12 +121,18 @@ public class WebCrawler {
                 int copyNumber = number;
                 String filePath = reader.nextLine();
                 while (copyNumber > 0) {
-                    createTestDataForEachCountry(filePath);
+                    createCorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese corecte
                     copyNumber--;
                 }
+                createIncorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese gresite care sa acopere cazurile din metoda
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void createIncorrectAddressesTestDataForEachCountry(String filePath) {
+        //  RandomAddressesWithoutAField.createRandomAddressesWithoutAFieldForAGivenFilePath(filePath); // unele adrese pot avea 2 nuluri, pt ca le lipsesc deja zip codeul
+        RandomAddressesWithWrongField.createRandomAddressesWithWrongFieldForAGivenFilePath(filePath);
     }
 }

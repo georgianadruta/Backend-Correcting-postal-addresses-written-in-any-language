@@ -1,31 +1,14 @@
 package application.testData.invalidRandomAddresses.easy;
 
-import application.dataset.storage.DataStorage;
 import application.testData.TestUtil;
 import application.testData.correctRandomAddresses.TestObject;
 
 import java.io.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
-import java.util.Scanner;
 
 public class RandomAddressesWithoutAField {
-
-    public static void createRandomAddressesWithoutAField() {
-        try {
-            File file = new File(DataStorage.INPUT_DATA_FILE); //RO.txt
-            Scanner reader = new Scanner(file);
-            while (reader.hasNext()) {
-                String filePath = reader.nextLine();
-                createRandomAddressesWithoutAFieldForAGivenFilePath(filePath);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void createRandomAddressesWithoutAFieldForAGivenFilePath(String filePath) {
+    public static void createRandomAddressesWithoutAFieldForAGivenFilePath(String filePath) {
         try {
             String countryCode = filePath.replace(".txt", "").split("/")[4];
             new File("./files/test/incorrectRandomAddresses/" + countryCode).mkdirs();
