@@ -27,7 +27,6 @@ public class RandomAddressesWithFieldsFilledIncorrectly {
             objectOut.writeObject(testObjectList);
             objectOut.close();
             fileWriter.close();
-            System.out.println(testObjectList);
         } catch (IOException e) {
             e.printStackTrace();
         }
