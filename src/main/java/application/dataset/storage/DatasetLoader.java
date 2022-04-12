@@ -8,8 +8,10 @@ public class DatasetLoader {
     public static void main(String[] args) {
 //        Date startDate = new Date();
 
+
+        DataStorage.addAllCountriesInToDoFile();
         DataStorage.createDataStorage();
-        //System.out.println(DataStorage.world.toString());
+        System.out.println(DataStorage.world.toString());
         System.out.println("The world object contains: " + DataStorage.calculateNumberOfLocationsInWorld(DataStorage.world) + " locations.");
 
 //        for (AbstractLocation abstractLocation : DataStorage.world.getSubRegions()) {

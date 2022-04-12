@@ -12,7 +12,7 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.util.*;
 
-import static application.testData.constants.Constants.*;
+import static application.constants.Constants.*;
 
 
 /**
@@ -109,7 +109,7 @@ public class WebCrawler {
 
     public void createANewSetForEachCountryFromToDoFile(int number) {
         try {
-            File file = new File(DataStorage.INPUT_DATA_FILE); //RO.txt
+            File file = new File(INPUT_DATA_FILE); //RO.txt
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
                 int copyNumber = number;

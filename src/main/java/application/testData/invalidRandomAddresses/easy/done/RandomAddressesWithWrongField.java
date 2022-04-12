@@ -10,7 +10,7 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.util.*;
 
-import static application.testData.constants.Constants.*;
+import static application.constants.Constants.*;
 
 public class RandomAddressesWithWrongField {
     // se extrage fieldul care trebuie completat gresit si se inlocuieste cu fieldul corespunzator dintr-o alta adresa
@@ -65,7 +65,7 @@ public class RandomAddressesWithWrongField {
 
     private static String getAnotherCountryName(String countryCode) {
         try {
-            File file = new File(DataStorage.INPUT_DATA_FILE); //RO.txt
+            File file = new File(INPUT_DATA_FILE); //RO.txt
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) { // citim linie cu linie din fisierul cu pathurile catre fisierul pt fiecare tara
                 String filePath = reader.nextLine();

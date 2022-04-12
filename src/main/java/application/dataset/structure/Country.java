@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import static application.constants.Constants.ADMIN_1_CODES_FILE_ASCII;
+
 @Getter
 @Setter
 public class Country extends AbstractLocation {
@@ -24,7 +26,7 @@ public class Country extends AbstractLocation {
 
     public void addStates(String filePath, Country country) { // primeste pathul catre fisierul tarii curente
         try {
-            File file = new File(DataStorage.ADMIN_1_CODES_FILE_ASCII); // in admin1 avem doar judetele cu codul de forma RO.18
+            File file = new File(ADMIN_1_CODES_FILE_ASCII); // in admin1 avem doar judetele cu codul de forma RO.18
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();

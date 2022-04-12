@@ -2,15 +2,17 @@ package application.dataset.storage;
 
 import application.dataset.structure.AbstractLocation;
 import application.dataset.structure.World;
+import application.testData.invalidRandomAddresses.easy.done.RandomAddressesWithWrongField;
+import application.testData.model.TestObject;
 
 import java.io.*;
 import java.util.*;
 
+import static application.constants.Constants.INPUT_DATA_FILE;
+import static application.constants.Constants.SERIALIZED_OBJECT_PATH;
+
 public class DataStorage implements Serializable {
     public static DataStorage dataStorage;
-    public static final String INPUT_DATA_FILE = "./files/dataset/todo/todo.txt";
-    public static final String SERIALIZED_OBJECT_PATH = "#";
-    public static final String ADMIN_1_CODES_FILE_ASCII = "./files/dataset/adminFiles/admin1CodesAscii.txt";
 
     public static World world;
     public static Set<Integer> foundGeoNameIds;
@@ -23,6 +25,22 @@ public class DataStorage implements Serializable {
         foundGeoNameIds = new HashSet<>();
         world = new World();
         world.addCountries();
+    }
+
+    public static void addAllCountriesInToDoFile() {
+        try {
+            File countriesFolder = new File("./files/dataset/countries");
+            new FileWriter(INPUT_DATA_FILE, false).close();
+            for (File fileEntry : Objects.requireNonNull(countriesFolder.listFiles())) {
+                FileWriter fw = new FileWriter(INPUT_DATA_FILE, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter out = new PrintWriter(bw);
+                out.println("./files/dataset/countries/" + fileEntry.getName());
+                out.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveDataStorage() {

@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Scanner;
 
+import static application.constants.Constants.INPUT_DATA_FILE;
+
 public class World extends AbstractLocation {
 
     public World() {
@@ -17,7 +19,7 @@ public class World extends AbstractLocation {
 
     public void addCountries() {
         try {
-            File file = new File(DataStorage.INPUT_DATA_FILE); //RO.txt
+            File file = new File(INPUT_DATA_FILE); //RO.txt
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) { // citim linie cu linie din fisierul cu pathurile catre fisierul pt fiecare tara
                 String filePath = reader.nextLine();
@@ -46,6 +48,7 @@ public class World extends AbstractLocation {
                     String timezone = splitData[17];
                     String modificationDate = splitData[18];
                     if (featureClass.equals("A") && featureCode.equals("PCLI")) { // este tara
+                        System.out.println(code);
                         Country country = new Country(geoNameId, name, asciiName, alternateNames, latitude, longitude,
                                 featureClass, featureCode, code, cc2, admin1, admin2, admin3,
                                 admin4, population, deviation, dem, timezone, modificationDate);
