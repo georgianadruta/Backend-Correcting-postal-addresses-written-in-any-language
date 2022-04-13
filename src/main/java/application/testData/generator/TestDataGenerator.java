@@ -6,11 +6,11 @@ import application.testData.invalidRandomAddresses.medium.done.RandomAddressesWi
 import application.testData.invalidRandomAddresses.medium.done.RandomAddressesWithMultipleDataInOneField;
 
 public class TestDataGenerator {
-    public static void createCorrectAddressesTestDataForEachCountry(String filePath) {
+    public static void createCorrectAddressesTestDataForEachCountry(String url, String filePath) {
         String fileName = filePath.split("/")[4];
-        String countryCode = fileName.replace(".txt", "");
-        WebCrawler.addRandomAddressesFromLinkInFile("https://www.bestrandoms.com/random-address-in-" + countryCode + "?quantity=20", fileName);
+        WebCrawler.addRandomAddressesFromLinkInFile(url, fileName);
     }
+
     public static void createIncorrectAddressesTestDataForEachCountry(String filePath) {
         RandomAddressesWithoutAField.createRandomAddressesWithoutAFieldForAGivenFilePath(filePath); // unele adrese pot avea 2 nuluri, pt ca le lipsesc deja zip codeul
         RandomAddressesWithWrongField.createRandomAddressesWithWrongFieldForAGivenFilePath(filePath);

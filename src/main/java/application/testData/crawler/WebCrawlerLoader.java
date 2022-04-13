@@ -1,7 +1,5 @@
 package application.testData.crawler;
 
-import application.testData.crawler.WebCrawler;
-
 public class WebCrawlerLoader {
     public static void main(String[] args) {
         // trebuie sa reduc numele la ascii name in adresele corecte. si solutia sa fie tot n ascii name

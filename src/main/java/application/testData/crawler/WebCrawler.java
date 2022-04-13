@@ -1,6 +1,5 @@
 package application.testData.crawler;
 
-import application.dataset.storage.DataStorage;
 import application.testData.generator.TestDataGenerator;
 import application.testData.model.TestObject;
 import lombok.*;
@@ -47,6 +46,18 @@ public class WebCrawler {
         } catch (IOException e) {
             System.err.println("For '" + url + "': " + e.getMessage());
         }
+    }
+
+    public static boolean isValidLink(String url) {
+        try {
+            Document document = Jsoup.connect(url).get();
+            Elements countryList = document.select("li.col-sm-6 > span"); //country
+            Elements addressWithoutCountryList = document.select("li.col-sm-6 > p > span");
+            return !(countryList.isEmpty() && addressWithoutCountryList.isEmpty());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private static Map<String, ArrayList<String>> getRandomAddressesMap(Elements countryList, Elements addressWithoutCountryList) {
@@ -114,14 +125,27 @@ public class WebCrawler {
             while (reader.hasNext()) {
                 int copyNumber = number;
                 String filePath = reader.nextLine();
+                String url = getCorespondentUrl(filePath);
                 while (copyNumber > 0) {
-                    TestDataGenerator.createCorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese corecte
+                    if (isValidLink(url)) {
+                        TestDataGenerator.createCorrectAddressesTestDataForEachCountry(url, filePath); // fisiere cu adrese corecte
+                    }
                     copyNumber--;
                 }
-                TestDataGenerator.createIncorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese gresite care sa acopere cazurile din metoda
+                if (isValidLink(url)) {
+                    System.out.println(url);
+                    TestDataGenerator.createIncorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese gresite care sa acopere cazurile din metoda
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getCorespondentUrl(String filePath) {
+        String fileName = filePath.split("/")[4];
+        String countryCode = fileName.replace(".txt", "");
+        System.out.println(countryCode);
+        return "https://www.bestrandoms.com/random-address-in-" + countryCode + "?quantity=20";
     }
 }
