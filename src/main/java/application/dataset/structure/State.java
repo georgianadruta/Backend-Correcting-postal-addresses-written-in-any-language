@@ -12,12 +12,14 @@ import java.util.Scanner;
 public class State extends AbstractLocation {
     final Country countryRoot;
 
-    public State(Country countryRoot, int geoNameId, String name, String asciiName, String[] alternateNames, float latitude, float longitude,
-                 String featureClass, String featureCode, String code, String cc2, String admin1, String admin2, String admin3,
-                 String admin4, float population, String deviation, String dem, String timezone, String modificationDate) {
-        super(geoNameId, name, asciiName, alternateNames, latitude, longitude,
-                featureClass, featureCode, code, cc2, admin1, admin2, admin3,
-                admin4, population, deviation, dem, timezone, modificationDate);
+    public State(Country countryRoot, int geoNameId, String name, String asciiName, String[] alternateNames, String code, String admin1){
+//        float latitude, float longitude,
+//                 String featureClass, String featureCode, String code, String cc2, String admin1, String admin2, String admin3,
+//                 String admin4, float population, String deviation, String dem, String timezone, String modificationDate) {
+        super(geoNameId, name, asciiName, alternateNames, code, admin1);
+//        latitude, longitude,
+//                featureClass, featureCode, code, cc2, admin1, admin2, admin3,
+//                admin4, population, deviation, dem, timezone, modificationDate);
         this.countryRoot = countryRoot;
     }
 
@@ -50,9 +52,10 @@ public class State extends AbstractLocation {
                 String timezone = splitData[17];
                 String modificationDate = splitData[18];
                 if (code.equals(stateCode) && admin1.equals(stateAdmin1) && (featureClass.equals("P") || featureClass.equals("A"))) {
-                    City city = new City(geoNameId, name, asciiName, alternateNames, latitude, longitude,
-                            featureClass, featureCode, code, cc2, admin1, admin2, admin3,
-                            admin4, population, deviation, dem, timezone, modificationDate);
+                    City city = new City(geoNameId, name, asciiName, alternateNames, code, admin1);
+//                    latitude, longitude,
+//                            featureClass, featureCode, code, cc2, admin1, admin2, admin3,
+//                            admin4, population, deviation, dem, timezone, modificationDate);
                     state.addSubRegion(city);
                 }
             }
@@ -73,21 +76,21 @@ public class State extends AbstractLocation {
                 ", name='" + name + '\'' +
                 ", asciiName='" + asciiName + '\'' +
                 ", alternateNames=" + alternateNames +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", featureClass='" + featureClass + '\'' +
-                ", featureCode='" + featureCode + '\'' +
+//                ", latitude=" + latitude +
+//                ", longitude=" + longitude +
+//                ", featureClass='" + featureClass + '\'' +
+//                ", featureCode='" + featureCode + '\'' +
                 ", code='" + code + '\'' +
-                ", cc2='" + cc2 + '\'' +
-                ", admin1='" + admin1 + '\'' +
-                ", admin2='" + admin2 + '\'' +
-                ", admin3='" + admin3 + '\'' +
-                ", admin4='" + admin4 + '\'' +
-                ", population=" + population +
-                ", deviation='" + deviation + '\'' +
-                ", dem='" + dem + '\'' +
-                ", timezone='" + timezone + '\'' +
-                ", modificationDate='" + modificationDate + '\'' +
+//                ", cc2='" + cc2 + '\'' +
+//                ", admin1='" + admin1 + '\'' +
+//                ", admin2='" + admin2 + '\'' +
+//                ", admin3='" + admin3 + '\'' +
+//                ", admin4='" + admin4 + '\'' +
+//                ", population=" + population +
+//                ", deviation='" + deviation + '\'' +
+//                ", dem='" + dem + '\'' +
+//                ", timezone='" + timezone + '\'' +
+//                ", modificationDate='" + modificationDate + '\'' +
                 ", subRegions=" + subRegions +
                 '}';
     }

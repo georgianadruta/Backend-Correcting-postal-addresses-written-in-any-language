@@ -12,8 +12,9 @@ import static application.constants.Constants.INPUT_DATA_FILE;
 public class World extends AbstractLocation {
 
     public World() {
-        super(1, "World", "World", new String[]{}, 0, 0, null, null, null,
-                null, null, null, null, null, 0, null, null, null, null);
+        super(1, "World", "World", new String[]{}, null, null);
+//                0, 0, null, null, null,
+//                null, null, null, null, null, 0, null, null, null, null);
         this.subRegions = new HashSet<>();
     }
 
@@ -49,9 +50,10 @@ public class World extends AbstractLocation {
                     String modificationDate = splitData[18];
                     if (featureClass.equals("A") && featureCode.equals("PCLI")) { // este tara
                         System.out.println(code);
-                        Country country = new Country(geoNameId, name, asciiName, alternateNames, latitude, longitude,
-                                featureClass, featureCode, code, cc2, admin1, admin2, admin3,
-                                admin4, population, deviation, dem, timezone, modificationDate);
+                        Country country = new Country(geoNameId, name, asciiName, alternateNames, code, admin1);
+//                                , latitude, longitude,
+//                                featureClass, featureCode, code, cc2, admin1, admin2, admin3,
+//                                admin4, population, deviation, dem, timezone, modificationDate);
                         this.addSubRegion(country); // adaugam tara la world
                         country.addStates(filePath, country); // adaugam toate stateurile la tara
                     }

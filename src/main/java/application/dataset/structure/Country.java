@@ -15,12 +15,14 @@ import static application.constants.Constants.ADMIN_1_CODES_FILE_ASCII;
 public class Country extends AbstractLocation {
     final World worldRoot;
 
-    public Country(int geoNameId, String name, String asciiName, String[] alternateNames, float latitude, float longitude,
-                   String featureClass, String featureCode, String code, String cc2, String admin1, String admin2, String admin3,
-                   String admin4, float population, String deviation, String dem, String timezone, String modificationDate) {
-        super(geoNameId, name, asciiName, alternateNames, latitude, longitude,
-                featureClass, featureCode, code, cc2, admin1, admin2, admin3,
-                admin4, population, deviation, dem, timezone, modificationDate);
+    public Country(int geoNameId, String name, String asciiName, String[] alternateNames, String code, String admin1) {
+//                   float latitude, float longitude,
+//                   String featureClass, String featureCode, String code, String cc2, String admin1, String admin2, String admin3,
+//                   String admin4, float population, String deviation, String dem, String timezone, String modificationDate) {
+        super(geoNameId, name, asciiName, alternateNames, code, admin1);
+//        latitude, longitude,
+//                featureClass, featureCode, code, cc2, admin1, admin2, admin3,
+//                admin4, population, deviation, dem, timezone, modificationDate);
         worldRoot = DataStorage.world;
     }
 
@@ -73,9 +75,10 @@ public class Country extends AbstractLocation {
                 String timezone = splitData[17];
                 String modificationDate = splitData[18];
                 if (code.equals(country.getCode()) && admin1.equals(givenAdmin1) && featureClass.equals("A") && featureCode.equals("ADM1")) {
-                    State state = new State(country, geoNameId, name, asciiName, alternateNames, latitude, longitude,
-                            featureClass, featureCode, code, cc2, admin1, admin2, admin3,
-                            admin4, population, deviation, dem, timezone, modificationDate);
+                    State state = new State(country, geoNameId, name, asciiName, alternateNames, code, admin1);
+//                    latitude, longitude,
+//                            featureClass, featureCode, code, cc2, admin1, admin2, admin3,
+//                            admin4, population, deviation, dem, timezone, modificationDate);
                     country.addSubRegion(state);
                     state.addSubStates(filePath, country, state);
                     return;
