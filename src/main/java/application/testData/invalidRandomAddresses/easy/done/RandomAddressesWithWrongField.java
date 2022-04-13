@@ -4,6 +4,7 @@ import application.testData.util.TestUtil;
 import application.testData.model.TestObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
@@ -31,7 +32,7 @@ public class RandomAddressesWithWrongField {
             FileOutputStream fileOut = new FileOutputStream(newFilePath);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             String serializedPath = "./files/test/correctRandomAddresses/" + countryCode + ".ser";
-            List<TestObject> testObjectList = getListObjectWithWrongField(serializedPath, givenTestObject, countryCode);
+            List<TestObject> testObjectList = getListObjectWithWrongField(serializedPath, givenTestObject);
             objectOut.writeObject(testObjectList);
             objectOut.close();
             fileWriter.close();
@@ -40,26 +41,26 @@ public class RandomAddressesWithWrongField {
         }
     }
 
-    private static List<TestObject> getListObjectWithWrongField(String serializedPath, TestObject givenTestObject, String countryCode) {
+    private static List<TestObject> getListObjectWithWrongField(String serializedPath, TestObject givenTestObject) {
         List<TestObject> testObjectList = TestUtil.readFromSerializedFile(serializedPath);
         assert testObjectList != null;
+        List<TestObject> newTestObjectList = new ArrayList<>();
         for (TestObject testObject : testObjectList) {
             int n = getRandomNumber();
-            setNewValueForGivenField(n, testObject, givenTestObject);
+            newTestObjectList.add(getNewValueForGivenField(n, testObject, givenTestObject));
         }
-        return testObjectList;
+        return newTestObjectList;
     }
 
-    private static void setNewValueForGivenField(int n, TestObject testObject, TestObject givenTestObject) {
+    private static TestObject getNewValueForGivenField(int n, TestObject testObject, TestObject givenTestObject) {
         switch (n) {
-            case 0 -> testObject.setStreet(givenTestObject.getStreet());
             case 1 -> testObject.setCity(givenTestObject.getCity());
             case 2 -> testObject.setState(givenTestObject.getState());
-            case 4 -> testObject.setZipCode(givenTestObject.getZipCode());
             case 6 -> testObject.setCountry(givenTestObject.getCountry()); // adresa retinuta are aceeasi tara. trb o alta tara
             default -> {
             }
         }
+        return testObject;
     }
 
     private static String getAnotherCountryName(String countryCode) {
@@ -84,8 +85,8 @@ public class RandomAddressesWithWrongField {
 
     private static int getRandomNumber() {
         Random rand = new Random();
-        int n = rand.nextInt(7); // 0, ... , 6 fara 3 si 5. nr de tel si country calling code nu s de interes
-        while (n == 3) {
+        int n = rand.nextInt(7); //street line, zip code, nr de tel si country calling code nu s de interes
+        while (n == 0 || n == 3 || n == 4 || n == 5) {
             n = rand.nextInt(7);
         }
         return n;
@@ -96,48 +97,46 @@ public class RandomAddressesWithWrongField {
             Document document = Jsoup.connect(url).get();
             Elements countryList = document.select("li.col-sm-6 > span"); //country
             Elements addressWithoutCountryList = document.select("li.col-sm-6 > p > span"); //street,city,state,phoneNumber,[zipCode],countryCallingCode
-            Map<String, ArrayList<String>> randomAddress = getRandomAddressesMap(countryList, addressWithoutCountryList);
-            return new TestObject(randomAddress.get(STREET).get(0), randomAddress.get(CITY).get(0), randomAddress.get(STATE).get(0),
-                    randomAddress.get(PHONE_NUMBER).get(0), randomAddress.get(ZIP_CODE).get(0),
-                    randomAddress.get(COUNTRY_CALLING_CODE).get(0), randomAddress.get(COUNTRY).get(0));
+            Map<String, String> randomAddress = getRandomAddress(countryList, addressWithoutCountryList);
+            return new TestObject(randomAddress.get(STREET), randomAddress.get(CITY), randomAddress.get(STATE),
+                    randomAddress.get(PHONE_NUMBER), randomAddress.get(ZIP_CODE),
+                    randomAddress.get(COUNTRY_CALLING_CODE), randomAddress.get(COUNTRY));
         } catch (IOException e) {
             System.err.println("For '" + url + "': " + e.getMessage());
         }
         return null;
     }
 
-    private static Map<String, ArrayList<String>> getRandomAddressesMap(Elements countryList, Elements addressWithoutCountryList) {
-        Map<String, ArrayList<String>> randomAddressMap = new HashMap<>();
+    private static Map<String, String> getRandomAddress(Elements countryList, Elements addressWithoutCountryList) {
+        Map<String, String> randomAddressMap = new HashMap<>();
 
-        initialiseRandomAddressMap(randomAddressMap);
+        randomAddressMap.put(COUNTRY, countryList.text().replace(COUNTRY_KEY, ""));
 
-        randomAddressMap.get(COUNTRY).add(countryList.get(0).text().replace(COUNTRY_KEY, ""));
-
-        if (addressWithoutCountryList.size() == 5) { // cate informatii are o adresa random. daca are 5 info => lipseste zip code
-            randomAddressMap.get(STREET).add(addressWithoutCountryList.get(0).text().replace(STREET_KEY, ""));
-            randomAddressMap.get(CITY).add(addressWithoutCountryList.get(1).text().replace(CITY_KEY, "").trim());
-            randomAddressMap.get(STATE).add(addressWithoutCountryList.get(2).text().replace(STATE_KEY, ""));
-            randomAddressMap.get(PHONE_NUMBER).add(addressWithoutCountryList.get(3).text().replace(PHONE_NUMBER_KEY, ""));
-            randomAddressMap.get(ZIP_CODE).add(null);
-            randomAddressMap.get(COUNTRY_CALLING_CODE).add(addressWithoutCountryList.get(4).text().replace(COUNTRY_CALLING_CODE_KEY, ""));
-        } else {
-            randomAddressMap.get(STREET).add(addressWithoutCountryList.get(0).text().replace(STREET_KEY, ""));
-            randomAddressMap.get(CITY).add(addressWithoutCountryList.get(1).text().replace(CITY_KEY, "").trim());
-            randomAddressMap.get(STATE).add(addressWithoutCountryList.get(2).text().replace(STATE_KEY, ""));
-            randomAddressMap.get(PHONE_NUMBER).add(addressWithoutCountryList.get(3).text().replace(PHONE_NUMBER_KEY, ""));
-            randomAddressMap.get(ZIP_CODE).add(addressWithoutCountryList.get(4).text().replace(ZIP_CODE_KEY, ""));
-            randomAddressMap.get(COUNTRY_CALLING_CODE).add(addressWithoutCountryList.get(5).text().replace(COUNTRY_CALLING_CODE_KEY, ""));
+        for (Element element : addressWithoutCountryList) {
+            if (element.text().toLowerCase().contains(STREET)) {
+                randomAddressMap.put(STREET, element.text().replace(STREET_KEY, ""));
+            } else {
+                if (element.text().toLowerCase().contains(CITY)) {
+                    randomAddressMap.put(CITY, element.text().replace(CITY_KEY, ""));
+                } else {
+                    if (element.text().toLowerCase().contains(STATE)) {
+                        randomAddressMap.put(STATE, element.text().replace(STATE_KEY, ""));
+                    } else {
+                        if (element.text().toLowerCase().contains(PHONE_NUMBER_KEY.toLowerCase().trim())) {
+                            randomAddressMap.put(PHONE_NUMBER, element.text().replace(PHONE_NUMBER_KEY, ""));
+                        } else {
+                            if (element.text().toLowerCase().contains(COUNTRY_CALLING_CODE_KEY.toLowerCase().trim())) {
+                                randomAddressMap.put(COUNTRY_CALLING_CODE, element.text().replace(COUNTRY_CALLING_CODE_KEY, ""));
+                            } else {
+                                if (element.text().toLowerCase().contains(COUNTRY)) {
+                                    randomAddressMap.put(COUNTRY, element.text().replace(COUNTRY_KEY, ""));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         return randomAddressMap;
-    }
-
-    private static void initialiseRandomAddressMap(Map<String, ArrayList<String>> randomAddressMap) {
-        randomAddressMap.put(STREET, new ArrayList<>());
-        randomAddressMap.put(CITY, new ArrayList<>());
-        randomAddressMap.put(STATE, new ArrayList<>());
-        randomAddressMap.put(PHONE_NUMBER, new ArrayList<>());
-        randomAddressMap.put(ZIP_CODE, new ArrayList<>());
-        randomAddressMap.put(COUNTRY_CALLING_CODE, new ArrayList<>());
-        randomAddressMap.put(COUNTRY, new ArrayList<>());
     }
 }

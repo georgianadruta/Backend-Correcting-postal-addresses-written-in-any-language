@@ -37,10 +37,12 @@ public class WebCrawler {
             Map<String, ArrayList<String>> randomAddressMap = getRandomAddressesMap(countryList, addressWithoutCountryList);
 
             List<TestObject> testObjectList = new ArrayList<>();
-            for (int i = 0; i < randomAddressMap.get(STREET).size(); i++) {
-                TestObject testObject = new TestObject(randomAddressMap.get(STREET).get(i), randomAddressMap.get(CITY).get(i), randomAddressMap.get(STATE).get(i), randomAddressMap.get(PHONE_NUMBER).get(i),
-                        randomAddressMap.get(ZIP_CODE).get(i), randomAddressMap.get(COUNTRY_CALLING_CODE).get(i), randomAddressMap.get(COUNTRY).get(i));
-                testObjectList.add(testObject);
+            for (int i = 0; i < randomAddressMap.get(STREET).size() - 1; i++) {
+                if (i < 20) {
+                    TestObject testObject = new TestObject(randomAddressMap.get(STREET).get(i), randomAddressMap.get(CITY).get(i), randomAddressMap.get(STATE).get(i),
+                            randomAddressMap.get(PHONE_NUMBER).get(i), randomAddressMap.get(ZIP_CODE).get(i), randomAddressMap.get(COUNTRY_CALLING_CODE).get(i), randomAddressMap.get(COUNTRY).get(i));
+                    testObjectList.add(testObject);
+                }
             }
             insertRandomAddressesInFile(testObjectList, fileName);
         } catch (IOException e) {
@@ -133,7 +135,6 @@ public class WebCrawler {
                     copyNumber--;
                 }
                 if (isValidLink(url)) {
-                    System.out.println(url);
                     TestDataGenerator.createIncorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese gresite care sa acopere cazurile din metoda
                 }
             }
@@ -145,7 +146,6 @@ public class WebCrawler {
     private String getCorespondentUrl(String filePath) {
         String fileName = filePath.split("/")[4];
         String countryCode = fileName.replace(".txt", "");
-        System.out.println(countryCode);
         return "https://www.bestrandoms.com/random-address-in-" + countryCode + "?quantity=20";
     }
 }
