@@ -69,30 +69,4 @@ public class State extends AbstractLocation {
     public AbstractLocation getRoot() {
         return countryRoot;
     }
-
-    @Override
-    public String toString() {
-        return "AbstractLocation{" +
-                "geoNameId=" + geoNameId +
-                ", name='" + name + '\'' +
-                ", asciiName='" + asciiName + '\'' +
-                ", alternateNames=" + alternateNames +
-//                ", latitude=" + latitude +
-//                ", longitude=" + longitude +
-//                ", featureClass='" + featureClass + '\'' +
-//                ", featureCode='" + featureCode + '\'' +
-                ", code='" + code + '\'' +
-//                ", cc2='" + cc2 + '\'' +
-//                ", admin1='" + admin1 + '\'' +
-//                ", admin2='" + admin2 + '\'' +
-//                ", admin3='" + admin3 + '\'' +
-//                ", admin4='" + admin4 + '\'' +
-//                ", population=" + population +
-//                ", deviation='" + deviation + '\'' +
-//                ", dem='" + dem + '\'' +
-//                ", timezone='" + timezone + '\'' +
-//                ", modificationDate='" + modificationDate + '\'' +
-                ", subRegions=" + subRegions +
-                '}';
-    }
 }
