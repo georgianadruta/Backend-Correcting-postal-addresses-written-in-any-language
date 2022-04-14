@@ -4,7 +4,6 @@ import application.testData.crawler.WebCrawler;
 import application.testData.model.TestObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
@@ -46,10 +45,15 @@ public class RandomAddressesWithWrongFieldCompleted {
             Document document = Jsoup.connect(url).get();
             Elements countryList = document.select("li.col-sm-6 > span"); //country
             Elements addressWithoutCountryList = document.select("li.col-sm-6 > p > span"); //street,city,state,phoneNumber,[zipCode],countryCallingCode
-            Map<String, String> randomAddress = WebCrawler.getRandomAddressMap(countryList, addressWithoutCountryList);
-            return new TestObject(randomAddress.get(STREET), randomAddress.get(CITY), randomAddress.get(STATE),
-                    randomAddress.get(PHONE_NUMBER), randomAddress.get(ZIP_CODE),
-                    randomAddress.get(COUNTRY_CALLING_CODE), randomAddress.get(COUNTRY));
+            Map<String, ArrayList<String>> randomAddress = WebCrawler.getRandomAddressesMap(countryList, addressWithoutCountryList);
+            String street = WebCrawler.getCorrespondentValueField(STREET, randomAddress, 0);
+            String city = WebCrawler.getCorrespondentValueField(CITY, randomAddress, 0);
+            String state = WebCrawler.getCorrespondentValueField(STATE, randomAddress, 0);
+            String phoneNumber = WebCrawler.getCorrespondentValueField(PHONE_NUMBER, randomAddress, 0);
+            String zipCode = WebCrawler.getCorrespondentValueField(ZIP_CODE, randomAddress, 0);
+            String countryCallingCode = WebCrawler.getCorrespondentValueField(COUNTRY_CALLING_CODE, randomAddress, 0);
+            String country = WebCrawler.getCorrespondentValueField(COUNTRY, randomAddress, 0);
+            return new TestObject(street, city, state, phoneNumber, zipCode, countryCallingCode, country);
         } catch (IOException e) {
             System.err.println("For '" + url + "': " + e.getMessage());
         }

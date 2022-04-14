@@ -37,12 +37,16 @@ public class WebCrawler {
             Map<String, ArrayList<String>> randomAddressMap = getRandomAddressesMap(countryList, addressWithoutCountryList);
 
             List<TestObject> testObjectList = new ArrayList<>();
-            for (int i = 0; i < randomAddressMap.get(STREET).size() - 1; i++) {
-                if (i < 20) {
-                    TestObject testObject = new TestObject(randomAddressMap.get(STREET).get(i), randomAddressMap.get(CITY).get(i), randomAddressMap.get(STATE).get(i),
-                            randomAddressMap.get(PHONE_NUMBER).get(i), randomAddressMap.get(ZIP_CODE).get(i), randomAddressMap.get(COUNTRY_CALLING_CODE).get(i), randomAddressMap.get(COUNTRY).get(i));
-                    testObjectList.add(testObject);
-                }
+            for (int i = 0; i < randomAddressMap.get(COUNTRY).size(); i++) { // country nu lipseste niciodata din adresa postala
+                String street = getCorrespondentValueField(STREET, randomAddressMap, i);
+                String city = getCorrespondentValueField(CITY, randomAddressMap, i);
+                String state = getCorrespondentValueField(STATE, randomAddressMap, i);
+                String phoneNumber = getCorrespondentValueField(PHONE_NUMBER, randomAddressMap, i);
+                String zipCode = getCorrespondentValueField(ZIP_CODE, randomAddressMap, i);
+                String countryCallingCode = getCorrespondentValueField(COUNTRY_CALLING_CODE, randomAddressMap, i);
+                String country = getCorrespondentValueField(COUNTRY, randomAddressMap, i);
+                TestObject testObject = new TestObject(street, city, state, phoneNumber, zipCode, countryCallingCode, country);
+                testObjectList.add(testObject);
             }
             insertRandomAddressesInFile(testObjectList, fileName);
         } catch (IOException e) {
@@ -62,40 +66,7 @@ public class WebCrawler {
         return false;
     }
 
-    public static Map<String, String> getRandomAddressMap(Elements countryList, Elements addressWithoutCountryList) {
-        Map<String, String> randomAddressMap = new HashMap<>();
-
-        randomAddressMap.put(COUNTRY, countryList.text().replace(COUNTRY_KEY, ""));
-
-        for (Element element : addressWithoutCountryList) {
-            if (element.text().toLowerCase().contains(STREET)) {
-                randomAddressMap.put(STREET, element.text().replace(STREET_KEY, ""));
-            } else {
-                if (element.text().toLowerCase().contains(CITY)) {
-                    randomAddressMap.put(CITY, element.text().replace(CITY_KEY, ""));
-                } else {
-                    if (element.text().toLowerCase().contains(STATE)) {
-                        randomAddressMap.put(STATE, element.text().replace(STATE_KEY, ""));
-                    } else {
-                        if (element.text().toLowerCase().contains(PHONE_NUMBER_KEY.toLowerCase().trim())) {
-                            randomAddressMap.put(PHONE_NUMBER, element.text().replace(PHONE_NUMBER_KEY, ""));
-                        } else {
-                            if (element.text().toLowerCase().contains(COUNTRY_CALLING_CODE_KEY.toLowerCase().trim())) {
-                                randomAddressMap.put(COUNTRY_CALLING_CODE, element.text().replace(COUNTRY_CALLING_CODE_KEY, ""));
-                            } else {
-                                if (element.text().toLowerCase().contains(COUNTRY)) {
-                                    randomAddressMap.put(COUNTRY, element.text().replace(COUNTRY_KEY, ""));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return randomAddressMap;
-    }
-
-    private static Map<String, ArrayList<String>> getRandomAddressesMap(Elements countryList, Elements addressWithoutCountryList) {
+    public static Map<String, ArrayList<String>> getRandomAddressesMap(Elements countryList, Elements addressWithoutCountryList) {
         Map<String, ArrayList<String>> randomAddressMap = new HashMap<>();
 
         initialiseRandomAddressMap(randomAddressMap);
@@ -104,23 +75,29 @@ public class WebCrawler {
             randomAddressMap.get(COUNTRY).add(element.text().replace(COUNTRY_KEY, ""));
         }
 
-        if ((addressWithoutCountryList.size() / 20) == 5) { // cate informatii are o adresa random. daca are 5 info => lipseste zip code
-            for (int i = 0; i < addressWithoutCountryList.size() - 5; i += 5) {
-                randomAddressMap.get(STREET).add(addressWithoutCountryList.get(i).text().replace(STREET_KEY, ""));
-                randomAddressMap.get(CITY).add(addressWithoutCountryList.get(i + 1).text().replace(CITY_KEY, "").trim());
-                randomAddressMap.get(STATE).add(addressWithoutCountryList.get(i + 2).text().replace(STATE_KEY, ""));
-                randomAddressMap.get(PHONE_NUMBER).add(addressWithoutCountryList.get(i + 3).text().replace(PHONE_NUMBER_KEY, ""));
-                randomAddressMap.get(ZIP_CODE).add(null);
-                randomAddressMap.get(COUNTRY_CALLING_CODE).add(addressWithoutCountryList.get(i + 4).text().replace(COUNTRY_CALLING_CODE_KEY, ""));
-            }
-        } else {
-            for (int i = 0; i < addressWithoutCountryList.size() - 6; i += 6) {
-                randomAddressMap.get(STREET).add(addressWithoutCountryList.get(i).text().replace(STREET_KEY, ""));
-                randomAddressMap.get(CITY).add(addressWithoutCountryList.get(i + 1).text().replace(CITY_KEY, "").trim());
-                randomAddressMap.get(STATE).add(addressWithoutCountryList.get(i + 2).text().replace(STATE_KEY, ""));
-                randomAddressMap.get(PHONE_NUMBER).add(addressWithoutCountryList.get(i + 3).text().replace(PHONE_NUMBER_KEY, ""));
-                randomAddressMap.get(ZIP_CODE).add(addressWithoutCountryList.get(i + 4).text().replace(ZIP_CODE_KEY, ""));
-                randomAddressMap.get(COUNTRY_CALLING_CODE).add(addressWithoutCountryList.get(i + 5).text().replace(COUNTRY_CALLING_CODE_KEY, ""));
+        for (Element element : addressWithoutCountryList) {
+            if (element.text().toLowerCase().contains(STREET)) {
+                randomAddressMap.get(STREET).add(element.text().replace(STREET_KEY, ""));
+            } else {
+                if (element.text().toLowerCase().contains(CITY)) {
+                    randomAddressMap.get(CITY).add(element.text().replace(CITY_KEY, ""));
+                } else {
+                    if (element.text().toLowerCase().contains(STATE)) {
+                        randomAddressMap.get(STATE).add(element.text().replace(STATE_KEY, ""));
+                    } else {
+                        if (element.text().toLowerCase().contains(PHONE_NUMBER_KEY.toLowerCase().trim())) {
+                            randomAddressMap.get(PHONE_NUMBER).add(element.text().replace(PHONE_NUMBER_KEY, ""));
+                        } else {
+                            if (element.text().toLowerCase().contains(COUNTRY_CALLING_CODE_KEY.toLowerCase().trim())) {
+                                randomAddressMap.get(COUNTRY_CALLING_CODE).add(element.text().replace(COUNTRY_CALLING_CODE_KEY, ""));
+                            } else {
+                                if (element.text().toLowerCase().contains(COUNTRY)) {
+                                    randomAddressMap.get(COUNTRY).add(element.text().replace(COUNTRY_KEY, ""));
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         return randomAddressMap;
@@ -180,5 +157,13 @@ public class WebCrawler {
         String fileName = filePath.split("/")[4];
         String countryCode = fileName.replace(".txt", "");
         return "https://www.bestrandoms.com/random-address-in-" + countryCode + "?quantity=20";
+    }
+
+    public static String getCorrespondentValueField(String nameField, Map<String, ArrayList<String>> randomAddress, int index) {
+        String value = null;
+        if (!randomAddress.get(nameField).isEmpty()) {
+            value = randomAddress.get(nameField).get(index);
+        }
+        return value;
     }
 }

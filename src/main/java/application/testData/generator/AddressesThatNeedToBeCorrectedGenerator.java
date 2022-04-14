@@ -40,7 +40,7 @@ public class AddressesThatNeedToBeCorrectedGenerator {
             String fileName = className + ".ser";
             String newFilePath = "./files/test/incorrectRandomAddresses/" + countryCode + "/" + fileName;
             File file = new File(newFilePath);
-            new FileWriter(file, true).close();
+            new FileWriter(file, false).close();
             file.getParentFile().mkdirs();
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file, true));
             FileOutputStream fileOut = new FileOutputStream(newFilePath);
@@ -57,16 +57,16 @@ public class AddressesThatNeedToBeCorrectedGenerator {
         try {
             TestObject copyTestObject = (TestObject) testObject.clone();
             switch (className) {
-                case "RandomAddressesWithoutAField" -> {
+                case "RandomAddressesWithAnEmptyField" -> {
                     return RandomAddressesWithAnEmptyField.getAddress(copyTestObject);
                 }
-                case "RandomAddressesWithWrongField" -> {
+                case "RandomAddressesWithWrongFieldCompleted" -> {
                     return RandomAddressesWithWrongFieldCompleted.getAddress(copyTestObject, countryCode);
                 }
-                case "RandomAddressesWithFieldsFilledIncorrectly" -> {
+                case "RandomAddressesWithShuffledFields" -> {
                     return RandomAddressesWithShuffledFields.getAddress(copyTestObject);
                 }
-                case "RandomAddressesWithMultipleDataInOneField" -> {
+                case "RandomAddressesWithMultipleInfoInSeveralFields" -> {
                     return RandomAddressesWithMultipleInfoInSeveralFields.getAddress(copyTestObject);
                 }
             }

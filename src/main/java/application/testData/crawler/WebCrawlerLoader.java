@@ -12,12 +12,12 @@ public class WebCrawlerLoader {
         webCrawler.createANewSetForEachCountryFromToDoFile(1); // un set cu 5 * 20 adrese random
 
 
-        // test ca se creeaza fisierele pt fiecare case
-//        List<TestObject> list = TestUtil.readFromSerializedFile("./files/test/correctRandomAddresses/RO.ser");
-//        System.out.println("correct" + list.get(0));
-//        System.out.println("filled incorrectly" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithFieldsFilledIncorrectly.ser").get(0));
-//        System.out.println("multiple data in one field" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithMultipleDataInOneField.ser").get(0));
-//        System.out.println("without a field" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithoutAField.ser").get(0));
-//        System.out.println("with wrong field" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithWrongField.ser").get(0));
+        // test ca se creeaza fisierele pt fiecare case cu datele corecte
+        List<TestObject> list = TestUtil.readFromSerializedFile("./files/test/correctRandomAddresses/RO.ser");
+        System.out.println("correct" + list.get(0));
+        System.out.println("filled incorrectly" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithShuffledFields.ser").get(0));
+        System.out.println("multiple info in one field" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithMultipleInfoInSeveralFields.ser").get(0));
+        System.out.println("empty field" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithAnEmptyField.ser").get(0));
+        System.out.println("wrong completed field" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithWrongFieldCompleted.ser").get(0));
     }
 }
