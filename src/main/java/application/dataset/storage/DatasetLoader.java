@@ -15,7 +15,7 @@ public class DatasetLoader {
 //        System.out.println(DataStorage.world.toString());
 //        System.out.println("The world object contains: " + DataStorage.calculateNumberOfLocationsInWorld(DataStorage.world) + " locations.");
 
-        //System.out.println(SolutionUtil.multimap.get("Podoleni"));
+        System.out.println(SolutionUtil.multimap.get("Podoleni").size());
 
 //        for (AbstractLocation abstractLocation : DataStorage.world.getSubRegions()) {
 //            for (AbstractLocation location : abstractLocation.getSubRegions()) {
