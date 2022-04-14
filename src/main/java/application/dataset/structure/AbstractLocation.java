@@ -7,6 +7,8 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.*;
 
+import static application.constants.ConstantsUtil.VOWELS;
+
 @Data
 public abstract class AbstractLocation implements Serializable {
     protected final int geoNameId;
@@ -119,7 +121,7 @@ public abstract class AbstractLocation implements Serializable {
 
     public static List<String> getAllNamesVariationsWithoutVowels(String name, String asciiName, String[] alternateNames) {
         Set<String> allNamesVariationsWithoutVowels = new HashSet<>();
-        List<String> vowelSubset = getAllSubsetsFromAString("aeiou");
+        List<String> vowelSubset = getAllSubsetsFromAString(VOWELS);
         for (String vowels : vowelSubset) {
             String regex = "[" + vowels + "]";
             allNamesVariationsWithoutVowels.add(name.replaceAll(regex, ""));
