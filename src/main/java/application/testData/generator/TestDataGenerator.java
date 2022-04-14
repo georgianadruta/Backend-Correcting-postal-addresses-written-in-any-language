@@ -12,9 +12,10 @@ public class TestDataGenerator {
     }
 
     public static void createIncorrectAddressesTestDataForEachCountry(String filePath) {
-        RandomAddressesWithoutAField.createRandomAddressesWithoutAFieldForAGivenFilePath(filePath); // unele adrese pot avea 2 nuluri, pt ca le lipsesc deja zip codeul
-        RandomAddressesWithWrongField.createRandomAddressesWithWrongFieldForAGivenFilePath(filePath);
-        RandomAddressesWithFieldsFilledIncorrectly.createRandomAddressesWithFieldsFilledIncorrectlyForAGivenFilePath(filePath);
-        RandomAddressesWithMultipleDataInOneField.createRandomAddressesWithMultipleDataInOneFieldForAGivenFilePath(filePath);
+//        RandomAddressesWithoutAField.createRandomAddressesWithoutAFieldForAGivenFilePath(filePath); // unele adrese pot avea 2 nuluri, pt ca le lipsesc deja zip codeul
+//        RandomAddressesWithWrongField.createRandomAddressesWithWrongFieldForAGivenFilePath(filePath);
+//        RandomAddressesWithFieldsFilledIncorrectly.createRandomAddressesWithFieldsFilledIncorrectlyForAGivenFilePath(filePath);
+//        RandomAddressesWithMultipleDataInOneField.createRandomAddressesWithMultipleDataInOneFieldForAGivenFilePath(filePath);
+        AddressesThatNeedToBeCorrectedGenerator.createAddressesThatNeedToBeCorrectedForAGivenFilePath(filePath);
     }
 }

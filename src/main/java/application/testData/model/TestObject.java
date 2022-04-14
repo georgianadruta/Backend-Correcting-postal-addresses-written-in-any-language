@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class TestObject implements Serializable {
+public class TestObject implements Serializable, Cloneable {
     private String street;
     private String city;
     private String state;
@@ -34,5 +34,10 @@ public class TestObject implements Serializable {
                 ",\nZip code: " + zipCode +
                 ",\nCountry calling code: " + countryCallingCode +
                 ",\nCountry: " + country + "\n}\n";
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
