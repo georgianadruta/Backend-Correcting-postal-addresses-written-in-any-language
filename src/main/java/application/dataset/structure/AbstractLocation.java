@@ -71,6 +71,12 @@ public abstract class AbstractLocation implements Serializable {
         }
     }
 
+    public void addAllVariationsOfAnAddress(String name, String asciiName, String[] alternateNames, AbstractLocation abstractLocation) {
+        addAlternateNamesInMap(new String[]{name, asciiName}, abstractLocation);
+        addAlternateNamesInMap(alternateNames, abstractLocation);
+        addAlternateNamesInMap(getMoreAlternateNames(name, asciiName, alternateNames), abstractLocation);
+    }
+
     public void addAlternateNamesInMap(String[] alternateNames, AbstractLocation parent) { // tarile au ca parinte valoarea null
         for (String alternateName : alternateNames) {
             SolutionUtil.multimap.put(alternateName, parent);
@@ -79,20 +85,20 @@ public abstract class AbstractLocation implements Serializable {
 
     public String[] getMoreAlternateNames(String name, String asciiName, String[] alternateNames) {
         Set<String> set = new HashSet<>();
-        set.addAll(List.of(getNamesWithoutPrepositions(name, asciiName, alternateNames)));
-        set.addAll(List.of(getNamesWithoutDuplicateCharacters(name, asciiName, alternateNames)));
-        set.addAll(List.of(getAllNamesVariationsWithoutVowels(name, asciiName, alternateNames)));
+        set.addAll(getNamesWithoutPrepositions(name, asciiName, alternateNames));
+        set.addAll(getNamesWithoutDuplicateCharacters(name, asciiName, alternateNames));
+        set.addAll(getAllNamesVariationsWithoutVowels(name, asciiName, alternateNames));
         return set.toArray(new String[0]);
     }
 
-    public String[] getNamesWithoutDuplicateCharacters(String name, String asciiName, String[] alternateNames) {
+    public List<String> getNamesWithoutDuplicateCharacters(String name, String asciiName, String[] alternateNames) {
         List<String> list = new ArrayList<>();
         list.add(removeDuplicateCharacters(name));
         list.add(removeDuplicateCharacters(asciiName));
         for (String alternateName : alternateNames) {
             list.add(removeDuplicateCharacters(alternateName));
         }
-        return list.toArray(new String[0]);
+        return list;
     }
 
     public static String removeDuplicateCharacters(String input) {
@@ -111,7 +117,7 @@ public abstract class AbstractLocation implements Serializable {
         return String.valueOf(Arrays.copyOfRange(characterList, 0, j + 1));
     }
 
-    public static String[] getAllNamesVariationsWithoutVowels(String name, String asciiName, String[] alternateNames) {
+    public static List<String> getAllNamesVariationsWithoutVowels(String name, String asciiName, String[] alternateNames) {
         Set<String> allNamesVariationsWithoutVowels = new HashSet<>();
         List<String> vowelSubset = getAllSubsetsFromAString("aeiou");
         for (String vowels : vowelSubset) {
@@ -122,7 +128,7 @@ public abstract class AbstractLocation implements Serializable {
                 allNamesVariationsWithoutVowels.add(alternateName.replaceAll(regex, ""));
             }
         }
-        return allNamesVariationsWithoutVowels.toArray(new String[0]);
+        return new ArrayList<>(allNamesVariationsWithoutVowels);
     }
 
     public static List<String> getAllSubsetsFromAString(String input) {
@@ -136,14 +142,14 @@ public abstract class AbstractLocation implements Serializable {
         return arr;
     }
 
-    public String[] getNamesWithoutPrepositions(String name, String asciiName, String[] alternateNames) {
+    public List<String> getNamesWithoutPrepositions(String name, String asciiName, String[] alternateNames) {
         List<String> newNameList = new ArrayList<>();
         addNonNullElement(newNameList, removePreposition(name));
         addNonNullElement(newNameList, removePreposition(asciiName));
         for (String alternateName : alternateNames) {
             addNonNullElement(newNameList, removePreposition(alternateName));
         }
-        return newNameList.toArray(new String[0]);
+        return newNameList;
     }
 
     public static void addNonNullElement(List<String> list, List<String> inputList) {
@@ -163,11 +169,11 @@ public abstract class AbstractLocation implements Serializable {
         for (String word : words) {
             if (word.length() <= 3) { // din, the, de, pe, le, la, l'
                 sw = true;
-                newWords.add(SolutionUtil.getCanonicalForm(input.replace(word, "")));
+                newWords.add(input.replace(word, ""));
                 input = input.replace(word, "");
             }
         }
-        newWords.add(SolutionUtil.getCanonicalForm(input));
+        newWords.add(input);
         return sw ? newWords : null;
     }
 

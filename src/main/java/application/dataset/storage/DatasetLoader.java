@@ -11,11 +11,13 @@ public class DatasetLoader {
 //        Date startDate = new Date(); contorizare timp
 
 //        DataStorage.addAllCountriesInToDoFile(); //metoda ajutatoare pt a adauga toate tarile
-//        DataStorage.createDataStorage();
+        DataStorage.createDataStorage();
 //        System.out.println(DataStorage.world.toString());
 //        System.out.println("The world object contains: " + DataStorage.calculateNumberOfLocationsInWorld(DataStorage.world) + " locations.");
 
-//        List<AbstractLocation> multimap = SolutionUtil.multimap.get("Podoleni");
+
+//        System.out.println(SolutionUtil.multimap.keySet());
+//        List<AbstractLocation> multimap = SolutionUtil.multimap.get("pdoleni");
 //        for (AbstractLocation abstractLocation : multimap)
 //            System.out.println(abstractLocation + "\n");
 

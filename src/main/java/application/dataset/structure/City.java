@@ -9,10 +9,7 @@ public class City extends AbstractLocation {
 //                String admin4, float population, String deviation, String dem, String timezone, String modificationDate) {
         super(geoNameId, name, asciiName, alternateNames, code, admin1);
         this.stateRoot = stateRoot;
-        addAlternateNamesInMap(new String[]{name}, stateRoot);
-        addAlternateNamesInMap(new String[]{asciiName}, stateRoot);
-        addAlternateNamesInMap(alternateNames, stateRoot);
-        addAlternateNamesInMap(getMoreAlternateNames(name, asciiName, alternateNames), stateRoot);
+        addAllVariationsOfAnAddress(name, asciiName, alternateNames, stateRoot);
 //        latitude, longitude,
 //                featureClass, featureCode, code, cc2, admin1, admin2, admin3,
 //                admin4, population, deviation, dem, timezone, modificationDate);

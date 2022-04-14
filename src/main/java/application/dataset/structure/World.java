@@ -1,8 +1,12 @@
 package application.dataset.structure;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 
 import static application.constants.ConstantsUtil.INPUT_DATA_FILE;
@@ -47,10 +51,7 @@ public class World extends AbstractLocation {
                     String timezone = splitData[17];
                     String modificationDate = splitData[18];
                     if (featureClass.equals("A") && featureCode.equals("PCLI")) { // este tara
-                        addAlternateNamesInMap(new String[]{name}, null);
-                        addAlternateNamesInMap(new String[]{asciiName}, null);
-                        addAlternateNamesInMap(alternateNames, null);
-                        addAlternateNamesInMap(getMoreAlternateNames(name, asciiName, alternateNames), null);
+                        addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
                         Country country = new Country(geoNameId, name, asciiName, alternateNames, code, admin1);
 //                                , latitude, longitude,
 //                                featureClass, featureCode, code, cc2, admin1, admin2, admin3,
