@@ -4,7 +4,7 @@ import application.testData.model.TestObject;
 
 import java.util.Random;
 
-public class RandomAddressesWithoutAField {
+public class RandomAddressesWithAnEmptyField {
     // se extrage un field intamplator si se elimina
 
     private static int getRandomNumber() {
@@ -16,7 +16,7 @@ public class RandomAddressesWithoutAField {
         return n;
     }
 
-    public static TestObject getAddressWithoutAField(TestObject testObject) {
+    public static TestObject getAddress(TestObject testObject) {
         int n = getRandomNumber();
         switch (n) {
             case 0 -> testObject.setStreet(null);

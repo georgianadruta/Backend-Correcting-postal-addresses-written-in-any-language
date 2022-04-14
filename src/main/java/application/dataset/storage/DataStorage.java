@@ -2,8 +2,6 @@ package application.dataset.storage;
 
 import application.dataset.structure.AbstractLocation;
 import application.dataset.structure.World;
-import application.testData.invalidRandomAddresses.easy.done.RandomAddressesWithWrongField;
-import application.testData.model.TestObject;
 
 import java.io.*;
 import java.util.*;

@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class RandomAddressesWithMultipleDataInOneField {
+public class RandomAddressesWithMultipleInfoInSeveralFields {
     // clasa include adrese cu mai multe info intr un singur field
 
     private static int getRandomNumber() {
@@ -14,7 +14,7 @@ public class RandomAddressesWithMultipleDataInOneField {
         return rand.nextInt(7);
     }
 
-    public static TestObject getMultipleInfoInOneFieldObject(TestObject testObject) {
+    public static TestObject getAddress(TestObject testObject) {
         List<String> list = Arrays.asList(testObject.getStreet(), testObject.getCity(), testObject.getState(),
                 testObject.getPhoneNumber(), testObject.getZipCode(), testObject.getCountryCallingCode(), testObject.getCountry());
         String street = null;

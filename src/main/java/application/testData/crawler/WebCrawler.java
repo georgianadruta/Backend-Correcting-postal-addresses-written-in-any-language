@@ -62,6 +62,39 @@ public class WebCrawler {
         return false;
     }
 
+    public static Map<String, String> getRandomAddressMap(Elements countryList, Elements addressWithoutCountryList) {
+        Map<String, String> randomAddressMap = new HashMap<>();
+
+        randomAddressMap.put(COUNTRY, countryList.text().replace(COUNTRY_KEY, ""));
+
+        for (Element element : addressWithoutCountryList) {
+            if (element.text().toLowerCase().contains(STREET)) {
+                randomAddressMap.put(STREET, element.text().replace(STREET_KEY, ""));
+            } else {
+                if (element.text().toLowerCase().contains(CITY)) {
+                    randomAddressMap.put(CITY, element.text().replace(CITY_KEY, ""));
+                } else {
+                    if (element.text().toLowerCase().contains(STATE)) {
+                        randomAddressMap.put(STATE, element.text().replace(STATE_KEY, ""));
+                    } else {
+                        if (element.text().toLowerCase().contains(PHONE_NUMBER_KEY.toLowerCase().trim())) {
+                            randomAddressMap.put(PHONE_NUMBER, element.text().replace(PHONE_NUMBER_KEY, ""));
+                        } else {
+                            if (element.text().toLowerCase().contains(COUNTRY_CALLING_CODE_KEY.toLowerCase().trim())) {
+                                randomAddressMap.put(COUNTRY_CALLING_CODE, element.text().replace(COUNTRY_CALLING_CODE_KEY, ""));
+                            } else {
+                                if (element.text().toLowerCase().contains(COUNTRY)) {
+                                    randomAddressMap.put(COUNTRY, element.text().replace(COUNTRY_KEY, ""));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return randomAddressMap;
+    }
+
     private static Map<String, ArrayList<String>> getRandomAddressesMap(Elements countryList, Elements addressWithoutCountryList) {
         Map<String, ArrayList<String>> randomAddressMap = new HashMap<>();
 

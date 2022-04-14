@@ -1,9 +1,9 @@
 package application.testData.generator;
 
-import application.testData.invalidRandomAddresses.easy.done.RandomAddressesWithWrongField;
-import application.testData.invalidRandomAddresses.easy.done.RandomAddressesWithoutAField;
-import application.testData.invalidRandomAddresses.medium.done.RandomAddressesWithFieldsFilledIncorrectly;
-import application.testData.invalidRandomAddresses.medium.done.RandomAddressesWithMultipleDataInOneField;
+import application.testData.invalidRandomAddresses.easy.done.RandomAddressesWithWrongFieldCompleted;
+import application.testData.invalidRandomAddresses.easy.done.RandomAddressesWithAnEmptyField;
+import application.testData.invalidRandomAddresses.medium.done.RandomAddressesWithShuffledFields;
+import application.testData.invalidRandomAddresses.medium.done.RandomAddressesWithMultipleInfoInSeveralFields;
 import application.testData.model.TestObject;
 import application.testData.util.TestUtil;
 
@@ -24,15 +24,15 @@ public class AddressesThatNeedToBeCorrectedGenerator {
         List<TestObject> randomAddressesWithFieldsFilledIncorrectlyList = new ArrayList<>();
         List<TestObject> randomAddressesWithMultipleDataInOneFieldList = new ArrayList<>();
         for (TestObject testObject : correctRandomAddressList) {
-            randomAddressesWithoutAFieldList.add(getTheNewAddressForGivenCase(RandomAddressesWithoutAField.class.getSimpleName(), testObject, countryCode));
-            randomAddressesWithAllWrongFieldList.add(getTheNewAddressForGivenCase(RandomAddressesWithWrongField.class.getSimpleName(), testObject, countryCode));
-            randomAddressesWithFieldsFilledIncorrectlyList.add(getTheNewAddressForGivenCase(RandomAddressesWithFieldsFilledIncorrectly.class.getSimpleName(), testObject, countryCode));
-            randomAddressesWithMultipleDataInOneFieldList.add(getTheNewAddressForGivenCase(RandomAddressesWithMultipleDataInOneField.class.getSimpleName(), testObject, countryCode));
+            randomAddressesWithoutAFieldList.add(getTheNewAddressForGivenCase(RandomAddressesWithAnEmptyField.class.getSimpleName(), testObject, countryCode));
+            randomAddressesWithAllWrongFieldList.add(getTheNewAddressForGivenCase(RandomAddressesWithWrongFieldCompleted.class.getSimpleName(), testObject, countryCode));
+            randomAddressesWithFieldsFilledIncorrectlyList.add(getTheNewAddressForGivenCase(RandomAddressesWithShuffledFields.class.getSimpleName(), testObject, countryCode));
+            randomAddressesWithMultipleDataInOneFieldList.add(getTheNewAddressForGivenCase(RandomAddressesWithMultipleInfoInSeveralFields.class.getSimpleName(), testObject, countryCode));
         }
-        addAddressesInFile(RandomAddressesWithoutAField.class.getSimpleName(), countryCode, randomAddressesWithoutAFieldList);
-        addAddressesInFile(RandomAddressesWithWrongField.class.getSimpleName(), countryCode, randomAddressesWithAllWrongFieldList);
-        addAddressesInFile(RandomAddressesWithFieldsFilledIncorrectly.class.getSimpleName(), countryCode, randomAddressesWithFieldsFilledIncorrectlyList);
-        addAddressesInFile(RandomAddressesWithMultipleDataInOneField.class.getSimpleName(), countryCode, randomAddressesWithMultipleDataInOneFieldList);
+        addAddressesInFile(RandomAddressesWithAnEmptyField.class.getSimpleName(), countryCode, randomAddressesWithoutAFieldList);
+        addAddressesInFile(RandomAddressesWithWrongFieldCompleted.class.getSimpleName(), countryCode, randomAddressesWithAllWrongFieldList);
+        addAddressesInFile(RandomAddressesWithShuffledFields.class.getSimpleName(), countryCode, randomAddressesWithFieldsFilledIncorrectlyList);
+        addAddressesInFile(RandomAddressesWithMultipleInfoInSeveralFields.class.getSimpleName(), countryCode, randomAddressesWithMultipleDataInOneFieldList);
     }
 
     private static void addAddressesInFile(String className, String countryCode, List<TestObject> testObjectList) {
@@ -58,16 +58,16 @@ public class AddressesThatNeedToBeCorrectedGenerator {
             TestObject copyTestObject = (TestObject) testObject.clone();
             switch (className) {
                 case "RandomAddressesWithoutAField" -> {
-                    return RandomAddressesWithoutAField.getAddressWithoutAField(copyTestObject);
+                    return RandomAddressesWithAnEmptyField.getAddress(copyTestObject);
                 }
                 case "RandomAddressesWithWrongField" -> {
-                    return RandomAddressesWithWrongField.getAddressWithWrongField(copyTestObject, countryCode);
+                    return RandomAddressesWithWrongFieldCompleted.getAddress(copyTestObject, countryCode);
                 }
                 case "RandomAddressesWithFieldsFilledIncorrectly" -> {
-                    return RandomAddressesWithFieldsFilledIncorrectly.getTestObjectWithShuffledFields(copyTestObject);
+                    return RandomAddressesWithShuffledFields.getAddress(copyTestObject);
                 }
                 case "RandomAddressesWithMultipleDataInOneField" -> {
-                    return RandomAddressesWithMultipleDataInOneField.getMultipleInfoInOneFieldObject(copyTestObject);
+                    return RandomAddressesWithMultipleInfoInSeveralFields.getAddress(copyTestObject);
                 }
             }
         } catch (CloneNotSupportedException e) {
