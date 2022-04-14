@@ -23,7 +23,7 @@ public class State extends AbstractLocation {
         this.countryRoot = countryRoot;
     }
 
-    public void addSubStates(String filePath, Country country, State state) {
+    public void addSubStates(String filePath, State stateRoot) {
         String stateCode = this.getCode();
         String stateAdmin1 = this.getAdmin1();
         try {
@@ -52,14 +52,15 @@ public class State extends AbstractLocation {
                 String timezone = splitData[17];
                 String modificationDate = splitData[18];
                 if (code.equals(stateCode) && admin1.equals(stateAdmin1) && (featureClass.equals("P") || featureClass.equals("A"))) {
-                    addAlternateNamesInMap(new String[]{name}, state);
-                    addAlternateNamesInMap(new String[]{asciiName}, state);
-                    addAlternateNamesInMap(alternateNames, state);
-                    City city = new City(state, geoNameId, name, asciiName, alternateNames, code, admin1);
+                    addAlternateNamesInMap(getNamesWithoutPrepositionsInMap(name, asciiName, alternateNames), stateRoot);
+                    addAlternateNamesInMap(new String[]{name}, stateRoot);
+                    addAlternateNamesInMap(new String[]{asciiName}, stateRoot);
+                    addAlternateNamesInMap(alternateNames, stateRoot);
+                    City city = new City(stateRoot, geoNameId, name, asciiName, alternateNames, code, admin1);
 //                    latitude, longitude,
 //                            featureClass, featureCode, code, cc2, admin1, admin2, admin3,
 //                            admin4, population, deviation, dem, timezone, modificationDate);
-                    state.addSubRegion(city);
+                    stateRoot.addSubRegion(city);
                 }
             }
         } catch (FileNotFoundException exception) {

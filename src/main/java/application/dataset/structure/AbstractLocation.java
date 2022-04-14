@@ -5,10 +5,7 @@ import application.solution.SolutionUtil;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Data
 public abstract class AbstractLocation implements Serializable {
@@ -78,6 +75,41 @@ public abstract class AbstractLocation implements Serializable {
         for (String alternateName : alternateNames) {
             SolutionUtil.multimap.put(alternateName, parent);
         }
+    }
+
+    public String[] getNamesWithoutPrepositionsInMap(String name, String asciiName, String[] alternateNames) {
+        List<String> newNameList = new ArrayList<>();
+        addNonNullElement(newNameList, removePreposition(name));
+        addNonNullElement(newNameList, removePreposition(asciiName));
+        for (String alternateName : alternateNames) {
+            addNonNullElement(newNameList, removePreposition(alternateName));
+        }
+        return newNameList.toArray(new String[0]);
+    }
+
+    public static void addNonNullElement(List<String> list, List<String> inputList) {
+        if (inputList != null) {
+            for (String input : inputList) {
+                if (input != null) {
+                    list.add(input);
+                }
+            }
+        }
+    }
+
+    public List<String> removePreposition(String input) {
+        List<String> newWords = new ArrayList<>();
+        String[] words = input.split("\\s+");
+        boolean sw = false;
+        for (String word : words) {
+            if (word.length() <= 3) { // din, the, de, pe, le, la, l'
+                sw = true;
+                newWords.add(SolutionUtil.getCanonicalForm(input.replace(word, "")));
+                input = input.replace(word, "");
+            }
+        }
+        newWords.add(SolutionUtil.getCanonicalForm(input));
+        return sw ? newWords : null;
     }
 
     @Override

@@ -37,7 +37,8 @@ public class SolutionUtil {
                 .replaceAll("º+", "o ") //nº => No
                 .replaceAll("[`']+", EMPTY_STRING)
                 .replaceAll("[.]+", ONE_WHITESPACE)
-                .replaceAll("\\s+", ONE_WHITESPACE);//white space
+                .replaceAll("\\s+", ONE_WHITESPACE)//white space
+                .trim();
     }
 
     public static boolean isPhoneNumberOrZipCodeOrCountryCallingCode(String input) {

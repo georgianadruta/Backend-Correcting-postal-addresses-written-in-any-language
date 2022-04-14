@@ -48,7 +48,7 @@ public class Country extends AbstractLocation {
         }
     }
 
-    private void searchStateInCountryFile(String filePath, Country country, String givenAdmin1) { // cauta in RO.txt judetul cu admin1
+    private void searchStateInCountryFile(String filePath, Country countryRoot, String givenAdmin1) { // cauta in RO.txt judetul cu admin1
         try {
             File file = new File(filePath);
             Scanner reader = new Scanner(file);
@@ -74,16 +74,17 @@ public class Country extends AbstractLocation {
                 String dem = splitData[16];
                 String timezone = splitData[17];
                 String modificationDate = splitData[18];
-                if (code.equals(country.getCode()) && admin1.equals(givenAdmin1) && featureClass.equals("A") && featureCode.equals("ADM1")) {
-                    addAlternateNamesInMap(new String[]{name}, country);
-                    addAlternateNamesInMap(new String[]{asciiName}, country);
-                    addAlternateNamesInMap(alternateNames, country);
-                    State state = new State(country, geoNameId, name, asciiName, alternateNames, code, admin1);
+                if (code.equals(countryRoot.getCode()) && admin1.equals(givenAdmin1) && featureClass.equals("A") && featureCode.equals("ADM1")) {
+                    addAlternateNamesInMap(getNamesWithoutPrepositionsInMap(name, asciiName, alternateNames), countryRoot);
+                    addAlternateNamesInMap(new String[]{name}, countryRoot);
+                    addAlternateNamesInMap(new String[]{asciiName}, countryRoot);
+                    addAlternateNamesInMap(alternateNames, countryRoot);
+                    State state = new State(countryRoot, geoNameId, name, asciiName, alternateNames, code, admin1);
 //                    latitude, longitude,
 //                            featureClass, featureCode, code, cc2, admin1, admin2, admin3,
 //                            admin4, population, deviation, dem, timezone, modificationDate);
-                    country.addSubRegion(state);
-                    state.addSubStates(filePath, country, state);
+                    countryRoot.addSubRegion(state);
+                    state.addSubStates(filePath, state);
                     return;
                 }
             }
