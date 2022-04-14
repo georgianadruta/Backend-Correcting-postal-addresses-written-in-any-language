@@ -76,6 +76,7 @@ public class Country extends AbstractLocation {
                 String modificationDate = splitData[18];
                 if (code.equals(countryRoot.getCode()) && admin1.equals(givenAdmin1) && featureClass.equals("A") && featureCode.equals("ADM1")) {
                     addAlternateNamesInMap(getNamesWithoutPrepositions(name, asciiName, alternateNames), countryRoot);
+                    addAlternateNamesInMap(getNamesWithoutDuplicateCharacters(name, asciiName, alternateNames), countryRoot);
                     addAlternateNamesInMap(new String[]{name}, countryRoot);
                     addAlternateNamesInMap(new String[]{asciiName}, countryRoot);
                     addAlternateNamesInMap(alternateNames, countryRoot);

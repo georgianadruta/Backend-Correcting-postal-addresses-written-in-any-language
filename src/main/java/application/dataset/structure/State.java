@@ -53,6 +53,7 @@ public class State extends AbstractLocation {
                 String modificationDate = splitData[18];
                 if (code.equals(stateCode) && admin1.equals(stateAdmin1) && (featureClass.equals("P") || featureClass.equals("A"))) {
                     addAlternateNamesInMap(getNamesWithoutPrepositions(name, asciiName, alternateNames), stateRoot);
+                    addAlternateNamesInMap(getNamesWithoutDuplicateCharacters(name, asciiName, alternateNames), stateRoot);
                     addAlternateNamesInMap(new String[]{name}, stateRoot);
                     addAlternateNamesInMap(new String[]{asciiName}, stateRoot);
                     addAlternateNamesInMap(alternateNames, stateRoot);

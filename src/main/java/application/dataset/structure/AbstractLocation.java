@@ -78,7 +78,29 @@ public abstract class AbstractLocation implements Serializable {
     }
 
     public String[] getNamesWithoutDuplicateCharacters(String name, String asciiName, String[] alternateNames) {
-        return null;
+        List<String> list = new ArrayList<>();
+        list.add(removeDuplicateCharacters(name));
+        list.add(removeDuplicateCharacters(asciiName));
+        for (String alternateName : alternateNames) {
+            list.add(removeDuplicateCharacters(alternateName));
+        }
+        return list.toArray(new String[0]);
+    }
+
+    public static String removeDuplicateCharacters(String input) {
+        char[] characterList = input.toCharArray();
+        int n = characterList.length;
+        if (n < 2) {
+            return null;
+        }
+        int j = 0;
+        for (int i = 1; i < n; i++) {
+            if (characterList[j] != characterList[i]) {
+                j++;
+                characterList[j] = characterList[i];
+            }
+        }
+        return String.valueOf(Arrays.copyOfRange(characterList, 0, j + 1));
     }
 
     public String[] getAllNamesVariationsWithoutVowels(String name, String asciiName, String[] alternateNames) {
