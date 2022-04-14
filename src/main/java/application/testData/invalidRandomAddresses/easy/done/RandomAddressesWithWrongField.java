@@ -1,6 +1,5 @@
 package application.testData.invalidRandomAddresses.easy.done;
 
-import application.testData.util.TestUtil;
 import application.testData.model.TestObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,63 +13,6 @@ import static application.constants.Constants.*;
 
 public class RandomAddressesWithWrongField {
     // se extrage fieldul care trebuie completat gresit si se inlocuieste cu fieldul corespunzator dintr-o alta adresa
-
-//    public static void createRandomAddressesWithWrongFieldForAGivenFilePath(String filePath) {
-//        try {
-//            String countryCode = filePath.replace(".txt", "").split("/")[4];
-//            String url = "https://www.bestrandoms.com/random-address-in-" + countryCode + "?quantity=1";
-//            TestObject givenTestObject = getTestObjectFromWebsite(url);
-//            assert givenTestObject != null;
-//            givenTestObject.setCountry(getAnotherCountryName(countryCode));
-//            new File("./files/test/incorrectRandomAddresses/" + countryCode).mkdirs();
-//            String fileName = RandomAddressesWithWrongField.class.getSimpleName() + ".ser";
-//            String newFilePath = "./files/test/incorrectRandomAddresses/" + countryCode + "/" + fileName;
-//            File file = new File(newFilePath);
-//            new FileWriter(file, false).close(); // sterge contentul existent din fisiere
-//            file.getParentFile().mkdirs();
-//            BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file, true));
-//            FileOutputStream fileOut = new FileOutputStream(newFilePath);
-//            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-//            String serializedPath = "./files/test/correctRandomAddresses/" + countryCode + ".ser";
-//            List<TestObject> testObjectList = getListObjectWithWrongField(serializedPath, givenTestObject);
-//            objectOut.writeObject(testObjectList);
-//            objectOut.close();
-//            fileWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    private static List<TestObject> getListObjectWithWrongField(String serializedPath, TestObject givenTestObject) {
-//        List<TestObject> testObjectList = TestUtil.readFromSerializedFile(serializedPath);
-//        assert testObjectList != null;
-//        List<TestObject> newTestObjectList = new ArrayList<>();
-//        for (TestObject testObject : testObjectList) {
-//            int n = getRandomNumber();
-//            newTestObjectList.add(getNewValueForGivenField(n, testObject, givenTestObject));
-//        }
-//        return newTestObjectList;
-//    }
-
-//    private static String getAnotherCountryName(String countryCode) {
-//        try {
-//            File file = new File(INPUT_DATA_FILE); //RO.txt
-//            Scanner reader = new Scanner(file);
-//            while (reader.hasNext()) { // citim linie cu linie din fisierul cu pathurile catre fisierul pt fiecare tara
-//                String filePath = reader.nextLine();
-//                String currentCountryCode = filePath.split("/")[4].replace(".txt", "");
-//                if (!currentCountryCode.equals(countryCode)) {
-//                    String url = "https://www.bestrandoms.com/random-address-in-" + currentCountryCode + "?quantity=1";
-//                    TestObject testObject = getTestObjectFromWebsite(url);
-//                    assert testObject != null;
-//                    return testObject.getCountry();
-//                }
-//            }
-//        } catch (FileNotFoundException exception) {
-//            System.out.println("ERROR! File at given path was not found!");
-//        }
-//        return null;
-//    }
 
     public static TestObject getAddressWithWrongField(TestObject testObject, String countryCode) {
         String url = "https://www.bestrandoms.com/random-address-in-" + countryCode + "?quantity=1";
