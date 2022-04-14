@@ -47,9 +47,10 @@ public class World extends AbstractLocation {
                     String timezone = splitData[17];
                     String modificationDate = splitData[18];
                     if (featureClass.equals("A") && featureCode.equals("PCLI")) { // este tara
-                        addAlternateNamesInMap(getNamesWithoutPrepositions(name, asciiName, alternateNames), null);
-                        addAlternateNamesInMap(getNamesWithoutDuplicateCharacters(name, asciiName, alternateNames), null);
+                        addAlternateNamesInMap(new String[]{name}, null);
+                        addAlternateNamesInMap(new String[]{asciiName}, null);
                         addAlternateNamesInMap(alternateNames, null);
+                        addAlternateNamesInMap(getMoreAlternateNames(name, asciiName, alternateNames), null);
                         Country country = new Country(geoNameId, name, asciiName, alternateNames, code, admin1);
 //                                , latitude, longitude,
 //                                featureClass, featureCode, code, cc2, admin1, admin2, admin3,

@@ -77,6 +77,14 @@ public abstract class AbstractLocation implements Serializable {
         }
     }
 
+    public String[] getMoreAlternateNames(String name, String asciiName, String[] alternateNames) {
+        Set<String> set = new HashSet<>();
+        set.addAll(List.of(getNamesWithoutPrepositions(name, asciiName, alternateNames)));
+        set.addAll(List.of(getNamesWithoutDuplicateCharacters(name, asciiName, alternateNames)));
+        set.addAll(List.of(getAllNamesVariationsWithoutVowels(name, asciiName, alternateNames)));
+        return set.toArray(new String[0]);
+    }
+
     public String[] getNamesWithoutDuplicateCharacters(String name, String asciiName, String[] alternateNames) {
         List<String> list = new ArrayList<>();
         list.add(removeDuplicateCharacters(name));
@@ -103,11 +111,29 @@ public abstract class AbstractLocation implements Serializable {
         return String.valueOf(Arrays.copyOfRange(characterList, 0, j + 1));
     }
 
-    public String[] getAllNamesVariationsWithoutVowels(String name, String asciiName, String[] alternateNames) {
-        List<String> allNamesVariationsWithoutVowels = new ArrayList<>();
-        //forma canonica de aplicat pe constructori
-        // aeiou. folosesc replace all pt orice combinatie din multimea aeiou. creez subseturi din setul aeiou
+    public static String[] getAllNamesVariationsWithoutVowels(String name, String asciiName, String[] alternateNames) {
+        Set<String> allNamesVariationsWithoutVowels = new HashSet<>();
+        List<String> vowelSubset = getAllSubsetsFromAString("aeiou");
+        for (String vowels : vowelSubset) {
+            String regex = "[" + vowels + "]";
+            allNamesVariationsWithoutVowels.add(name.replaceAll(regex, ""));
+            allNamesVariationsWithoutVowels.add(asciiName.replaceAll(regex, ""));
+            for (String alternateName : alternateNames) {
+                allNamesVariationsWithoutVowels.add(alternateName.replaceAll(regex, ""));
+            }
+        }
         return allNamesVariationsWithoutVowels.toArray(new String[0]);
+    }
+
+    public static List<String> getAllSubsetsFromAString(String input) {
+        int len = input.length();
+        List<String> arr = new ArrayList<>(len * (len + 1) / 2);
+        for (int i = 0; i < len; i++) {
+            for (int j = i; j < len; j++) {
+                arr.add(input.substring(i, j + 1));
+            }
+        }
+        return arr;
     }
 
     public String[] getNamesWithoutPrepositions(String name, String asciiName, String[] alternateNames) {

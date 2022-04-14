@@ -3,16 +3,16 @@ package application.dataset.storage;
 import application.dataset.structure.AbstractLocation;
 import application.solution.SolutionUtil;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class DatasetLoader {
     public static void main(String[] args) {
 //        Date startDate = new Date(); contorizare timp
 
-
 //        DataStorage.addAllCountriesInToDoFile(); //metoda ajutatoare pt a adauga toate tarile
-        DataStorage.createDataStorage();
-        //System.out.println(DataStorage.world.toString());
+//        DataStorage.createDataStorage();
+//        System.out.println(DataStorage.world.toString());
 //        System.out.println("The world object contains: " + DataStorage.calculateNumberOfLocationsInWorld(DataStorage.world) + " locations.");
 
 //        List<AbstractLocation> multimap = SolutionUtil.multimap.get("Podoleni");
