@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class State extends AbstractLocation {
     final Country countryRoot;
 
-    public State(Country countryRoot, int geoNameId, String name, String asciiName, String[] alternateNames, String code, String admin1){
+    public State(Country countryRoot, int geoNameId, String name, String asciiName, String[] alternateNames, String code, String admin1) {
 //        float latitude, float longitude,
 //                 String featureClass, String featureCode, String code, String cc2, String admin1, String admin2, String admin3,
 //                 String admin4, float population, String deviation, String dem, String timezone, String modificationDate) {
@@ -52,7 +52,8 @@ public class State extends AbstractLocation {
                 String timezone = splitData[17];
                 String modificationDate = splitData[18];
                 if (code.equals(stateCode) && admin1.equals(stateAdmin1) && (featureClass.equals("P") || featureClass.equals("A"))) {
-                    City city = new City(geoNameId, name, asciiName, alternateNames, code, admin1);
+                    addAlternateNamesInMap(alternateNames, state);
+                    City city = new City(state, geoNameId, name, asciiName, alternateNames, code, admin1);
 //                    latitude, longitude,
 //                            featureClass, featureCode, code, cc2, admin1, admin2, admin3,
 //                            admin4, population, deviation, dem, timezone, modificationDate);

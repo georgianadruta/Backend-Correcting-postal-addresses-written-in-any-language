@@ -1,6 +1,7 @@
 package application.dataset.structure;
 
 import application.dataset.storage.DataStorage;
+import application.solution.SolutionUtil;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -70,6 +71,12 @@ public abstract class AbstractLocation implements Serializable {
         if (!DataStorage.foundGeoNameIds.contains(abstractLocation.geoNameId)) {
             subRegions.add(abstractLocation);
             DataStorage.foundGeoNameIds.add(geoNameId);
+        }
+    }
+
+    public void addAlternateNamesInMap(String[] alternateNames, AbstractLocation parent) { // tarile au ca parinte valoarea null
+        for (String alternateName : alternateNames) {
+            SolutionUtil.multimap.put(alternateName, parent);
         }
     }
 

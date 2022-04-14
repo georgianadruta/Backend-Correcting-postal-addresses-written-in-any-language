@@ -1,10 +1,16 @@
 package application.solution;
 
+import application.dataset.structure.AbstractLocation;
 import application.testData.model.TestObject;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 
 import static application.constants.ConstantsUtil.*;
 
 public class SolutionUtil {
+    public static ListMultimap<String, AbstractLocation> multimap = ArrayListMultimap.create(); // va fi de ajutor in cautarea solutiilor
+    // caut in multimap dupa numele din adresa sa vad unde se gaseste acel nume, in ce country/state
+
     public static TestObject getCanonicalForm(TestObject testObject) {
         String street = getCanonicalForm(testObject.getStreet());
         String city = getCanonicalForm(testObject.getStreet());

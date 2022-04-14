@@ -75,6 +75,7 @@ public class Country extends AbstractLocation {
                 String timezone = splitData[17];
                 String modificationDate = splitData[18];
                 if (code.equals(country.getCode()) && admin1.equals(givenAdmin1) && featureClass.equals("A") && featureCode.equals("ADM1")) {
+                    addAlternateNamesInMap(alternateNames, country);
                     State state = new State(country, geoNameId, name, asciiName, alternateNames, code, admin1);
 //                    latitude, longitude,
 //                            featureClass, featureCode, code, cc2, admin1, admin2, admin3,

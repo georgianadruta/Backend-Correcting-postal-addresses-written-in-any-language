@@ -1,6 +1,7 @@
 package application.dataset.storage;
 
 import application.dataset.structure.AbstractLocation;
+import application.solution.SolutionUtil;
 
 import java.util.Date;
 
@@ -9,10 +10,12 @@ public class DatasetLoader {
 //        Date startDate = new Date(); contorizare timp
 
 
-//        DataStorage.addAllCountriesInToDoFile(); //metoda ajutatoare pt a adauga toate tarile in todo
+//        DataStorage.addAllCountriesInToDoFile(); //metoda ajutatoare pt a adauga toate tarile
         DataStorage.createDataStorage();
-        System.out.println(DataStorage.world.toString());
-        System.out.println("The world object contains: " + DataStorage.calculateNumberOfLocationsInWorld(DataStorage.world) + " locations.");
+//        System.out.println(DataStorage.world.toString());
+//        System.out.println("The world object contains: " + DataStorage.calculateNumberOfLocationsInWorld(DataStorage.world) + " locations.");
+
+        //System.out.println(SolutionUtil.multimap.get("Podoleni"));
 
 //        for (AbstractLocation abstractLocation : DataStorage.world.getSubRegions()) {
 //            for (AbstractLocation location : abstractLocation.getSubRegions()) {
