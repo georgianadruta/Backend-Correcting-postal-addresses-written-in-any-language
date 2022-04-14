@@ -91,8 +91,12 @@ public class WebCrawler {
                             if (element.text().toLowerCase().contains(COUNTRY_CALLING_CODE_KEY.toLowerCase().trim())) {
                                 randomAddressMap.get(COUNTRY_CALLING_CODE).add(element.text().replace(COUNTRY_CALLING_CODE_KEY, ""));
                             } else {
-                                if (element.text().toLowerCase().contains(COUNTRY)) {
-                                    randomAddressMap.get(COUNTRY).add(element.text().replace(COUNTRY_KEY, ""));
+                                if (element.text().toLowerCase().contains(ZIP_CODE_KEY.toLowerCase().trim())) {
+                                    randomAddressMap.get(ZIP_CODE).add(element.text().replace(ZIP_CODE_KEY, ""));
+                                } else {
+                                    if (element.text().toLowerCase().contains(COUNTRY)) {
+                                        randomAddressMap.get(COUNTRY).add(element.text().replace(COUNTRY_KEY, ""));
+                                    }
                                 }
                             }
                         }

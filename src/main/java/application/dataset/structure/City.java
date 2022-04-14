@@ -1,7 +1,5 @@
 package application.dataset.structure;
 
-import application.solution.SolutionUtil;
-
 public class City extends AbstractLocation {
     final State stateRoot;
 
@@ -10,7 +8,7 @@ public class City extends AbstractLocation {
 //                String featureClass, String featureCode, String code, String cc2, String admin1, String admin2, String admin3,
 //                String admin4, float population, String deviation, String dem, String timezone, String modificationDate) {
         super(geoNameId, name, asciiName, alternateNames, code, admin1);
-        addAlternateNamesInMap(getNamesWithoutPrepositionsInMap(name, asciiName, alternateNames), stateRoot);
+        addAlternateNamesInMap(getNamesWithoutPrepositions(name, asciiName, alternateNames), stateRoot);
         addAlternateNamesInMap(new String[]{name}, stateRoot);
         addAlternateNamesInMap(new String[]{asciiName}, stateRoot);
         addAlternateNamesInMap(alternateNames, stateRoot);

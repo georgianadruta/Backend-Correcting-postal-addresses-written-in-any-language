@@ -77,7 +77,18 @@ public abstract class AbstractLocation implements Serializable {
         }
     }
 
-    public String[] getNamesWithoutPrepositionsInMap(String name, String asciiName, String[] alternateNames) {
+    public String[] getNamesWithoutDuplicateCharacters(String name, String asciiName, String[] alternateNames) {
+        return null;
+    }
+
+    public String[] getAllNamesVariationsWithoutVowels(String name, String asciiName, String[] alternateNames) {
+        List<String> allNamesVariationsWithoutVowels = new ArrayList<>();
+        //forma canonica de aplicat pe constructori
+        // aeiou. folosesc replace all pt orice combinatie din multimea aeiou. creez subseturi din setul aeiou
+        return allNamesVariationsWithoutVowels.toArray(new String[0]);
+    }
+
+    public String[] getNamesWithoutPrepositions(String name, String asciiName, String[] alternateNames) {
         List<String> newNameList = new ArrayList<>();
         addNonNullElement(newNameList, removePreposition(name));
         addNonNullElement(newNameList, removePreposition(asciiName));

@@ -23,4 +23,6 @@ public final class ConstantsUtil {
 
     public static final String ONE_WHITESPACE = " ";
     public static final String EMPTY_STRING = "";
+
+    public static final Character[] VOWELS = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
 }
