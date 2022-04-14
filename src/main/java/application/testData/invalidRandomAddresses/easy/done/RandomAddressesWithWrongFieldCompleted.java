@@ -9,7 +9,7 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.util.*;
 
-import static application.constants.Constants.*;
+import static application.constants.ConstantsUtil.*;
 
 public class RandomAddressesWithWrongFieldCompleted {
     // se extrage fieldul care trebuie completat gresit si se inlocuieste cu fieldul corespunzator dintr-o alta adresa

@@ -1,13 +1,11 @@
 package application.dataset.structure;
 
-import application.dataset.storage.DataStorage;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Scanner;
 
-import static application.constants.Constants.INPUT_DATA_FILE;
+import static application.constants.ConstantsUtil.INPUT_DATA_FILE;
 
 public class World extends AbstractLocation {
 

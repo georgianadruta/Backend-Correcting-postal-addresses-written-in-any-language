@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import static application.constants.Constants.ADMIN_1_CODES_FILE_ASCII;
+import static application.constants.ConstantsUtil.ADMIN_1_CODES_FILE_ASCII;
 
 @Getter
 @Setter

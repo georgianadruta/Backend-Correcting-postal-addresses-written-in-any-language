@@ -6,8 +6,8 @@ import application.dataset.structure.World;
 import java.io.*;
 import java.util.*;
 
-import static application.constants.Constants.INPUT_DATA_FILE;
-import static application.constants.Constants.SERIALIZED_OBJECT_PATH;
+import static application.constants.ConstantsUtil.INPUT_DATA_FILE;
+import static application.constants.ConstantsUtil.SERIALIZED_OBJECT_PATH;
 
 public class DataStorage implements Serializable {
     public static DataStorage dataStorage;

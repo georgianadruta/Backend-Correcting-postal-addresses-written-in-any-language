@@ -1,6 +1,6 @@
 package application.constants;
 
-public final class Constants {
+public final class ConstantsUtil {
     public static final String INPUT_DATA_FILE = "./files/dataset/todo/todo.txt";
     public static final String SERIALIZED_OBJECT_PATH = "#";
     public static final String ADMIN_1_CODES_FILE_ASCII = "./files/dataset/adminFiles/admin1CodesAscii.txt";
@@ -20,4 +20,7 @@ public final class Constants {
     public static final String ZIP_CODE_KEY = "Zip code  ";
     public static final String COUNTRY_CALLING_CODE_KEY = "Country calling code  ";
     public static final String COUNTRY_KEY = "Country  ";
+
+    public static final String ONE_WHITESPACE = " ";
+    public static final String EMPTY_STRING = "";
 }
