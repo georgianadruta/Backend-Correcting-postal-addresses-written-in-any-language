@@ -4,10 +4,14 @@ import application.testData.model.TestObject;
 
 import java.util.*;
 
+/**
+ * helpful class to create a wrong completed address
+ */
 public class RandomAddressesWithShuffledFields {
-
-    // nerespectarea sensului fieldului. fac shuffle datelor din adresa
-
+    /**
+     * helpful method to build the address for this case
+     * shuffle the values from the fields of address
+     */
     public static TestObject getAddress(TestObject testObject) {
         List<String> list = Arrays.asList(testObject.getStreet(), testObject.getCity(), testObject.getState(),
                 testObject.getPhoneNumber(), testObject.getZipCode(), testObject.getCountryCallingCode(), testObject.getCountry());

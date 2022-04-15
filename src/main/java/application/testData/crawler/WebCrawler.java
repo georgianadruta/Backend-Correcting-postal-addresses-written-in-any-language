@@ -28,16 +28,21 @@ import static application.constants.ConstantsUtil.*;
 @EqualsAndHashCode
 @ToString
 public class WebCrawler {
+    /**
+     * helpful method to connect to the url and take data from this
+     * country field is selected by "li.col-sm-6 > span"
+     * other fields are selected by "li.col-sm-6 > p > span"
+     */
     public static void addRandomAddressesFromLinkInFile(String url, String fileName) {
         try {
             Document document = Jsoup.connect(url).get();
-            Elements countryList = document.select("li.col-sm-6 > span"); //country
-            Elements addressWithoutCountryList = document.select("li.col-sm-6 > p > span"); //street,city,state,phoneNumber,[zipCode],countryCallingCode
+            Elements countryList = document.select("li.col-sm-6 > span");
+            Elements addressWithoutCountryList = document.select("li.col-sm-6 > p > span");
 
             Map<String, ArrayList<String>> randomAddressMap = getRandomAddressesMap(countryList, addressWithoutCountryList);
 
             List<TestObject> testObjectList = new ArrayList<>();
-            for (int i = 0; i < randomAddressMap.get(COUNTRY).size(); i++) { // country nu lipseste niciodata din adresa postala
+            for (int i = 0; i < randomAddressMap.get(COUNTRY).size(); i++) { // country appears in all the random addresses
                 String street = getCorrespondentValueField(STREET, randomAddressMap, i);
                 String city = getCorrespondentValueField(CITY, randomAddressMap, i);
                 String state = getCorrespondentValueField(STATE, randomAddressMap, i);
@@ -54,6 +59,10 @@ public class WebCrawler {
         }
     }
 
+    /**
+     * check if a given url is valid
+     * note: some countries do not have random addresses on this site
+     */
     public static boolean isValidLink(String url) {
         try {
             Document document = Jsoup.connect(url).get();
@@ -66,6 +75,13 @@ public class WebCrawler {
         return false;
     }
 
+    /**
+     * helpful method to avoid misunderstanding of data
+     * the random addresses do not follow a pattern
+     * eg: some countries have states, other do not
+     * for a better understanding of value this method check what key word is contain and after that it added
+     * in the map in the corresponding field
+     */
     public static Map<String, ArrayList<String>> getRandomAddressesMap(Elements countryList, Elements addressWithoutCountryList) {
         Map<String, ArrayList<String>> randomAddressMap = new HashMap<>();
 
@@ -107,6 +123,9 @@ public class WebCrawler {
         return randomAddressMap;
     }
 
+    /**
+     * helpful method to initialize the map for random addresses
+     */
     private static void initialiseRandomAddressMap(Map<String, ArrayList<String>> randomAddressMap) {
         randomAddressMap.put(STREET, new ArrayList<>());
         randomAddressMap.put(CITY, new ArrayList<>());
@@ -117,11 +136,14 @@ public class WebCrawler {
         randomAddressMap.put(COUNTRY, new ArrayList<>());
     }
 
+    /**
+     * helpful method to insert the list of random addresses in the given file
+     */
     public static void insertRandomAddressesInFile(List<TestObject> list, String fileName) {
         try {
             String filePath = "./files/test/correctRandomAddresses/" + fileName.replace("txt", "ser");
             File file = new File(filePath);
-            new FileWriter(filePath, false).close(); // sterge contentul existent din fisiere
+            new FileWriter(filePath, false).close(); // remove all data from the file
             file.getParentFile().mkdirs();
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file, true));
             FileOutputStream fileOut = new FileOutputStream(filePath);
@@ -134,9 +156,12 @@ public class WebCrawler {
         }
     }
 
+    /**
+     * helpful method to generate number * 20 of correct and incorrect random addresses
+     */
     public void createANewSetForEachCountryFromToDoFile(int number) {
         try {
-            File file = new File(INPUT_DATA_FILE); //RO.txt
+            File file = new File(INPUT_DATA_FILE);
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
                 int copyNumber = number;
@@ -157,12 +182,18 @@ public class WebCrawler {
         }
     }
 
+    /**
+     * get the corresponding URL to generate 20 random addresses for a given country
+     */
     private String getCorespondentUrl(String filePath) {
         String fileName = filePath.split("/")[4];
         String countryCode = fileName.replace(".txt", "");
         return "https://www.bestrandoms.com/random-address-in-" + countryCode + "?quantity=20";
     }
 
+    /**
+     * helpful method to get the value from the list, if the list is not empty
+     */
     public static String getCorrespondentValueField(String nameField, Map<String, ArrayList<String>> randomAddress, int index) {
         String value = null;
         if (!randomAddress.get(nameField).isEmpty()) {

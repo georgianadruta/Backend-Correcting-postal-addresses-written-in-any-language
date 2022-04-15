@@ -1,19 +1,18 @@
 package application.testData.invalidRandomAddresses.medium.done;
 
 import application.testData.model.TestObject;
+import application.testData.util.TestUtil;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
+/**
+ * helpful class to create addresses with multiple data in several fields
+ */
 public class RandomAddressesWithMultipleInfoInSeveralFields {
-    // clasa include adrese cu mai multe info intr un singur field
-
-    private static int getRandomNumber() {
-        Random rand = new Random();
-        return rand.nextInt(7);
-    }
-
+    /**
+     * helpful method to build the address
+     */
     public static TestObject getAddress(TestObject testObject) {
         List<String> list = Arrays.asList(testObject.getStreet(), testObject.getCity(), testObject.getState(),
                 testObject.getPhoneNumber(), testObject.getZipCode(), testObject.getCountryCallingCode(), testObject.getCountry());
@@ -25,7 +24,7 @@ public class RandomAddressesWithMultipleInfoInSeveralFields {
         String countryCallingCode = null;
         String country = null;
         for (String s : list) {
-            int n = getRandomNumber();
+            int n = TestUtil.getRandomNumber();
             switch (n) {
                 case 0 -> street = getNewValue(street, s);
                 case 1 -> city = getNewValue(city, s);
@@ -41,6 +40,9 @@ public class RandomAddressesWithMultipleInfoInSeveralFields {
         return new TestObject(street, city, state, phoneNumber, zipCode, countryCallingCode, country);
     }
 
+    /**
+     * helpful method to concatenate two strings
+     */
     private static String getNewValue(String fieldValue, String valueToAdd) {
         if (valueToAdd != null) {
             if (fieldValue == null) {

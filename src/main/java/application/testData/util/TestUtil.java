@@ -6,8 +6,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
+import java.util.Random;
 
 public class TestUtil {
+    /**
+     * helpful method to read list of TestObject from .ser files
+     */
     public static List<TestObject> readFromSerializedFile(String pathName) {
         ObjectInputStream objectinputstream;
         try {
@@ -20,5 +24,13 @@ public class TestUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * helpful method to generate a random number corresponding to the number of a field from address
+     */
+    public static int getRandomNumber() {
+        Random rand = new Random();
+        return rand.nextInt(7);
     }
 }

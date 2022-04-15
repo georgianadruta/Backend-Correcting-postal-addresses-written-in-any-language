@@ -11,7 +11,17 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * very helpful to generate incorrect addresses
+ */
 public class AddressesThatNeedToBeCorrectedGenerator {
+    /**
+     * create multiple files for each case of incorrect address form:
+     * randomAddressesWithoutAFieldList
+     * randomAddressesWithAllWrongFieldList
+     * randomAddressesWithFieldsFilledIncorrectlyList
+     * randomAddressesWithMultipleDataInOneFieldList
+     */
     public static void createAddressesThatNeedToBeCorrectedForAGivenFilePath(String filePath) {
         String countryCode = filePath.replace(".txt", "").split("/")[4];
         new File("./files/test/incorrectRandomAddresses/" + countryCode).mkdirs();
@@ -35,6 +45,9 @@ public class AddressesThatNeedToBeCorrectedGenerator {
         addAddressesInFile(RandomAddressesWithMultipleInfoInSeveralFields.class.getSimpleName(), countryCode, randomAddressesWithMultipleDataInOneFieldList);
     }
 
+    /**
+     * helpful method to add a list of addresses in the corresponding file of country and incorrect address form
+     */
     private static void addAddressesInFile(String className, String countryCode, List<TestObject> testObjectList) {
         try {
             String fileName = className + ".ser";
@@ -53,6 +66,9 @@ public class AddressesThatNeedToBeCorrectedGenerator {
         }
     }
 
+    /**
+     * get the incorrect address form in function of case name
+     */
     private static TestObject getTheNewAddressForGivenCase(String className, TestObject testObject, String countryCode) {
         try {
             TestObject copyTestObject = (TestObject) testObject.clone();

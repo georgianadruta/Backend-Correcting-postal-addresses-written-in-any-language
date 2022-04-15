@@ -7,6 +7,9 @@ import java.util.*;
 
 import static application.constants.ConstantsUtil.VOWELS;
 
+/**
+ * helpful class to create more names for a better precision
+ */
 public class NameVariationsUtil {
     /**
      * helpful method to add in multimap the pairs [possible name, the corresponding node from tree]

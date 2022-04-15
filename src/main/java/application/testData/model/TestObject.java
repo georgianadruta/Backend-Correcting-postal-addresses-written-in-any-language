@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * helpful method for modeling random addresses
+ */
 @Data
 public class TestObject implements Serializable, Cloneable {
     private String street;
@@ -36,6 +39,9 @@ public class TestObject implements Serializable, Cloneable {
                 ",\nCountry: " + country + "\n}\n";
     }
 
+    /**
+     * helpful method to create an exact copy of an object
+     */
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
