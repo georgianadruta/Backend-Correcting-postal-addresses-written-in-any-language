@@ -5,7 +5,7 @@ package application.constants;
  */
 public final class ConstantsUtil {
     public static final String INPUT_DATA_FILE = "./files/dataset/todo/todo.txt";
-    public static final String SERIALIZED_OBJECT_PATH = "#";
+    public static final String SERIALIZED_OBJECT_PATH = "./datastorage/datastorage.ser";
     public static final String ADMIN_1_CODES_FILE_ASCII = "./files/dataset/adminFiles/admin1CodesAscii.txt";
 
     public static final String STREET = "street";

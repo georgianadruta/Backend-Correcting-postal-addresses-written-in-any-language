@@ -13,6 +13,6 @@ public class City extends AbstractLocation {
 
     @Override
     public AbstractLocation getRoot() {
-        return null;
+        return stateRoot;
     }
 }

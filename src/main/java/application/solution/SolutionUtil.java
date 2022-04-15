@@ -12,8 +12,12 @@ import java.util.List;
 import static application.constants.ConstantsUtil.*;
 
 public class SolutionUtil {
-    public static ListMultimap<String, AbstractLocation> multimap = ArrayListMultimap.create(); // va fi de ajutor in cautarea solutiilor
-    // caut in multimap dupa numele din adresa sa vad unde se gaseste acel nume, in ce country/state
+    /**
+     * helpful data structure for searching the solution
+     * we have a better complexity for searching starting with the lowest level
+     * we'll get the corresponding node from tree with searched the name(complexity O(1))
+     */
+    public static ListMultimap<String, AbstractLocation> multimap = ArrayListMultimap.create();
 
     public static TestObject getCanonicalFormTestObject(TestObject testObject) {
         String street = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
@@ -27,12 +31,14 @@ public class SolutionUtil {
         return new TestObject(street, city, state, phoneNumber, zipCode, countryCallingCode, country);
     }
 
+    /**
+     * helpful method to increase the precision of the algorithm
+     * transform input in lowercase, remove special characters, transform nº in No and remove multiple white spaces
+     */
     public static String[] getCanonicalForm(String[] inputList) {
         List<String> newList = new ArrayList<>();
         for (String input : inputList) {
-            //lowercase
             input = input.toLowerCase();
-            //special characters
             newList.add(input
                     .replaceAll("(\\D)\\.(\\d)", "$1 $2")
                     .replaceAll("[!@€£¢$¥%^*\"`~><()\\-.=_;,\\\\+?{}\\[\\]:|\\s]+", ONE_WHITESPACE)
@@ -40,15 +46,19 @@ public class SolutionUtil {
                     .replaceAll("#+", ONE_WHITESPACE)
                     .replaceAll("/+", ONE_WHITESPACE)
                     .replaceAll("&+", " and ")
-                    .replaceAll("º+", "o ") //nº => No
+                    .replaceAll("º+", "o ")
                     .replaceAll("[`']+", EMPTY_STRING)
                     .replaceAll("[.]+", ONE_WHITESPACE)
-                    .replaceAll("\\s+", ONE_WHITESPACE)//white space
+                    .replaceAll("\\s+", ONE_WHITESPACE)
                     .trim());
         }
         return newList.toArray(new String[0]);
     }
 
+    /**
+     * check if the input is a phone number/zip code/country calling code
+     * with other words the input does not have letters
+     */
     public static boolean isPhoneNumberOrZipCodeOrCountryCallingCode(String input) {
         return !input.contains("[a-zA-Z]+");
     }

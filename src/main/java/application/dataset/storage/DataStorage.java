@@ -19,30 +19,36 @@ public class DataStorage implements Serializable {
     public static Set<AbstractLocation> abstractLocationSet = new HashSet<>();
     public static Set<Integer> foundGeoNameIds;
 
-    private DataStorage(){
+    private DataStorage() {
     }
 
     /**
      * get the only object available
      */
-    public static DataStorage getDataStorage(){
+    public static DataStorage getDataStorage() {
         return dataStorage;
     }
 
+    /**
+     * helpful method to start the creating the data storage. first step is to add the countries
+     */
     public static void createDataStorage() {
         foundGeoNameIds = new HashSet<>();
         addCountries();
     }
 
+    /**
+     * helpful method to add all the countries founded in the paths from INPUT_DATA_FILE
+     */
     public static void addCountries() {
         try {
-            File file = new File(INPUT_DATA_FILE); //RO.txt
+            File file = new File(INPUT_DATA_FILE);
             Scanner reader = new Scanner(file);
-            while (reader.hasNext()) { // citim linie cu linie din fisierul cu pathurile catre fisierul pt fiecare tara
+            while (reader.hasNext()) { // read line by line from countries paths file
                 String filePath = reader.nextLine();
                 File currentFile = new File(filePath);
                 Scanner currentReader = new Scanner(currentFile);
-                while (currentReader.hasNext()) { // citim linie cu linie din fisierul tarii
+                while (currentReader.hasNext()) { // read line by line from the current country file
                     String dataFromFile = currentReader.nextLine();
                     String[] splitData = dataFromFile.split("\t");
                     int geoNameId = Integer.parseInt(splitData[0]);
@@ -53,11 +59,11 @@ public class DataStorage implements Serializable {
                     String featureCode = splitData[7];
                     String code = splitData[8];
                     String admin1 = splitData[10];
-                    if (featureClass.equals("A") && featureCode.equals("PCLI")) { // este tara
+                    if (featureClass.equals("A") && featureCode.equals("PCLI")) { // is country
                         NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
                         Country country = new Country(geoNameId, name, asciiName, alternateNames, code, admin1);
-                        country.addStates(filePath, country); // adaugam toate stateurile la tara
-                        abstractLocationSet.add(country); // adaugam tara la world
+                        country.addStates(filePath, country); // add all the states from the current country
+                        abstractLocationSet.add(country); // add the country in the data storage set
                     }
                 }
             }
@@ -66,6 +72,9 @@ public class DataStorage implements Serializable {
         }
     }
 
+    /**
+     * helpful to add automatically all the country paths in INPUT_DATA_FILE
+     */
     public static void addAllCountriesInToDoFile() {
         try {
             File countriesFolder = new File("./files/dataset/countries");
@@ -82,6 +91,9 @@ public class DataStorage implements Serializable {
         }
     }
 
+    /**
+     * helpful method to save the data storage set with all countries in datastorage.ser file
+     */
     public void saveDataStorage() {
         try {
             var fileOut = new FileOutputStream(SERIALIZED_OBJECT_PATH);
@@ -96,6 +108,9 @@ public class DataStorage implements Serializable {
         }
     }
 
+    /**
+     * get the data storage from the datastorage.ser file
+     */
     public void loadDataStorage() {
         try {
             var fileIn = new FileInputStream(SERIALIZED_OBJECT_PATH);
@@ -103,16 +118,14 @@ public class DataStorage implements Serializable {
             abstractLocationSet = (Set<AbstractLocation>) in.readObject();
             in.close();
             fileIn.close();
-        } catch (IOException i) {
-            i.printStackTrace();
-        } catch (ClassNotFoundException c) {
-            System.out.println("Location class not found");
-            c.printStackTrace();
+        } catch (IOException | ClassNotFoundException exception) {
+            exception.printStackTrace();
         }
     }
 
     /**
-     * Debug method
+     * debug method
+     * eg: for Romania this method should return 21443
      */
     public static int calculateNumberOfLocationsInWorld(AbstractLocation abstractLocation) {
         int sum = 0;

@@ -18,7 +18,10 @@ public class State extends AbstractLocation {
         this.countryRoot = countryRoot;
     }
 
-    public void addSubStates(String filePath, State stateRoot) {
+    /**
+     * helpful method to add all the cities from the current state from country file
+     */
+    public void addCity(String filePath, State stateRoot) {
         String stateCode = this.getCode();
         String stateAdmin1 = this.getAdmin1();
         try {

@@ -17,9 +17,14 @@ public class Country extends AbstractLocation {
         super(geoNameId, name, asciiName, alternateNames, code, admin1);
     }
 
-    public void addStates(String filePath, Country country) { // primeste pathul catre fisierul tarii curente
+    /**
+     * helpful method to add states from the given filePath
+     * in admin1CodesAscii we have only states
+     * eg: for Romania the states are identified by the id RO.X, where X is a number
+     */
+    public void addStates(String filePath, Country country) {
         try {
-            File file = new File(ADMIN_1_CODES_FILE_ASCII); // in admin1 avem doar judetele cu codul de forma RO.18
+            File file = new File(ADMIN_1_CODES_FILE_ASCII);
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();
@@ -36,6 +41,10 @@ public class Country extends AbstractLocation {
         }
     }
 
+    /**
+     * search the state with the given id from admin1CodesAscii file in the country file then it added to country
+     * and add cities in the found state
+     */
     private void searchStateInCountryFile(String filePath, Country countryRoot, String givenAdmin1) { // cauta in RO.txt judetul cu admin1
         try {
             File file = new File(filePath);
@@ -55,7 +64,7 @@ public class Country extends AbstractLocation {
                     NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, countryRoot);
                     State state = new State(countryRoot, geoNameId, name, asciiName, alternateNames, code, admin1);
                     countryRoot.addSubRegion(state);
-                    state.addSubStates(filePath, state);
+                    state.addCity(filePath, state);
                     return;
                 }
             }

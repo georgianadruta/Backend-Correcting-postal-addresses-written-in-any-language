@@ -1,16 +1,13 @@
 package application.dataset.structure;
 
 import application.dataset.storage.DataStorage;
-import application.solution.SolutionUtil;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.*;
 
-import static application.constants.ConstantsUtil.VOWELS;
-
 /**
- * abstract class to allows to create functionality that subclasses can implement or override
+ * abstract class to allow creating functionality that subclasses can implement or override
  */
 @Data
 public abstract class AbstractLocation implements Serializable {
@@ -36,8 +33,6 @@ public abstract class AbstractLocation implements Serializable {
 
     /**
      * add subregion if it's not already added
-     *
-     * @param abstractLocation the given subregion to add
      */
     public void addSubRegion(AbstractLocation abstractLocation) {
         if (!DataStorage.foundGeoNameIds.contains(abstractLocation.geoNameId)) {
