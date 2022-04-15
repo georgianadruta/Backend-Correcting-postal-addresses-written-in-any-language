@@ -1,5 +1,8 @@
 package application.constants;
 
+/**
+ * useful class to keep all the constants in one place
+ */
 public final class ConstantsUtil {
     public static final String INPUT_DATA_FILE = "./files/dataset/todo/todo.txt";
     public static final String SERIALIZED_OBJECT_PATH = "#";

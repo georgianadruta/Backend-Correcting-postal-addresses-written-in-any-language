@@ -10,17 +10,26 @@ import java.util.*;
 import static application.constants.ConstantsUtil.INPUT_DATA_FILE;
 import static application.constants.ConstantsUtil.SERIALIZED_OBJECT_PATH;
 
+/**
+ * singleton pattern to prevent creating multiple databases
+ */
 public class DataStorage implements Serializable {
-    public static DataStorage dataStorage;
+    private static final DataStorage dataStorage = new DataStorage();
 
     public static Set<AbstractLocation> abstractLocationSet = new HashSet<>();
     public static Set<Integer> foundGeoNameIds;
 
-    public static void createDataStorage() {
-        initializeDataStorage();
+    private DataStorage(){
     }
 
-    private static void initializeDataStorage() {
+    /**
+     * get the only object available
+     */
+    public static DataStorage getDataStorage(){
+        return dataStorage;
+    }
+
+    public static void createDataStorage() {
         foundGeoNameIds = new HashSet<>();
         addCountries();
     }
