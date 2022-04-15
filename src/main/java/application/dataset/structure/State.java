@@ -1,5 +1,6 @@
 package application.dataset.structure;
 
+import application.testData.util.NameVariationsUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,7 +35,7 @@ public class State extends AbstractLocation {
                 String code = splitData[8];
                 String admin1 = splitData[10];
                 if (code.equals(stateCode) && admin1.equals(stateAdmin1) && (featureClass.equals("P") || featureClass.equals("A"))) {
-                    addAllVariationsOfAnAddress(name, asciiName, alternateNames, stateRoot);
+                    NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, stateRoot);
                     City city = new City(stateRoot, geoNameId, name, asciiName, alternateNames, code, admin1);
                     stateRoot.addSubRegion(city);
                 }

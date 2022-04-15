@@ -2,6 +2,7 @@ package application.dataset.storage;
 
 import application.dataset.structure.AbstractLocation;
 import application.dataset.structure.Country;
+import application.testData.util.NameVariationsUtil;
 
 import java.io.*;
 import java.util.*;
@@ -44,7 +45,7 @@ public class DataStorage implements Serializable {
                     String code = splitData[8];
                     String admin1 = splitData[10];
                     if (featureClass.equals("A") && featureCode.equals("PCLI")) { // este tara
-                        AbstractLocation.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
+                        NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
                         Country country = new Country(geoNameId, name, asciiName, alternateNames, code, admin1);
                         country.addStates(filePath, country); // adaugam toate stateurile la tara
                         abstractLocationSet.add(country); // adaugam tara la world

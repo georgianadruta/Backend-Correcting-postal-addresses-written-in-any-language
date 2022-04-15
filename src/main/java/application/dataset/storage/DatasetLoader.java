@@ -7,13 +7,13 @@ public class DatasetLoader {
 //        Date startDate = new Date();// contorizare timp
 
 //        DataStorage.addAllCountriesInToDoFile(); //metoda ajutatoare pt a adauga toate tarile
-//        DataStorage.createDataStorage();
-//        for (AbstractLocation abstractLocation : DataStorage.abstractLocationSet) {
-//            for (AbstractLocation abstractLocation1 : abstractLocation.getSubRegions()) {
-//                if(abstractLocation1.getName().equals("Suceava"))
-//                    System.out.println(abstractLocation1);
-//            }
-//        }
+        DataStorage.createDataStorage();
+        for (AbstractLocation abstractLocation : DataStorage.abstractLocationSet) {
+            for (AbstractLocation abstractLocation1 : abstractLocation.getSubRegions()) {
+                if(abstractLocation1.getName().equals("Suceava"))
+                    System.out.println(abstractLocation1);
+            }
+        }
 
 //        System.out.println(SolutionUtil.multimap.keySet());
 //        List<AbstractLocation> multimap = SolutionUtil.multimap.get("pdoleni");
