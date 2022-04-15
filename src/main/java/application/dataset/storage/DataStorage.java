@@ -1,7 +1,7 @@
 package application.dataset.storage;
 
 import application.dataset.structure.AbstractLocation;
-import application.dataset.structure.World;
+import application.dataset.structure.Country;
 
 import java.io.*;
 import java.util.*;
@@ -12,7 +12,7 @@ import static application.constants.ConstantsUtil.SERIALIZED_OBJECT_PATH;
 public class DataStorage implements Serializable {
     public static DataStorage dataStorage;
 
-    public static World world;
+    public static Set<AbstractLocation> abstractLocationSet = new HashSet<>();
     public static Set<Integer> foundGeoNameIds;
 
     public static void createDataStorage() {
@@ -21,8 +21,39 @@ public class DataStorage implements Serializable {
 
     private static void initializeDataStorage() {
         foundGeoNameIds = new HashSet<>();
-        world = new World();
-        world.addCountries();
+        addCountries();
+    }
+
+    public static void addCountries() {
+        try {
+            File file = new File(INPUT_DATA_FILE); //RO.txt
+            Scanner reader = new Scanner(file);
+            while (reader.hasNext()) { // citim linie cu linie din fisierul cu pathurile catre fisierul pt fiecare tara
+                String filePath = reader.nextLine();
+                File currentFile = new File(filePath);
+                Scanner currentReader = new Scanner(currentFile);
+                while (currentReader.hasNext()) { // citim linie cu linie din fisierul tarii
+                    String dataFromFile = currentReader.nextLine();
+                    String[] splitData = dataFromFile.split("\t");
+                    int geoNameId = Integer.parseInt(splitData[0]);
+                    String name = splitData[1];
+                    String asciiName = splitData[2];
+                    String[] alternateNames = splitData[3].split(",");
+                    String featureClass = splitData[6];
+                    String featureCode = splitData[7];
+                    String code = splitData[8];
+                    String admin1 = splitData[10];
+                    if (featureClass.equals("A") && featureCode.equals("PCLI")) { // este tara
+                        AbstractLocation.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
+                        Country country = new Country(geoNameId, name, asciiName, alternateNames, code, admin1);
+                        country.addStates(filePath, country); // adaugam toate stateurile la tara
+                        abstractLocationSet.add(country); // adaugam tara la world
+                    }
+                }
+            }
+        } catch (FileNotFoundException exception) {
+            System.out.println("ERROR! File at given path was not found!");
+        }
     }
 
     public static void addAllCountriesInToDoFile() {
@@ -45,8 +76,8 @@ public class DataStorage implements Serializable {
         try {
             var fileOut = new FileOutputStream(SERIALIZED_OBJECT_PATH);
             var out = new ObjectOutputStream(fileOut);
-            System.out.println(world.getSubRegions());
-            out.writeObject(world);
+            System.out.println(DataStorage.abstractLocationSet);
+            out.writeObject(DataStorage.abstractLocationSet);
             out.close();
             fileOut.close();
             System.out.println("Serialized data is saved at:" + SERIALIZED_OBJECT_PATH);
@@ -59,7 +90,7 @@ public class DataStorage implements Serializable {
         try {
             var fileIn = new FileInputStream(SERIALIZED_OBJECT_PATH);
             var in = new ObjectInputStream(fileIn);
-            world = (World) in.readObject();
+            abstractLocationSet = (Set<AbstractLocation>) in.readObject();
             in.close();
             fileIn.close();
         } catch (IOException i) {

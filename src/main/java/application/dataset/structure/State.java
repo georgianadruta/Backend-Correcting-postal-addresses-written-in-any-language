@@ -13,13 +13,7 @@ public class State extends AbstractLocation {
     final Country countryRoot;
 
     public State(Country countryRoot, int geoNameId, String name, String asciiName, String[] alternateNames, String code, String admin1) {
-//        float latitude, float longitude,
-//                 String featureClass, String featureCode, String code, String cc2, String admin1, String admin2, String admin3,
-//                 String admin4, float population, String deviation, String dem, String timezone, String modificationDate) {
         super(geoNameId, name, asciiName, alternateNames, code, admin1);
-//        latitude, longitude,
-//                featureClass, featureCode, code, cc2, admin1, admin2, admin3,
-//                admin4, population, deviation, dem, timezone, modificationDate);
         this.countryRoot = countryRoot;
     }
 
@@ -36,27 +30,12 @@ public class State extends AbstractLocation {
                 String name = splitData[1];
                 String asciiName = splitData[2];
                 String[] alternateNames = splitData[3].split(",");
-                float latitude = Float.parseFloat(splitData[4]);
-                float longitude = Float.parseFloat(splitData[5]);
                 String featureClass = splitData[6];
-                String featureCode = splitData[7];
                 String code = splitData[8];
-                String cc2 = splitData[9];
                 String admin1 = splitData[10];
-                String admin2 = splitData[11];
-                String admin3 = splitData[12];
-                String admin4 = splitData[13];
-                float population = Float.parseFloat(splitData[14]);
-                String deviation = splitData[15];
-                String dem = splitData[16];
-                String timezone = splitData[17];
-                String modificationDate = splitData[18];
                 if (code.equals(stateCode) && admin1.equals(stateAdmin1) && (featureClass.equals("P") || featureClass.equals("A"))) {
                     addAllVariationsOfAnAddress(name, asciiName, alternateNames, stateRoot);
                     City city = new City(stateRoot, geoNameId, name, asciiName, alternateNames, code, admin1);
-//                    latitude, longitude,
-//                            featureClass, featureCode, code, cc2, admin1, admin2, admin3,
-//                            admin4, population, deviation, dem, timezone, modificationDate);
                     stateRoot.addSubRegion(city);
                 }
             }
