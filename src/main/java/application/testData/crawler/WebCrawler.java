@@ -2,7 +2,9 @@ package application.testData.crawler;
 
 import application.testData.generator.TestDataGenerator;
 import application.testData.model.TestObject;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,27 +35,30 @@ public class WebCrawler {
      * country field is selected by "li.col-sm-6 > span"
      * other fields are selected by "li.col-sm-6 > p > span"
      */
-    public static void addRandomAddressesFromLinkInFile(String url, String fileName) {
+    public static void addRandomAddressesFromLinkInFile(int number, String url, String fileName, boolean isAppend) {
         try {
-            Document document = Jsoup.connect(url).get();
-            Elements countryList = document.select("li.col-sm-6 > span");
-            Elements addressWithoutCountryList = document.select("li.col-sm-6 > p > span");
-
-            Map<String, ArrayList<String>> randomAddressMap = getRandomAddressesMap(countryList, addressWithoutCountryList);
-
             List<TestObject> testObjectList = new ArrayList<>();
-            for (int i = 0; i < randomAddressMap.get(COUNTRY).size(); i++) { // country appears in all the random addresses
-                String street = getCorrespondentValueField(STREET, randomAddressMap, i);
-                String city = getCorrespondentValueField(CITY, randomAddressMap, i);
-                String state = getCorrespondentValueField(STATE, randomAddressMap, i);
-                String phoneNumber = getCorrespondentValueField(PHONE_NUMBER, randomAddressMap, i);
-                String zipCode = getCorrespondentValueField(ZIP_CODE, randomAddressMap, i);
-                String countryCallingCode = getCorrespondentValueField(COUNTRY_CALLING_CODE, randomAddressMap, i);
-                String country = getCorrespondentValueField(COUNTRY, randomAddressMap, i);
-                TestObject testObject = new TestObject(street, city, state, phoneNumber, zipCode, countryCallingCode, country);
-                testObjectList.add(testObject);
+
+            for (int i = 0; i < number; i++) {
+                Document document = Jsoup.connect(url).get();
+                Elements countryList = document.select("li.col-sm-6 > span");
+                Elements addressWithoutCountryList = document.select("li.col-sm-6 > p > span");
+
+                Map<String, ArrayList<String>> randomAddressMap = getRandomAddressesMap(countryList, addressWithoutCountryList);
+
+                for (int index = 0; index < randomAddressMap.get(COUNTRY).size(); index++) { // country appears in all the random addresses
+                    String street = getCorrespondentValueField(STREET, randomAddressMap, index);
+                    String city = getCorrespondentValueField(CITY, randomAddressMap, index);
+                    String state = getCorrespondentValueField(STATE, randomAddressMap, index);
+                    String phoneNumber = getCorrespondentValueField(PHONE_NUMBER, randomAddressMap, index);
+                    String zipCode = getCorrespondentValueField(ZIP_CODE, randomAddressMap, index);
+                    String countryCallingCode = getCorrespondentValueField(COUNTRY_CALLING_CODE, randomAddressMap, index);
+                    String country = getCorrespondentValueField(COUNTRY, randomAddressMap, index);
+                    TestObject testObject = new TestObject(street, city, state, phoneNumber, zipCode, countryCallingCode, country);
+                    testObjectList.add(testObject);
+                }
             }
-            insertRandomAddressesInFile(testObjectList, fileName);
+            insertRandomAddressesInFile(testObjectList, fileName, isAppend);
         } catch (IOException e) {
             System.err.println("For '" + url + "': " + e.getMessage());
         }
@@ -139,13 +144,13 @@ public class WebCrawler {
     /**
      * helpful method to insert the list of random addresses in the given file
      */
-    public static void insertRandomAddressesInFile(List<TestObject> list, String fileName) {
+    public static void insertRandomAddressesInFile(List<TestObject> list, String fileName, boolean isAppend) {
         try {
             String filePath = "./files/test/correctRandomAddresses/" + fileName.replace("txt", "ser");
             File file = new File(filePath);
-            new FileWriter(filePath, false).close(); // remove all data from the file
+            new FileWriter(filePath, isAppend).close(); // remove all data from the file if isAppend=false
             file.getParentFile().mkdirs();
-            BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file, true));
+            BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file, isAppend));
             FileOutputStream fileOut = new FileOutputStream(filePath);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(list);
@@ -159,19 +164,15 @@ public class WebCrawler {
     /**
      * helpful method to generate number * 20 of correct and incorrect random addresses
      */
-    public void createANewSetForEachCountryFromToDoFile(int number) {
+    public void createANewSetForEachCountryFromToDoFile(int number, boolean isAppend) {
         try {
             File file = new File(INPUT_DATA_FILE);
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
-                int copyNumber = number;
                 String filePath = reader.nextLine();
                 String url = getCorespondentUrl(filePath);
-                while (copyNumber > 0) {
-                    if (isValidLink(url)) {
-                        TestDataGenerator.createCorrectAddressesTestDataForEachCountry(url, filePath); // fisiere cu adrese corecte
-                    }
-                    copyNumber--;
+                if (isValidLink(url)) {
+                    TestDataGenerator.createCorrectAddressesTestDataForEachCountry(number, url, filePath, isAppend); // fisiere cu adrese corecte
                 }
                 if (isValidLink(url)) {
                     TestDataGenerator.createIncorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese gresite care sa acopere cazurile din metoda
@@ -194,7 +195,8 @@ public class WebCrawler {
     /**
      * helpful method to get the value from the list, if the list is not empty
      */
-    public static String getCorrespondentValueField(String nameField, Map<String, ArrayList<String>> randomAddress, int index) {
+    public static String getCorrespondentValueField(String
+                                                            nameField, Map<String, ArrayList<String>> randomAddress, int index) {
         String value = null;
         if (!randomAddress.get(nameField).isEmpty()) {
             value = randomAddress.get(nameField).get(index);

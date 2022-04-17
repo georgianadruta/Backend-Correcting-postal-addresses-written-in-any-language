@@ -5,6 +5,7 @@ import application.testData.model.TestObject;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,5 +62,30 @@ public class SolutionUtil {
      */
     public static boolean isPhoneNumberOrZipCodeOrCountryCallingCode(String input) {
         return !input.contains("[a-zA-Z]+");
+    }
+
+    public static void saveMultimap() {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(SERIALIZED_MAP_PATH);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(multimap);
+            out.close();
+            fileOut.close();
+            System.out.println("Serialized multimap is saved at:" + SERIALIZED_MAP_PATH);
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    public static void loadMultimap() {
+        try {
+            FileInputStream fileIn = new FileInputStream(SERIALIZED_MAP_PATH);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            multimap = (ListMultimap<String, AbstractLocation>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
     }
 }

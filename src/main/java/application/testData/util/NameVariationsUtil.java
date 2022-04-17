@@ -17,7 +17,7 @@ public class NameVariationsUtil {
     public static void addAllVariationsOfAnAddress(String name, String asciiName, String[] alternateNames, AbstractLocation abstractLocation) {
         addAlternateNamesInMap(new String[]{name, asciiName}, abstractLocation);
         addAlternateNamesInMap(alternateNames, abstractLocation);
-        addAlternateNamesInMap(getMoreAlternateNames(name, asciiName, alternateNames), abstractLocation);
+        //addAlternateNamesInMap(getMoreAlternateNames(name, asciiName, alternateNames), abstractLocation);
     }
 
     /**

@@ -2,13 +2,15 @@ package application.dataset.storage;
 
 import application.dataset.structure.AbstractLocation;
 import application.dataset.structure.Country;
-import application.testData.util.NameVariationsUtil;
 
 import java.io.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.Set;
 
 import static application.constants.ConstantsUtil.INPUT_DATA_FILE;
-import static application.constants.ConstantsUtil.SERIALIZED_OBJECT_PATH;
+import static application.constants.ConstantsUtil.SERIALIZED_DATASTORAGE_PATH;
 
 /**
  * singleton pattern to prevent creating multiple databases
@@ -20,13 +22,6 @@ public class DataStorage implements Serializable {
     public static Set<Integer> foundGeoNameIds;
 
     private DataStorage() {
-    }
-
-    /**
-     * get the only object available
-     */
-    public static DataStorage getDataStorage() {
-        return dataStorage;
     }
 
     /**
@@ -60,7 +55,7 @@ public class DataStorage implements Serializable {
                     String code = splitData[8];
                     String admin1 = splitData[10];
                     if (featureClass.equals("A") && featureCode.equals("PCLI")) { // is country
-                        NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
+                        //NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
                         Country country = new Country(geoNameId, name, asciiName, alternateNames, code, admin1);
                         country.addStates(filePath, country); // add all the states from the current country
                         abstractLocationSet.add(country); // add the country in the data storage set
@@ -94,15 +89,14 @@ public class DataStorage implements Serializable {
     /**
      * helpful method to save the data storage set with all countries in datastorage.ser file
      */
-    public void saveDataStorage() {
+    public static void saveDataStorage() {
         try {
-            var fileOut = new FileOutputStream(SERIALIZED_OBJECT_PATH);
-            var out = new ObjectOutputStream(fileOut);
-            System.out.println(DataStorage.abstractLocationSet);
+            FileOutputStream fileOut = new FileOutputStream(SERIALIZED_DATASTORAGE_PATH);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(DataStorage.abstractLocationSet);
             out.close();
             fileOut.close();
-            System.out.println("Serialized data is saved at:" + SERIALIZED_OBJECT_PATH);
+            System.out.println("Serialized data is saved at:" + SERIALIZED_DATASTORAGE_PATH);
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -111,10 +105,10 @@ public class DataStorage implements Serializable {
     /**
      * get the data storage from the datastorage.ser file
      */
-    public void loadDataStorage() {
+    public static void loadDataStorage() {
         try {
-            var fileIn = new FileInputStream(SERIALIZED_OBJECT_PATH);
-            var in = new ObjectInputStream(fileIn);
+            FileInputStream fileIn = new FileInputStream(SERIALIZED_DATASTORAGE_PATH);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
             abstractLocationSet = (Set<AbstractLocation>) in.readObject();
             in.close();
             fileIn.close();

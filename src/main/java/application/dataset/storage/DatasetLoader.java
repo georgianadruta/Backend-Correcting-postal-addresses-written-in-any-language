@@ -1,6 +1,10 @@
 package application.dataset.storage;
 
 import application.dataset.structure.AbstractLocation;
+import application.dataset.structure.State;
+import application.solution.SolutionUtil;
+
+import java.util.List;
 
 public class DatasetLoader {
     public static void main(String[] args) {
@@ -8,14 +12,14 @@ public class DatasetLoader {
 
 //        DataStorage.addAllCountriesInToDoFile(); //metoda ajutatoare pt a adauga toate tarile
         DataStorage.createDataStorage();
-        for (AbstractLocation abstractLocation : DataStorage.abstractLocationSet) {
-            System.out.println(DataStorage.calculateNumberOfLocationsInWorld(abstractLocation));
-        }
+        DataStorage.saveDataStorage();
+//        for (AbstractLocation abstractLocation : DataStorage.abstractLocationSet) {
+//            System.out.println(DataStorage.calculateNumberOfLocationsInWorld(abstractLocation));
+//        }
 
-//        System.out.println(SolutionUtil.multimap.keySet());
-//        List<AbstractLocation> multimap = SolutionUtil.multimap.get("pdoleni");
-//        for (AbstractLocation abstractLocation : multimap)
-//            System.out.println(abstractLocation + "\n");
+        List<AbstractLocation> multimap = SolutionUtil.multimap.get("Prahova");
+        for (AbstractLocation abstractLocation : multimap)
+            System.out.println(abstractLocation instanceof State);
 
 //        for (AbstractLocation abstractLocation : DataStorage.world.getSubRegions()) {
 //            for (AbstractLocation location : abstractLocation.getSubRegions()) {
