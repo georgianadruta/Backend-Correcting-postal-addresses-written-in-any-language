@@ -18,13 +18,13 @@ public class TestObject implements Serializable, Cloneable {
     private String country;
 
     public TestObject(String street, String city, String state, String phoneNumber, String zipCode, String countryCallingCode, String country) {
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.phoneNumber = phoneNumber;
-        this.countryCallingCode = countryCallingCode;
-        this.zipCode = zipCode;
-        this.country = country;
+        this.street = street != null ? street.trim() : null;
+        this.city = city != null ? city.trim() : null;
+        this.state = state != null ? state.trim() : null;
+        this.phoneNumber = phoneNumber != null ? phoneNumber.trim() : null;
+        this.countryCallingCode = countryCallingCode != null ? countryCallingCode.trim() : null;
+        this.zipCode = zipCode != null ? zipCode.trim() : null;
+        this.country = country != null ? country.trim() : null;
     }
 
     @Override

@@ -15,7 +15,7 @@ public class Solution {
         for (TestObject testObject : testObjectList) {
             TestObject correctedTestObject = getCorrectAddress(testObject);
             System.out.println(testObject + "" + correctedTestObject);
-            if (testObject.getCity().trim().equals(correctedTestObject.getCity()) && testObject.getState().trim().equals(correctedTestObject.getState()) && testObject.getCountry().trim().equals(correctedTestObject.getCountry())) {
+            if (testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
                 number++;
             }
         }
@@ -77,16 +77,16 @@ public class Solution {
     }
 
     private static void addElementInCity(String value, Set<String> set) {
-        List<AbstractLocation> list = SolutionUtil.multimap.get(value.trim());
+        List<AbstractLocation> list = SolutionUtil.multimap.get(value);
         for (AbstractLocation abstractLocation : list) {
             if (abstractLocation instanceof State) {
-                set.add(value.trim());
+                set.add(value);
             }
         }
     }
 
     private static void addElementInState(String value, Set<String> set) {
-        List<AbstractLocation> list = SolutionUtil.multimap.get(value.trim());
+        List<AbstractLocation> list = SolutionUtil.multimap.get(value);
         for (AbstractLocation abstractLocation : list) {
             if (abstractLocation instanceof State) {
                 set.add(abstractLocation.getName());
@@ -95,9 +95,9 @@ public class Solution {
     }
 
     private static void addElementInCountry(String value, Set<String> set) {
-        List<AbstractLocation> list = SolutionUtil.multimap.get(value.trim());
+        List<AbstractLocation> list = SolutionUtil.multimap.get(value);
         if (list.isEmpty()) {
-            set.add(value.trim());
+            set.add(value);
         }
     }
 }
