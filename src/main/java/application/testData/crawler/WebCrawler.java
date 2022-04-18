@@ -173,8 +173,6 @@ public class WebCrawler {
                 String url = getCorespondentUrl(filePath);
                 if (isValidLink(url)) {
                     TestDataGenerator.createCorrectAddressesTestDataForEachCountry(number, url, filePath, isAppend); // fisiere cu adrese corecte
-                }
-                if (isValidLink(url)) {
                     TestDataGenerator.createIncorrectAddressesTestDataForEachCountry(filePath); // fisiere cu adrese gresite care sa acopere cazurile din metoda
                 }
             }
@@ -195,8 +193,7 @@ public class WebCrawler {
     /**
      * helpful method to get the value from the list, if the list is not empty
      */
-    public static String getCorrespondentValueField(String
-                                                            nameField, Map<String, ArrayList<String>> randomAddress, int index) {
+    public static String getCorrespondentValueField(String nameField, Map<String, ArrayList<String>> randomAddress, int index) {
         String value = null;
         if (!randomAddress.get(nameField).isEmpty()) {
             value = randomAddress.get(nameField).get(index);

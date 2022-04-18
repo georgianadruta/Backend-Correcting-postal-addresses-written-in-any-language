@@ -2,6 +2,8 @@ package application.dataset.storage;
 
 import application.dataset.structure.AbstractLocation;
 import application.dataset.structure.Country;
+import application.solution.SolutionUtil;
+import application.testData.util.NameVariationsUtil;
 
 import java.io.*;
 import java.util.HashSet;
@@ -55,7 +57,10 @@ public class DataStorage implements Serializable {
                     String code = splitData[8];
                     String admin1 = splitData[10];
                     if (featureClass.equals("A") && featureCode.equals("PCLI")) { // is country
-                        //NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
+                        name = SolutionUtil.getCanonicalForm(new String[]{name})[0];
+                        asciiName = SolutionUtil.getCanonicalForm(new String[]{asciiName})[0];
+                        alternateNames = SolutionUtil.getCanonicalForm(alternateNames);
+                        NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
                         Country country = new Country(geoNameId, name, asciiName, alternateNames, code, admin1);
                         country.addStates(filePath, country); // add all the states from the current country
                         abstractLocationSet.add(country); // add the country in the data storage set

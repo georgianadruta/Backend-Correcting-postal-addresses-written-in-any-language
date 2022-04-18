@@ -6,6 +6,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import java.io.*;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,12 +35,14 @@ public class SolutionUtil {
 
     /**
      * helpful method to increase the precision of the algorithm
-     * transform input in lowercase, remove special characters, transform nº in No and remove multiple white spaces
+     * transform input in lowercase, remove diacritics and accents, remove special characters, transform nº in No and remove multiple white spaces
      */
     public static String[] getCanonicalForm(String[] inputList) {
         List<String> newList = new ArrayList<>();
         for (String input : inputList) {
             input = input.toLowerCase();
+            input = Normalizer.normalize(input, Normalizer.Form.NFD)
+                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
             newList.add(input
                     .replaceAll("(\\D)\\.(\\d)", "$1 $2")
                     .replaceAll("[!@€£¢$¥%^*\"`~><()\\-.=_;,\\\\+?{}\\[\\]:|\\s]+", ONE_WHITESPACE)

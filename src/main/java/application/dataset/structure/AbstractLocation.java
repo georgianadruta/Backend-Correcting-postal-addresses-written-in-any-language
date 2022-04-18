@@ -4,7 +4,10 @@ import application.dataset.storage.DataStorage;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * abstract class to allow creating functionality that subclasses can implement or override
@@ -39,6 +42,18 @@ public abstract class AbstractLocation implements Serializable {
             subRegions.add(abstractLocation);
             DataStorage.foundGeoNameIds.add(geoNameId);
         }
+    }
+
+    /**
+     * helpful method to check if it exists at least one element with given name in subregion list for current location
+     */
+    public boolean contains(String locationName) {
+        for (AbstractLocation abstractLocation : subRegions) {
+            if (abstractLocation.getName().equals(locationName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

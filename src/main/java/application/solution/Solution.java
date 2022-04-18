@@ -1,6 +1,7 @@
 package application.solution;
 
 import application.dataset.structure.AbstractLocation;
+import application.dataset.structure.Country;
 import application.dataset.structure.State;
 import application.testData.model.TestObject;
 
@@ -14,7 +15,7 @@ public class Solution {
     public static int getNumberOfCorrectAddressesAfterCorrection(List<TestObject> testObjectList) {
         for (TestObject testObject : testObjectList) {
             TestObject correctedTestObject = getCorrectAddress(testObject);
-            System.out.println(testObject + "" + correctedTestObject);
+            System.out.println(testObject + "" + correctedTestObject);//afiseaza adresele diferite
             if (testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
                 number++;
             }
@@ -77,27 +78,61 @@ public class Solution {
     }
 
     private static void addElementInCity(String value, Set<String> set) {
-        List<AbstractLocation> list = SolutionUtil.multimap.get(value);
-        for (AbstractLocation abstractLocation : list) {
-            if (abstractLocation instanceof State) {
-                set.add(value);
+        List<String> allSubsetsFromValue = getAllSubsetsFromString(value);
+        for (String subsetFromValue : allSubsetsFromValue) {
+            List<AbstractLocation> list = SolutionUtil.multimap.get(subsetFromValue);
+            for (AbstractLocation abstractLocation : list) {
+                if (abstractLocation instanceof State) {
+                    set.add(subsetFromValue);
+                }
             }
         }
     }
 
     private static void addElementInState(String value, Set<String> set) {
-        List<AbstractLocation> list = SolutionUtil.multimap.get(value);
-        for (AbstractLocation abstractLocation : list) {
-            if (abstractLocation instanceof State) {
-                set.add(abstractLocation.getName());
+        List<String> allSubsetsFromValue = getAllSubsetsFromString(value);
+        for (String subsetFromValue : allSubsetsFromValue) {
+            List<AbstractLocation> list = SolutionUtil.multimap.get(subsetFromValue);
+            for (AbstractLocation abstractLocation : list) {
+                if (abstractLocation instanceof Country) {
+                    set.add(subsetFromValue);
+                } else {
+                    if (abstractLocation instanceof State && abstractLocation.contains(subsetFromValue)) {
+                        set.add(abstractLocation.getName());
+                    }
+                }
             }
         }
     }
 
     private static void addElementInCountry(String value, Set<String> set) {
         List<AbstractLocation> list = SolutionUtil.multimap.get(value);
-        if (list.isEmpty()) {
+        if (SolutionUtil.multimap.containsKey(value) && list.parallelStream().allMatch(Objects::isNull)) {
             set.add(value);
         }
+    }
+
+    public static List<String> getAllSubsetsFromString(String input) {
+        String[] set = input.trim().split(" ");
+        List<String> subsetList = new ArrayList<>();
+        int n = set.length;
+
+        for (int i = 0; i < (1 << n); i++) {
+            StringBuilder subset = new StringBuilder();
+            for (int j = 0; j < n; j++) {
+                if ((i & (1 << j)) > 0) {
+                    if (subset.isEmpty()) {
+                        subset.append(set[j]);
+                    } else {
+                        subset.append(" ").append(set[j]);
+                    }
+                }
+            }
+            if (!subset.isEmpty()) {
+                subsetList.add(String.valueOf(subset));
+            }
+        }
+        Collections.reverse(subsetList);
+        return subsetList;
     }
 }

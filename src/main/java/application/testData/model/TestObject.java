@@ -1,5 +1,6 @@
 package application.testData.model;
 
+import application.solution.SolutionUtil;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,13 +19,13 @@ public class TestObject implements Serializable, Cloneable {
     private String country;
 
     public TestObject(String street, String city, String state, String phoneNumber, String zipCode, String countryCallingCode, String country) {
-        this.street = street != null ? street.trim() : null;
-        this.city = city != null ? city.trim() : null;
-        this.state = state != null ? state.trim() : null;
+        this.street = street != null ? SolutionUtil.getCanonicalForm(new String[]{street.trim()})[0] : null;
+        this.city = city != null ? SolutionUtil.getCanonicalForm(new String[]{city.trim()})[0] : null;
+        this.state = state != null ? SolutionUtil.getCanonicalForm(new String[]{state.trim()})[0] : null;
         this.phoneNumber = phoneNumber != null ? phoneNumber.trim() : null;
         this.countryCallingCode = countryCallingCode != null ? countryCallingCode.trim() : null;
         this.zipCode = zipCode != null ? zipCode.trim() : null;
-        this.country = country != null ? country.trim() : null;
+        this.country = country != null ? SolutionUtil.getCanonicalForm(new String[]{country.trim()})[0] : null;
     }
 
     @Override

@@ -10,9 +10,8 @@ public class WebCrawlerLoader {
         WebCrawler webCrawler = new WebCrawler();
         webCrawler.createANewSetForEachCountryFromToDoFile(5, true);
 
-
         List<TestObject> list = TestUtil.readFromSerializedFile("./files/test/correctRandomAddresses/RO.ser");
-        System.out.println("correct" + list.size());
+        System.out.println("correct" + list);
 //        System.out.println("filled incorrectly" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithShuffledFields.ser").get(0));
 //        System.out.println("multiple info in one field" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithMultipleInfoInSeveralFields.ser").get(0));
 //        System.out.println("empty field" + TestUtil.readFromSerializedFile("./files/test/incorrectRandomAddresses/RO/RandomAddressesWithAnEmptyField.ser").get(0));
