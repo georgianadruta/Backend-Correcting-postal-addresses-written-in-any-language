@@ -7,9 +7,7 @@ import com.google.common.collect.ListMultimap;
 
 import java.io.*;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static application.constants.ConstantsUtil.*;
 
@@ -90,5 +88,47 @@ public class SolutionUtil {
         } catch (IOException | ClassNotFoundException exception) {
             exception.printStackTrace();
         }
+    }
+
+    /**
+     * helpful method to check if the words from substring exist in string
+     */
+    public static boolean contains(String string, String substring) {
+        List<String> strings = List.of(string.split(" "));
+        List<String> substrings = List.of(substring.split(" "));
+        for (String substr : substrings) {
+            if (!strings.contains(substr)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * helpful method to get all the subsets from string
+     */
+    public static Set<String> getAllSubsetsFromString(String input) {
+        String[] set = input.trim().split(" ");
+        Set<String> subsetList = new HashSet<>();
+        int n = set.length;
+
+        for (int j = 0; j < set.length; j++) {
+            for (int i = j; i < (1 << n); i++) {
+                StringBuilder subset = new StringBuilder();
+                for (int k = j; k < n; k++) {
+                    if ((i & (1 << k)) > 0) {
+                        if (subset.isEmpty()) {
+                            subset.append(set[k]);
+                        } else {
+                            subset.append(" ").append(set[k]);
+                        }
+                    }
+                }
+                if (!subset.isEmpty()) {
+                    subsetList.add(String.valueOf(subset));
+                }
+            }
+        }
+        return subsetList;
     }
 }

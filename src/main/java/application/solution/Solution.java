@@ -1,47 +1,42 @@
 package application.solution;
 
 import application.dataset.structure.AbstractLocation;
-import application.dataset.structure.Country;
-import application.dataset.structure.State;
 import application.testData.model.TestObject;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
 import static application.constants.ConstantsUtil.*;
+import static application.solution.SolutionUtil.getAllSubsetsFromString;
 
 public class Solution {
     private static int number = 0;
 
+    /**
+     * get the number of corrected addresses which correspond with the generated addresses from randomaddresses.com
+     */
     public static int getNumberOfCorrectAddressesAfterCorrection(List<TestObject> testObjectList) {
         for (TestObject testObject : testObjectList) {
             if (testObject.getState().equals("bucharest") && testObject.getCity().equals("bucharest")) {
                 testObject.setState("bucuresti");
                 testObject.setCity("bucuresti");
             }
-            TestObject correctedTestObject = getCorrectAddress(testObject);
+            TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
             if ((testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) || testObject.getCity().equals(correctedTestObject.getState()) && testObject.getState().equals(correctedTestObject.getCity())) // am adaugat aceasta conditie deoarece multe adrese generate de site au stateul inversat cu city
                     && testObject.getCountry().equals(correctedTestObject.getCountry())) {
                 number++;
             } else {
-                System.out.println(testObject + "" + correctedTestObject);//afiseaza adresele diferite
+                System.out.println(testObject + "" + correctedTestObject); // afiseaza adresele diferite
             }
         }
         return number;
     }
 
-    private static TestObject getCorrectAddress(TestObject testObject) {
-        Map<String, Map<String, Set<String>>> mapWithFieldsValue = new HashMap<>();
-        mapWithFieldsValue.put(CITY, getCitiesFromTestObject(testObject));
-        mapWithFieldsValue.put(STATE, getStatesFromTestObject(testObject));
-        mapWithFieldsValue.put(COUNTRY, getCountriesFromTestObject(testObject));
-        if (mapWithFieldsValue.get(STATE).isEmpty()) {
-            // add states for founded cities mapWithFieldsValue.put(STATE, getStatesForFoundCities(mapWithFieldsValue.get(CITY)));
-        }
-        return getTheBestCorrectedAddress(testObject, mapWithFieldsValue);
-    }
-
-    private static TestObject getTheBestCorrectedAddress(TestObject testObject, Map<String, Map<String, Set<String>>> mapWithFieldsValue) {
+    /**
+     * helpful method to find the best solution
+     */
+    private static TestObject getTheBestCorrectedAddress(TestObject testObject) {
+        Map<String, Map<String, Set<String>>> mapWithFieldsValue = getMapWithFieldsValue(testObject);
         String streetLine = testObject.getStreet();
         String city = testObject.getStreet();
         String state = testObject.getStreet();
@@ -51,139 +46,69 @@ public class Solution {
         String country = testObject.getStreet();
 
         List<Pair<Integer, TestObject>> scoredCorrectedAddresses = new ArrayList<>();
-        System.out.println(mapWithFieldsValue);
+
         return new TestObject(null, "brasov", "brasov", null, null, null, "romania");
     }
 
-    private static boolean contains(String string, String substring) {
-        List<String> strings = List.of(string.split(" "));
-        List<String> substrings = List.of(substring.split(" "));
-        for (String substr : substrings) {
-            if (!strings.contains(substr)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-//    private static List<TestObject> getAllPossibleCorrectedForm(Map<String, PriorityQueue<String>> mapWithFieldsValue) {
-//        List<TestObject> testObjectList = new ArrayList<>();
-//        List<String> cities = new ArrayList<>(mapWithFieldsValue.get(CITY));
-//        List<String> states = new ArrayList<>(mapWithFieldsValue.get(STATE));
-//        List<String> countries = new ArrayList<>(mapWithFieldsValue.get(COUNTRY));
-//        TestObject testObject = new TestObject(null, null, null, null, null, null, null);
-//        if (!cities.isEmpty()) {
-//            testObject.setCity(cities.get(0));
-//        }
-//        if (!states.isEmpty()) {
-//            testObject.setState(states.get(0));
-//        }
-//        if (!countries.isEmpty()) {
-//            testObject.setCountry(countries.get(0));
-//        }
-//        testObjectList.add(testObject);
-//        return testObjectList;
-//    }
-//
-//    private static Set<String> getStatesForFoundCities(Set<String> strings) {
-//        Set<String> list = new HashSet<>();
-//        for (String str : strings) {
-//            List<AbstractLocation> abstractLocations = SolutionUtil.multimap.get(str);
-//            for (AbstractLocation abstractLocation : abstractLocations) {
-//                if (abstractLocation instanceof State) {
-//                    list.add(abstractLocation.getName());
-//                }
-//            }
-//        }
-//        return list;
-//    }
-
-    private static Map<String, Set<String>> getCitiesFromTestObject(TestObject testObject) {
+    /**
+     * helpful method to create a map with field name as key and a map with field names and corresponding locations names as value
+     * eg for country : romania, iasi, state: brasov, iasi, city: com. bran, podoleni ->
+     * {    country = { country = [romania], city = [iasi], state = [iasi] },
+     * city = { country = [], city = [bran, podoleni], state = []},
+     * state = { country = [], city = [brasov, iasi], state = [brasov, iasi]}
+     * }
+     */
+    private static Map<String, Map<String, Set<String>>> getMapWithFieldsValue(TestObject testObject) {
+        Map<String, Map<String, Set<String>>> mapWithFieldsValue = new HashMap<>();
         Map<String, Set<String>> cities = new HashMap<>();
-        addElementInCountry(COUNTRY, testObject.getCity(), cities);
-        addElementInState(STATE, testObject.getCity(), cities);
-        addElementInCity(CITY, testObject.getCity(), cities);
-        return cities;
-    }
-
-    private static Map<String, Set<String>> getCountriesFromTestObject(TestObject testObject) {
-        Map<String, Set<String>> countries = new HashMap<>();
-        addElementInCountry(COUNTRY, testObject.getCountry(), countries);
-        addElementInState(STATE, testObject.getCountry(), countries);
-        addElementInCity(CITY, testObject.getCountry(), countries);
-        return countries;
-    }
-
-    private static Map<String, Set<String>> getStatesFromTestObject(TestObject testObject) {
+        mapWithFieldsValue.put(CITY, getValuesFieldsFromTestObject(testObject.getCity(), cities));
         Map<String, Set<String>> states = new HashMap<>();
-        addElementInCountry(COUNTRY, testObject.getState(), states);
-        addElementInState(STATE, testObject.getState(), states);
-        addElementInCity(CITY, testObject.getState(), states);
-        return states;
+        mapWithFieldsValue.put(STATE, getValuesFieldsFromTestObject(testObject.getState(), states));
+        Map<String, Set<String>> countries = new HashMap<>();
+        mapWithFieldsValue.put(COUNTRY, getValuesFieldsFromTestObject(testObject.getCountry(), countries));
+        System.out.println(mapWithFieldsValue);
+        return mapWithFieldsValue;
     }
 
-    private static void addElementInCity(String fieldName, String value, Map<String, Set<String>> set) {
+    /**
+     * helpful method to create a map for given value field
+     * eg for country : romania, iasi -> { country = [romania], city = [iasi], state = [iasi] }
+     */
+    private static Map<String, Set<String>> getValuesFieldsFromTestObject(String name, Map<String, Set<String>> map) {
+        try {
+            addElementInGivenField(COUNTRY, null, name, map);
+            addElementInGivenField(STATE, "application.dataset.structure.Country", name, map);
+            addElementInGivenField(CITY, "application.dataset.structure.State", name, map);
+        } catch (ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
+        return map;
+    }
+
+    /**
+     * helpful method to add each location in the corresponding field
+     * eg romania iasi -> country="romania", state="iasi", city="iasi"
+     */
+    private static void addElementInGivenField(String fieldName, String className, String value, Map<String, Set<String>> set) throws ClassNotFoundException {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(value);
         Set<String> foundLocations = new HashSet<>();
         for (String subsetFromValue : allSubsetsFromValue) {
             Set<AbstractLocation> list = new HashSet<>(SolutionUtil.multimap.get(subsetFromValue));
             for (AbstractLocation abstractLocation : list) {
-                if (abstractLocation instanceof State) {
-                    foundLocations.add(subsetFromValue);
-                }
-            }
-        }
-        set.put(fieldName, foundLocations);
-    }
-
-    private static void addElementInState(String fieldName, String value, Map<String, Set<String>> set) {
-        Set<String> allSubsetsFromValue = getAllSubsetsFromString(value);
-        Set<String> foundLocations = new HashSet<>();
-        for (String subsetFromValue : allSubsetsFromValue) {
-            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.multimap.get(subsetFromValue));
-            for (AbstractLocation abstractLocation : list) {
-                if (abstractLocation instanceof Country) {
-                    foundLocations.add(subsetFromValue);
-                }
-            }
-        }
-        set.put(fieldName, foundLocations);
-    }
-
-    private static void addElementInCountry(String fieldName, String value, Map<String, Set<String>> set) {
-        Set<String> allSubsetsFromValue = getAllSubsetsFromString(value);
-        Set<String> foundLocations = new HashSet<>();
-        for (String subsetFromValue : allSubsetsFromValue) {
-            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.multimap.get(subsetFromValue));
-            for (AbstractLocation abstractLocation : list) {
-                if (abstractLocation == null) {
-                    foundLocations.add(subsetFromValue);
-                }
-                set.put(fieldName, foundLocations);
-            }
-        }
-    }
-
-    public static Set<String> getAllSubsetsFromString(String input) {
-        String[] set = input.trim().split(" ");
-        Set<String> subsetList = new HashSet<>();
-        int n = set.length;
-
-        for (int i = 0; i < (1 << n); i++) {
-            StringBuilder subset = new StringBuilder();
-            for (int j = 0; j < n; j++) {
-                if ((i & (1 << j)) > 0) {
-                    if (subset.isEmpty()) {
-                        subset.append(set[j]);
-                    } else {
-                        subset.append(" ").append(set[j]);
+                if (className == null) {
+                    if (abstractLocation == null) {
+                        foundLocations.add(subsetFromValue);
+                    }
+                    set.put(fieldName, foundLocations);
+                } else {
+                    if (Class.forName(className).isInstance(abstractLocation)) {
+                        foundLocations.add(subsetFromValue);
                     }
                 }
             }
-            if (!subset.isEmpty()) {
-                subsetList.add(String.valueOf(subset));
-            }
         }
-        return subsetList;
+        if (className != null) {
+            set.put(fieldName, foundLocations);
+        }
     }
 }

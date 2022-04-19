@@ -21,10 +21,7 @@ public class SolutionLoader {
         List<TestObject> list = new ArrayList<>(); //TestUtil.readFromSerializedFile("./files/test/correctRandomAddresses/RO.ser");
 //        list.add(new TestObject(null, "slatina", "slatina", null, null, null, "romania"));
 //        list.add(new TestObject(null, "oravita", "caras severin", null, null, null, "romania"));
-        list.add(new TestObject(null, "com bran podoleni", "brasov iasi", null, null, null, "romania iasi"));
-//        List<String> names = new ArrayList<String>();
-//        SolutionUtil.multimap.get("bran").forEach(a -> names.add(a.getName()));
-//        System.out.println(names);
-        System.out.println(Solution.getNumberOfCorrectAddressesAfterCorrection(list));
+        list.add(new TestObject(null, "com bran podoleni", " iasi brasov", null, null, null, "iasi romania"));
+        System.out.println(Solution.getNumberOfCorrectAddressesAfterCorrection(list) + "/" + list.size());
     }
 }
