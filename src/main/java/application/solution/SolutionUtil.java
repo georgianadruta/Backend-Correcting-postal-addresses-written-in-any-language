@@ -39,20 +39,8 @@ public class SolutionUtil {
         List<String> newList = new ArrayList<>();
         for (String input : inputList) {
             input = input.toLowerCase();
-            input = Normalizer.normalize(input, Normalizer.Form.NFD)
-                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-            newList.add(input
-                    .replaceAll("(\\D)\\.(\\d)", "$1 $2")
-                    .replaceAll("[!@€£¢$¥%^*\"`~><()\\-.=_;,\\\\+?{}\\[\\]:|\\s]+", ONE_WHITESPACE)
-                    .replaceAll("[–\\-]+", ONE_WHITESPACE)
-                    .replaceAll("#+", ONE_WHITESPACE)
-                    .replaceAll("/+", ONE_WHITESPACE)
-                    .replaceAll("&+", " and ")
-                    .replaceAll("º+", "o ")
-                    .replaceAll("[`']+", EMPTY_STRING)
-                    .replaceAll("[.]+", ONE_WHITESPACE)
-                    .replaceAll("\\s+", ONE_WHITESPACE)
-                    .trim());
+            input = Normalizer.normalize(input, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+            newList.add(input.replaceAll("(\\D)\\.(\\d)", "$1 $2").replaceAll("[!@€£¢$¥%^*\"`~><()\\-.=_;,\\\\+?{}\\[\\]:|\\s]+", ONE_WHITESPACE).replaceAll("[–\\-]+", ONE_WHITESPACE).replaceAll("#+", ONE_WHITESPACE).replaceAll("/+", ONE_WHITESPACE).replaceAll("&+", " and ").replaceAll("º+", "o ").replaceAll("[`']+", EMPTY_STRING).replaceAll("[.]+", ONE_WHITESPACE).replaceAll("\\s+", ONE_WHITESPACE).trim());
         }
         return newList.toArray(new String[0]);
     }
@@ -108,28 +96,32 @@ public class SolutionUtil {
      * helpful method to get all the subsets from string
      */
     public static Set<String> getAllSubsetsFromString(String input) {
-        String[] set = input.trim().split(" ");
-        Set<String> subsetList = new HashSet<>();
-        int n = set.length;
+        if (input != null) {
+            String[] set = input.trim().split(" ");
+            Set<String> subsetList = new HashSet<>();
+            int n = set.length;
 
-        for (int j = 0; j < set.length; j++) {
-            for (int i = j; i < (1 << n); i++) {
-                StringBuilder subset = new StringBuilder();
-                for (int k = j; k < n; k++) {
-                    if ((i & (1 << k)) > 0) {
-                        if (subset.isEmpty()) {
-                            subset.append(set[k]);
-                        } else {
-                            subset.append(" ").append(set[k]);
+            for (int j = 0; j < set.length; j++) {
+                for (int i = j; i < (1 << n); i++) {
+                    StringBuilder subset = new StringBuilder();
+                    for (int k = j; k < n; k++) {
+                        if ((i & (1 << k)) > 0) {
+                            if (subset.isEmpty()) {
+                                subset.append(set[k]);
+                            } else {
+                                subset.append(" ").append(set[k]);
+                            }
                         }
                     }
-                }
-                if (!subset.isEmpty()) {
-                    subsetList.add(String.valueOf(subset));
+                    if (!subset.isEmpty()) {
+                        subsetList.add(String.valueOf(subset));
+                    }
                 }
             }
+            return subsetList;
+        } else {
+            return new HashSet<>();
         }
-        return subsetList;
     }
 
     /**
@@ -148,6 +140,14 @@ public class SolutionUtil {
         mapWithFieldsValue.put(STATE, getValuesFieldsFromTestObject(testObject.getState(), states));
         Map<String, Set<String>> countries = new HashMap<>();
         mapWithFieldsValue.put(COUNTRY, getValuesFieldsFromTestObject(testObject.getCountry(), countries));
+        Map<String, Set<String>> streets = new HashMap<>();
+        mapWithFieldsValue.put(STREET, getValuesFieldsFromTestObject(testObject.getStreet(), streets));
+        Map<String, Set<String>> phoneNumbers = new HashMap<>();
+        mapWithFieldsValue.put(PHONE_NUMBER, getValuesFieldsFromTestObject(testObject.getPhoneNumber(), testObject.getPhoneNumber() == null ? new HashMap<>() : phoneNumbers));
+        Map<String, Set<String>> zipCodes = new HashMap<>();
+        mapWithFieldsValue.put(ZIP_CODE, getValuesFieldsFromTestObject(testObject.getZipCode(), testObject.getZipCode() == null ? new HashMap<>() : zipCodes));
+        Map<String, Set<String>> countryCallingCodes = new HashMap<>();
+        mapWithFieldsValue.put(COUNTRY_CALLING_CODE, getValuesFieldsFromTestObject(testObject.getCountryCallingCode(), testObject.getCountryCallingCode() == null ? new HashMap<>() : countryCallingCodes));
         System.out.println(mapWithFieldsValue);
         return mapWithFieldsValue;
     }
@@ -189,7 +189,7 @@ public class SolutionUtil {
                 }
             }
         }
-        if (className != null) {
+        if (className != null || value == null) {
             set.put(fieldName, foundLocations);
         }
     }
