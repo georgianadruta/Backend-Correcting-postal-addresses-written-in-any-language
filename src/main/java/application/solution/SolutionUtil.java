@@ -149,7 +149,16 @@ public class SolutionUtil {
         mapWithFieldsValue.put(ZIP_CODE, getValuesFieldsFromTestObject(testObject.getZipCode(), new HashMap<>()));
         mapWithFieldsValue.put(COUNTRY_CALLING_CODE, getValuesFieldsFromTestObject(testObject.getCountryCallingCode(), new HashMap<>()));
         mapWithFieldsValue.put(COUNTRY, getValuesFieldsFromTestObject(testObject.getCountry(), new HashMap<>()));
-        System.out.println(mapWithFieldsValue);
+
+//        System.out.println(STREET + "" + mapWithFieldsValue.get(STREET));
+//        System.out.println(CITY + "" + mapWithFieldsValue.get(CITY));
+//        System.out.println(STATE + "" + mapWithFieldsValue.get(STATE));
+//        System.out.println(PHONE_NUMBER + "" + mapWithFieldsValue.get(PHONE_NUMBER));
+//        System.out.println(ZIP_CODE + "" + mapWithFieldsValue.get(ZIP_CODE));
+//        System.out.println(COUNTRY_CALLING_CODE + "" + mapWithFieldsValue.get(COUNTRY_CALLING_CODE));
+//        System.out.println(COUNTRY + "" + mapWithFieldsValue.get(COUNTRY));
+//        System.out.println();
+
         return mapWithFieldsValue;
     }
 

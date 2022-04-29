@@ -8,10 +8,7 @@ import application.testData.util.PairComparator;
 import application.testData.util.TestObjectPairComparator;
 import org.apache.commons.math3.util.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static application.constants.ConstantsUtil.*;
 
@@ -23,15 +20,11 @@ public class Solution {
      */
     public static int getNumberOfCorrectAddressesAfterCorrection(List<TestObject> testObjectList) {
         for (TestObject testObject : testObjectList) {
-            if (testObject.getState().equals("bucharest") && testObject.getCity().equals("bucharest")) {
-                testObject.setState("bucuresti");
-                testObject.setCity("bucuresti");
-            }
             TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
             if (correctedTestObject != null && (testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry()))) {
                 number++;
             } else {
-                System.out.println(testObject + "" + correctedTestObject); // afiseaza adresele diferite
+                System.out.println(testObject + "" + correctedTestObject); // display the corrected addresses which are different from the initial addresses
             }
         }
         return number;
@@ -47,7 +40,6 @@ public class Solution {
      */
     private static List<Pair<String, Integer>> getPairsForGivenField(String fieldName, Map<String, Map<String, Set<String>>> map) {
         List<Pair<String, Integer>> list = new ArrayList<>();
-
         int score;
         for (String key : map.keySet()) {
             if (key.equals(fieldName)) {
@@ -59,14 +51,32 @@ public class Solution {
                 if (subKey.equals(fieldName) && !map.get(key).get(subKey).isEmpty()) {
                     int length = map.get(key).get(subKey).size();
                     for (String value : map.get(key).get(subKey)) {
+                        if (subKey.equals(CITY) && isACityDifferentOfState(value)) {
+                            score += 7;
+                        }
+                        if (value.endsWith(STAR)) {
+                            score -= 3;
+                        }
                         list.add(new Pair(value, score + length));
                         length--;
                     }
                 }
             }
         }
-
         return getMinimalList(list);
+    }
+
+    /**
+     * helpful method to check if a city has a different name of state where it is found
+     */
+    private static boolean isACityDifferentOfState(String value) {
+        Set<AbstractLocation> multimap = new HashSet<>(SolutionUtil.multimap.get(value));
+        for (AbstractLocation abstractLocation : multimap) {
+            if (abstractLocation.getName().equals(value)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
