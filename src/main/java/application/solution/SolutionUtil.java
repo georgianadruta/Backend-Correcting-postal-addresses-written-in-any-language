@@ -1,6 +1,9 @@
 package application.solution;
 
 import application.dataset.structure.AbstractLocation;
+import application.dataset.structure.City;
+import application.dataset.structure.Country;
+import application.dataset.structure.State;
 import application.testData.model.TestObject;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -66,6 +69,9 @@ public class SolutionUtil {
         }
     }
 
+    /**
+     * load multimap from serialized file
+     */
     public static void loadMultimap() {
         try {
             FileInputStream fileIn = new FileInputStream(SERIALIZED_MAP_PATH);
@@ -82,8 +88,8 @@ public class SolutionUtil {
      * helpful method to check if the words from substring exist in string
      */
     public static boolean contains(String string, String substring) {
-        List<String> strings = List.of(string.split(" "));
-        List<String> substrings = List.of(substring.split(" "));
+        List<String> strings = List.of(string.split(ONE_WHITESPACE));
+        List<String> substrings = List.of(substring.split(ONE_WHITESPACE));
         for (String substr : substrings) {
             if (!strings.contains(substr)) {
                 return false;
@@ -97,7 +103,8 @@ public class SolutionUtil {
      */
     public static Set<String> getAllSubsetsFromString(String input) {
         if (input != null) {
-            String[] set = input.trim().split(" ");
+            String[] set = input.trim().split(ONE_WHITESPACE);
+            set = new LinkedHashSet<>(Arrays.asList(set)).toArray(new String[0]);
             Set<String> subsetList = new HashSet<>();
             int n = set.length;
 
@@ -109,7 +116,7 @@ public class SolutionUtil {
                             if (subset.isEmpty()) {
                                 subset.append(set[k]);
                             } else {
-                                subset.append(" ").append(set[k]);
+                                subset.append(ONE_WHITESPACE).append(set[k]);
                             }
                         }
                     }
@@ -134,20 +141,13 @@ public class SolutionUtil {
      */
     public static Map<String, Map<String, Set<String>>> getMapWithFieldsValue(TestObject testObject) {
         Map<String, Map<String, Set<String>>> mapWithFieldsValue = new HashMap<>();
-        Map<String, Set<String>> cities = new HashMap<>();
-        mapWithFieldsValue.put(CITY, getValuesFieldsFromTestObject(testObject.getCity(), cities));
-        Map<String, Set<String>> states = new HashMap<>();
-        mapWithFieldsValue.put(STATE, getValuesFieldsFromTestObject(testObject.getState(), states));
-        Map<String, Set<String>> countries = new HashMap<>();
-        mapWithFieldsValue.put(COUNTRY, getValuesFieldsFromTestObject(testObject.getCountry(), countries));
-        Map<String, Set<String>> streets = new HashMap<>();
-        mapWithFieldsValue.put(STREET, getValuesFieldsFromTestObject(testObject.getStreet(), streets));
-        Map<String, Set<String>> phoneNumbers = new HashMap<>();
-        mapWithFieldsValue.put(PHONE_NUMBER, getValuesFieldsFromTestObject(testObject.getPhoneNumber(), testObject.getPhoneNumber() == null ? new HashMap<>() : phoneNumbers));
-        Map<String, Set<String>> zipCodes = new HashMap<>();
-        mapWithFieldsValue.put(ZIP_CODE, getValuesFieldsFromTestObject(testObject.getZipCode(), testObject.getZipCode() == null ? new HashMap<>() : zipCodes));
-        Map<String, Set<String>> countryCallingCodes = new HashMap<>();
-        mapWithFieldsValue.put(COUNTRY_CALLING_CODE, getValuesFieldsFromTestObject(testObject.getCountryCallingCode(), testObject.getCountryCallingCode() == null ? new HashMap<>() : countryCallingCodes));
+        mapWithFieldsValue.put(STREET, getValuesFieldsFromTestObject(testObject.getStreet(), new HashMap<>()));
+        mapWithFieldsValue.put(CITY, getValuesFieldsFromTestObject(testObject.getCity(), new HashMap<>()));
+        mapWithFieldsValue.put(STATE, getValuesFieldsFromTestObject(testObject.getState(), new HashMap<>()));
+        mapWithFieldsValue.put(PHONE_NUMBER, getValuesFieldsFromTestObject(testObject.getPhoneNumber(), new HashMap<>()));
+        mapWithFieldsValue.put(ZIP_CODE, getValuesFieldsFromTestObject(testObject.getZipCode(), new HashMap<>()));
+        mapWithFieldsValue.put(COUNTRY_CALLING_CODE, getValuesFieldsFromTestObject(testObject.getCountryCallingCode(), new HashMap<>()));
+        mapWithFieldsValue.put(COUNTRY, getValuesFieldsFromTestObject(testObject.getCountry(), new HashMap<>()));
         System.out.println(mapWithFieldsValue);
         return mapWithFieldsValue;
     }
@@ -158,6 +158,9 @@ public class SolutionUtil {
      */
     private static Map<String, Set<String>> getValuesFieldsFromTestObject(String name, Map<String, Set<String>> map) {
         try {
+            map.put(COUNTRY, new HashSet<>());
+            map.put(STATE, new HashSet<>());
+            map.put(CITY, new HashSet<>());
             addElementInGivenField(COUNTRY, null, name, map);
             addElementInGivenField(STATE, "application.dataset.structure.Country", name, map);
             addElementInGivenField(CITY, "application.dataset.structure.State", name, map);
@@ -189,8 +192,68 @@ public class SolutionUtil {
                 }
             }
         }
+        if (fieldName.equals(COUNTRY)) {
+            addCountriesNameWhichHaveTheGivenLocation(foundLocations, value);
+        }
+        if (fieldName.equals(STATE)) {
+            addStatesNameWhichHaveTheGivenCityName(foundLocations, value);
+        }
         if (className != null || value == null) {
             set.put(fieldName, foundLocations);
         }
+    }
+
+    /**
+     * helpful method to add extra data for given data
+     * eg: for bran will add states: iasi*, brasov*
+     * note: each new data will be finished with '*' because is not explicit data from user
+     */
+    private static Set<String> addStatesNameWhichHaveTheGivenCityName(Set<String> foundStates, String cityName) {
+        Set<String> allSubsetsFromValue = getAllSubsetsFromString(cityName);
+        for (String subsetFromValue : allSubsetsFromValue) {
+            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.multimap.get(subsetFromValue));
+            for (AbstractLocation abstractLocation : list) {
+                if (abstractLocation instanceof City) {
+                    Set<AbstractLocation> secondList = new HashSet<>(SolutionUtil.multimap.get(abstractLocation.getName()));
+                    for (AbstractLocation abstractLocation1 : secondList) {
+                        if (abstractLocation1 instanceof State && !foundStates.contains(abstractLocation1.getName())) {
+                            foundStates.add(abstractLocation1.getName() + STAR);
+                        }
+                    }
+                } else {
+                    if (abstractLocation instanceof State && !foundStates.contains(abstractLocation.getName())) {
+                        foundStates.add(abstractLocation.getName() + STAR);
+                    }
+                }
+            }
+        }
+        return foundStates;
+    }
+
+    /**
+     * helpful method to add extra data for given data
+     * eg: for iasi will add country: romania*
+     * note: each new data will be finished with '*' because is not explicit data from user
+     */
+    private static Set<String> addCountriesNameWhichHaveTheGivenLocation(Set<String> foundCountries, String locationName) {
+        Set<String> allSubsetsFromValue = getAllSubsetsFromString(locationName);
+        for (String subsetFromValue : allSubsetsFromValue) {
+            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.multimap.get(subsetFromValue));
+            for (AbstractLocation abstractLocation : list) {
+                if (abstractLocation instanceof State) {
+                    Set<AbstractLocation> secondList = new HashSet<>(SolutionUtil.multimap.get(abstractLocation.getName()));
+                    for (AbstractLocation abstractLocation1 : secondList) {
+                        if (abstractLocation1 instanceof Country && !foundCountries.contains(abstractLocation1.getName())) {
+                            foundCountries.add(abstractLocation1.getName() + STAR);
+                        }
+                    }
+                } else {
+                    if (abstractLocation instanceof Country && !foundCountries.contains(abstractLocation.getName())) {
+                        foundCountries.add(abstractLocation.getName() + STAR);
+                    }
+                }
+            }
+        }
+        return foundCountries;
     }
 }
