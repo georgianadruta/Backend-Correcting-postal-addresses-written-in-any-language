@@ -63,7 +63,7 @@ public class SolutionUtil {
             out.writeObject(multimap);
             out.close();
             fileOut.close();
-            System.out.println("Serialized multimap is saved at:" + SERIALIZED_MAP_PATH);
+            System.out.println("Serialized multimap is saved at: " + SERIALIZED_MAP_PATH);
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -105,7 +105,8 @@ public class SolutionUtil {
         if (input != null) {
             String[] set = input.trim().split(ONE_WHITESPACE);
             set = new LinkedHashSet<>(Arrays.asList(set)).toArray(new String[0]);
-            Set<String> subsetList = new HashSet<>();
+            Set<String> subsetList = new LinkedHashSet<>();
+            subsetList.add(input);
             int n = set.length;
 
             for (int j = 0; j < set.length; j++) {
@@ -127,7 +128,7 @@ public class SolutionUtil {
             }
             return subsetList;
         } else {
-            return new HashSet<>();
+            return new LinkedHashSet<>();
         }
     }
 
@@ -176,7 +177,7 @@ public class SolutionUtil {
      */
     private static void addElementInGivenField(String fieldName, String className, String value, Map<String, Set<String>> set) throws ClassNotFoundException {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(value);
-        Set<String> foundLocations = new HashSet<>();
+        Set<String> foundLocations = new LinkedHashSet<>();
         for (String subsetFromValue : allSubsetsFromValue) {
             Set<AbstractLocation> list = new HashSet<>(SolutionUtil.multimap.get(subsetFromValue));
             for (AbstractLocation abstractLocation : list) {

@@ -28,8 +28,7 @@ public class Solution {
                 testObject.setCity("bucuresti");
             }
             TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
-            if (correctedTestObject != null && (testObject.getCity().equals(correctedTestObject.getCity()) &&
-                    testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry()))) {
+            if (correctedTestObject != null && (testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry()))) {
                 number++;
             } else {
                 System.out.println(testObject + "" + correctedTestObject); // afiseaza adresele diferite
@@ -78,14 +77,24 @@ public class Solution {
         list.sort(new PairComparator());
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = i + 1; j < list.size(); j++) {
-                if (list.get(i).getKey().equals(list.get(j).getKey())) {
+                if (getStringWithoutStar(list.get(i).getKey()).equals(getStringWithoutStar(list.get(j).getKey()))) {
                     list.remove(j);
+                    j--;
                 }
             }
         }
         return list;
     }
 
+    /**
+     * helpful method to remove the last character if it is a star
+     */
+    private static String getStringWithoutStar(String name) {
+        if (name.endsWith(STAR)) {
+            name = name.substring(0, name.length() - 1);
+        }
+        return name;
+    }
 
     /**
      * helpful method to find the best solution
@@ -99,7 +108,7 @@ public class Solution {
         if (scoredCityList.isEmpty() || scoredCountryList.isEmpty() || scoredStateList.isEmpty()) {
             return null;
         } else {
-            System.out.println(scoredCountryList + "\n" + scoredStateList + "\n" + scoredCityList);
+            System.out.println("country" + scoredCountryList + "\nstate" + scoredStateList + "\ncity" + scoredCityList);
             List<Pair<TestObject, Integer>> scoredCorrectedAddresses = getScoredAllPossibleCorrectAddresses(scoredCountryList, scoredStateList, scoredCityList);
 
             return new TestObject(null, scoredCorrectedAddresses.get(0).getKey().getCity(), scoredCorrectedAddresses.get(0).getKey().getState(), null, null, null, scoredCorrectedAddresses.get(0).getKey().getCountry());
