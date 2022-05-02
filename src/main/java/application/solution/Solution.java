@@ -21,26 +21,24 @@ public class Solution {
      * get the number of corrected addresses which correspond with the generated addresses from randomaddresses.com
      */
     public static int getNumberOfCorrectAddressesAfterCorrection() {
-        int nr = 0;
         try {
-            File file = new File("./files/test/correctRandomAddresses/RO.txt");
+            File file = new File("./files/test/correctRandomAddresses/RO.txt"); // doar pt RO
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
-                nr++;
                 String dataFromFile = reader.nextLine();
-                String[] splitData = dataFromFile.split(", ");
+                String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
-                TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
-                if (correctedTestObject != null && (testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry()))) {
-                    number++;
-                } else {
-                    System.out.println(testObject + "" + correctedTestObject); // display the corrected addresses which are different from the initial addresses
+                if (testObject.getCity().equals("stejaru")) {
+                    TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
+                    if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
+                        number++;
+                    } else {
+                        System.out.println(testObject + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
+                    }
                 }
             }
         } catch (FileNotFoundException exception) {
             exception.printStackTrace();
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println(nr);
         }
         return number;
     }
@@ -57,15 +55,15 @@ public class Solution {
         List<Pair<String, Integer>> list = new ArrayList<>();
         int score;
         for (String key : map.keySet()) {
-            if (key.equals(fieldName)) {
-                score = 5;
-            } else {
-                score = 0;
-            }
             for (String subKey : map.get(key).keySet()) {
                 if (subKey.equals(fieldName) && !map.get(key).get(subKey).isEmpty()) {
                     int length = map.get(key).get(subKey).size();
                     for (String value : map.get(key).get(subKey)) {
+                        if (key.equals(fieldName)) {
+                            score = 5;
+                        } else {
+                            score = 0;
+                        }
                         if (subKey.equals(CITY) && isACityDifferentOfState(value)) {
                             score += 3;
                         }
@@ -103,6 +101,7 @@ public class Solution {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = i + 1; j < list.size(); j++) {
                 if (getStringWithoutStar(list.get(i).getKey()).equals(getStringWithoutStar(list.get(j).getKey()))) {
+                    list.set(i, new Pair<>(list.get(i).getKey(), list.get(i).getValue() + list.get(j).getValue()));
                     list.remove(j);
                     j--;
                 }
@@ -133,10 +132,9 @@ public class Solution {
         if (scoredCityList.isEmpty() || scoredCountryList.isEmpty() || scoredStateList.isEmpty()) {
             return null;
         } else {
-            System.out.println("country" + scoredCountryList + "\nstate" + scoredStateList + "\ncity" + scoredCityList);
             List<Pair<TestObject, Integer>> scoredCorrectedAddresses = getScoredAllPossibleCorrectAddresses(scoredCountryList, scoredStateList, scoredCityList);
-
-            return new TestObject(null, null, scoredCorrectedAddresses.get(0).getKey().getCity(), scoredCorrectedAddresses.get(0).getKey().getState(), scoredCorrectedAddresses.get(0).getKey().getCountry());
+            System.out.println("country" + scoredCountryList + "\nstate" + scoredStateList + "\ncity" + scoredCityList);
+            return new TestObject(null, null, scoredCorrectedAddresses.get(0).getKey().getState(), scoredCorrectedAddresses.get(0).getKey().getCity(), scoredCorrectedAddresses.get(0).getKey().getCountry());
         }
     }
 
@@ -145,12 +143,11 @@ public class Solution {
      */
     private static List<Pair<TestObject, Integer>> getScoredAllPossibleCorrectAddresses(List<Pair<String, Integer>> scoredCountryList, List<Pair<String, Integer>> scoredStateList, List<Pair<String, Integer>> scoredCityList) {
         List<Pair<TestObject, Integer>> list = new ArrayList<>();
-
         for (Pair<String, Integer> countryPair : scoredCountryList) {
             for (Pair<String, Integer> statePair : scoredStateList) {
                 for (Pair<String, Integer> cityPair : scoredCityList) {
                     int score = countryPair.getValue() + statePair.getValue() + cityPair.getValue();
-                    TestObject testObject = new TestObject(null, null, cityPair.getKey(), statePair.getKey(), countryPair.getKey());
+                    TestObject testObject = new TestObject(null, null, statePair.getKey(), cityPair.getKey(), countryPair.getKey());
                     if (isValidAddress(testObject)) {
                         list.add(new Pair<>(testObject, score));
                     }

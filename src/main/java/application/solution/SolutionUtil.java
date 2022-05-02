@@ -145,6 +145,7 @@ public class SolutionUtil {
         mapWithFieldsValue.put(STATE, getValuesFieldsFromTestObject(testObject.getState(), new HashMap<>()));
         mapWithFieldsValue.put(ZIP_CODE, getValuesFieldsFromTestObject(testObject.getZipCode(), new HashMap<>()));
         mapWithFieldsValue.put(COUNTRY, getValuesFieldsFromTestObject(testObject.getCountry(), new HashMap<>()));
+        System.out.println(mapWithFieldsValue);
 
 //        System.out.println(STREET + "" + mapWithFieldsValue.get(STREET));
 //        System.out.println(CITY + "" + mapWithFieldsValue.get(CITY));

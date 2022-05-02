@@ -18,9 +18,9 @@ public class TestObject implements Serializable, Cloneable {
 
     public TestObject(String street, String zipCode, String state, String city, String country) {
         this.street = street != null ? SolutionUtil.getCanonicalForm(new String[]{street.trim()})[0] : null;
-        this.city = city != null ? SolutionUtil.getCanonicalForm(new String[]{city.trim()})[0] : null;
         this.state = state != null ? SolutionUtil.getCanonicalForm(new String[]{state.trim()})[0] : null;
         this.zipCode = zipCode != null ? zipCode.trim() : null;
+        this.city = city != null ? SolutionUtil.getCanonicalForm(new String[]{city.trim()})[0] : null;
         this.country = country != null ? SolutionUtil.getCanonicalForm(new String[]{country.trim()})[0] : null;
     }
 
@@ -28,9 +28,9 @@ public class TestObject implements Serializable, Cloneable {
     public String toString() {
         return "{ " +
                 "\nStreet: " + street +
-                ",\nCity: " + city +
-                ",\nState: " + state +
                 ",\nZip code: " + zipCode +
+                ",\nState: " + state +
+                ",\nCity: " + city +
                 ",\nCountry: " + country + "\n}\n";
     }
 
