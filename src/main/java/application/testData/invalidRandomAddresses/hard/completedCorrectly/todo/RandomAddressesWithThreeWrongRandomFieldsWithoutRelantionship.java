@@ -1,4 +1,0 @@
-package application.testData.invalidRandomAddresses.hard.completedCorrectly.todo;
-
-public class RandomAddressesWithThreeWrongRandomFieldsWithoutRelantionship {
-}

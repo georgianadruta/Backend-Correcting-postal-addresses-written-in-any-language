@@ -8,6 +8,8 @@ import application.testData.util.PairComparator;
 import application.testData.util.TestObjectPairComparator;
 import org.apache.commons.math3.util.Pair;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import static application.constants.ConstantsUtil.*;
@@ -18,14 +20,27 @@ public class Solution {
     /**
      * get the number of corrected addresses which correspond with the generated addresses from randomaddresses.com
      */
-    public static int getNumberOfCorrectAddressesAfterCorrection(List<TestObject> testObjectList) {
-        for (TestObject testObject : testObjectList) {
-            TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
-            if (correctedTestObject != null && (testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry()))) {
-                number++;
-            } else {
-                System.out.println(testObject + "" + correctedTestObject); // display the corrected addresses which are different from the initial addresses
+    public static int getNumberOfCorrectAddressesAfterCorrection() {
+        int nr = 0;
+        try {
+            File file = new File("./files/test/correctRandomAddresses/RO.txt");
+            Scanner reader = new Scanner(file);
+            while (reader.hasNext()) {
+                nr++;
+                String dataFromFile = reader.nextLine();
+                String[] splitData = dataFromFile.split(", ");
+                TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
+                TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
+                if (correctedTestObject != null && (testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry()))) {
+                    number++;
+                } else {
+                    System.out.println(testObject + "" + correctedTestObject); // display the corrected addresses which are different from the initial addresses
+                }
             }
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(nr);
         }
         return number;
     }
@@ -52,7 +67,7 @@ public class Solution {
                     int length = map.get(key).get(subKey).size();
                     for (String value : map.get(key).get(subKey)) {
                         if (subKey.equals(CITY) && isACityDifferentOfState(value)) {
-                            score += 7;
+                            score += 3;
                         }
                         if (value.endsWith(STAR)) {
                             score -= 3;
@@ -121,7 +136,7 @@ public class Solution {
             System.out.println("country" + scoredCountryList + "\nstate" + scoredStateList + "\ncity" + scoredCityList);
             List<Pair<TestObject, Integer>> scoredCorrectedAddresses = getScoredAllPossibleCorrectAddresses(scoredCountryList, scoredStateList, scoredCityList);
 
-            return new TestObject(null, scoredCorrectedAddresses.get(0).getKey().getCity(), scoredCorrectedAddresses.get(0).getKey().getState(), null, null, null, scoredCorrectedAddresses.get(0).getKey().getCountry());
+            return new TestObject(null, null, scoredCorrectedAddresses.get(0).getKey().getCity(), scoredCorrectedAddresses.get(0).getKey().getState(), scoredCorrectedAddresses.get(0).getKey().getCountry());
         }
     }
 
@@ -135,7 +150,7 @@ public class Solution {
             for (Pair<String, Integer> statePair : scoredStateList) {
                 for (Pair<String, Integer> cityPair : scoredCityList) {
                     int score = countryPair.getValue() + statePair.getValue() + cityPair.getValue();
-                    TestObject testObject = new TestObject(null, cityPair.getKey(), statePair.getKey(), null, null, null, countryPair.getKey());
+                    TestObject testObject = new TestObject(null, null, cityPair.getKey(), statePair.getKey(), countryPair.getKey());
                     if (isValidAddress(testObject)) {
                         list.add(new Pair<>(testObject, score));
                     }

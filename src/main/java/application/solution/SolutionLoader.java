@@ -1,28 +1,22 @@
 package application.solution;
 
 import application.dataset.storage.DataStorage;
-import application.testData.model.TestObject;
-import application.testData.util.TestUtil;
 
-import java.util.List;
+import java.util.Date;
 
 public class SolutionLoader {
     public static void main(String[] args) {
 //        DataStorage.createDataStorage();
 //        DataStorage.saveDataStorage();
 //        SolutionUtil.saveMultimap();
-
+        Date startDate = new Date();// contorizare timp
         DataStorage.loadDataStorage();
         SolutionUtil.loadMultimap();
 
-        List<TestObject> list = TestUtil.readFromSerializedFile("./files/test/correctRandomAddresses/RO.ser");
 
-//        list.add(new TestObject(null, "cluj napoca", "cluj napoca", null, null, null, "romania"));
-//        list.add(new TestObject(null, "ilfov", "pantelimon", null, null, null, "romania"));
-
-//        list.add(new TestObject("romania", "com bran, podoleni", "iasi brasov",
-//                null, null, null, "iasi romania romania"));
-
-        System.out.println(Solution.getNumberOfCorrectAddressesAfterCorrection(list) + "/" + list.size());
+        System.out.println(Solution.getNumberOfCorrectAddressesAfterCorrection() + "/100");
+        Date endDate = new Date();
+        int numSeconds = (int) ((endDate.getTime() - startDate.getTime()) / 1000);
+        System.out.println(numSeconds); //afisare timp creare db
     }
 }

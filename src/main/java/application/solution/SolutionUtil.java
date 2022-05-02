@@ -26,12 +26,10 @@ public class SolutionUtil {
         String street = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
         String city = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
         String state = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
-        String phoneNumber = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
         String zipCode = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
-        String countryCallingCode = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
         String country = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
 
-        return new TestObject(street, city, state, phoneNumber, zipCode, countryCallingCode, country);
+        return new TestObject(street, zipCode, state, city, country);
     }
 
     /**
@@ -145,17 +143,13 @@ public class SolutionUtil {
         mapWithFieldsValue.put(STREET, getValuesFieldsFromTestObject(testObject.getStreet(), new HashMap<>()));
         mapWithFieldsValue.put(CITY, getValuesFieldsFromTestObject(testObject.getCity(), new HashMap<>()));
         mapWithFieldsValue.put(STATE, getValuesFieldsFromTestObject(testObject.getState(), new HashMap<>()));
-        mapWithFieldsValue.put(PHONE_NUMBER, getValuesFieldsFromTestObject(testObject.getPhoneNumber(), new HashMap<>()));
         mapWithFieldsValue.put(ZIP_CODE, getValuesFieldsFromTestObject(testObject.getZipCode(), new HashMap<>()));
-        mapWithFieldsValue.put(COUNTRY_CALLING_CODE, getValuesFieldsFromTestObject(testObject.getCountryCallingCode(), new HashMap<>()));
         mapWithFieldsValue.put(COUNTRY, getValuesFieldsFromTestObject(testObject.getCountry(), new HashMap<>()));
 
 //        System.out.println(STREET + "" + mapWithFieldsValue.get(STREET));
 //        System.out.println(CITY + "" + mapWithFieldsValue.get(CITY));
 //        System.out.println(STATE + "" + mapWithFieldsValue.get(STATE));
-//        System.out.println(PHONE_NUMBER + "" + mapWithFieldsValue.get(PHONE_NUMBER));
 //        System.out.println(ZIP_CODE + "" + mapWithFieldsValue.get(ZIP_CODE));
-//        System.out.println(COUNTRY_CALLING_CODE + "" + mapWithFieldsValue.get(COUNTRY_CALLING_CODE));
 //        System.out.println(COUNTRY + "" + mapWithFieldsValue.get(COUNTRY));
 //        System.out.println();
 
