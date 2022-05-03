@@ -106,22 +106,43 @@ public class TestObject implements Serializable, Cloneable {
         return EMPTY_STRING;
     }
 
-    public void setRandomField(String value, Integer integer) {
+    public String getValueForNoField(Integer integer) {
         switch (integer) {
             case 0 -> {
-                this.setStreet(value);
+                return this.street;
             }
             case 1 -> {
-                this.setZipCode(value);
+                return this.zipCode;
             }
             case 2 -> {
-                this.setState(value);
+                return state;
             }
             case 3 -> {
-                this.setCity(value);
+                return city;
             }
             case 4 -> {
-                this.setCountry(value);
+                return country;
+            }
+        }
+        return EMPTY_STRING;
+    }
+
+    public void setValueForNoField(String value, Integer integer) {
+        switch (integer) {
+            case 0 -> {
+                this.street = value;
+            }
+            case 1 -> {
+                this.zipCode = value;
+            }
+            case 2 -> {
+                state = value;
+            }
+            case 3 -> {
+                city = value;
+            }
+            case 4 -> {
+                country = value;
             }
         }
     }

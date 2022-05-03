@@ -12,16 +12,16 @@ import static application.constants.ConstantsUtil.*;
  * helpful class to generate multiple cases of wrong filled address
  */
 public class TestsGenerator {
-    static List<Integer> randomNumberListForAddressesWithAllFieldsFilledIncorrectly = new ArrayList<>(6);
+    static List<Integer> randomNumberListForAddressesWithAllFieldsFilledIncorrectly = new ArrayList<>(5);
     static List<Integer> randomNumberListForAddressesWithMultipleDataInOneField = new ArrayList<>();
     static int m;
 
     public static void createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly() {
         Random rand = new Random();
-        for (int i = 0; i < 6; i++) {
-            int k = rand.nextInt(6);
+        for (int i = 0; i < 5; i++) {
+            int k = rand.nextInt(5);
             while (randomNumberListForAddressesWithAllFieldsFilledIncorrectly.contains(k)) {
-                k = rand.nextInt(6);
+                k = rand.nextInt(5);
             }
             randomNumberListForAddressesWithAllFieldsFilledIncorrectly.add(k);
         }
@@ -29,14 +29,42 @@ public class TestsGenerator {
 
     public static void createRandomNumberListForAddressesWithMultipleDataInOneField() {
         Random rand = new Random();
-        int n = rand.nextInt(6);
-        m = rand.nextInt(6);
+        int n = rand.nextInt(5);
+        while (n < 2) {
+            n = rand.nextInt(5);
+        }
+        m = rand.nextInt(5);
         for (int i = 0; i < n; i++) {
-            int k = rand.nextInt(6);
-            while (randomNumberListForAddressesWithMultipleDataInOneField.contains(k) && k != m) {
-                k = rand.nextInt(6);
+            int k = rand.nextInt(5);
+            while (randomNumberListForAddressesWithMultipleDataInOneField.contains(k) || k == m) {
+                k = rand.nextInt(5);
             }
             randomNumberListForAddressesWithMultipleDataInOneField.add(k);
+        }
+    }
+
+    private static void getNewInput(StringBuilder input, TestObject testObject, Integer integer) {
+        switch (integer) {
+            case 0 -> {
+                input.append(ONE_WHITESPACE).append(testObject.getStreet());
+                testObject.setStreet(EMPTY_STRING);
+            }
+            case 1 -> {
+                input.append(ONE_WHITESPACE).append(testObject.getZipCode());
+                testObject.setZipCode(EMPTY_STRING);
+            }
+            case 2 -> {
+                input.append(ONE_WHITESPACE).append(testObject.getState());
+                testObject.setState(EMPTY_STRING);
+            }
+            case 3 -> {
+                input.append(ONE_WHITESPACE).append(testObject.getCity());
+                testObject.setCity(EMPTY_STRING);
+            }
+            case 4 -> {
+                input.append(ONE_WHITESPACE).append(testObject.getCountry());
+                testObject.setCountry(EMPTY_STRING);
+            }
         }
     }
 
@@ -85,8 +113,7 @@ public class TestsGenerator {
 
     public static TestObject getAddressWithAllDataInOneField(TestObject testObject, String fieldName) {
         TestObject copy = new TestObject();
-        String input = testObject.getStreet() + ONE_WHITESPACE + testObject.getZipCode() + ONE_WHITESPACE + testObject.getState() +
-                ONE_WHITESPACE + testObject.getCity() + ONE_WHITESPACE + testObject.getCountry() + ONE_WHITESPACE;
+        String input = testObject.getStreet() + ONE_WHITESPACE + testObject.getZipCode() + ONE_WHITESPACE + testObject.getState() + ONE_WHITESPACE + testObject.getCity() + ONE_WHITESPACE + testObject.getCountry() + ONE_WHITESPACE;
         copy.setTestObjectField(fieldName, input);
         return copy;
     }
@@ -142,64 +169,17 @@ public class TestsGenerator {
 
     public static TestObject getAddressesWithMultipleDataInOneField(TestObject testObject) {
         StringBuilder input = new StringBuilder();
-        switch (m) {
-            case 0 -> {
-                input.append(testObject.getStreet());
+        try {
+            TestObject testObject1 = (TestObject) testObject.clone();
+            input.append(testObject.getValueForNoField(m));
+
+            for (Integer integer : randomNumberListForAddressesWithMultipleDataInOneField) {
+                getNewInput(input, testObject1, integer);
             }
-            case 1 -> {
-                input.append(testObject.getZipCode());
-            }
-            case 2 -> {
-                input.append(testObject.getState());
-            }
-            case 3 -> {
-                input.append(testObject.getCity());
-            }
-            case 4 -> {
-                input.append(testObject.getCountry());
-            }
+            testObject1.setValueForNoField(String.valueOf(input), m);
+            return testObject1;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
         }
-        for (int i = 0; i < randomNumberListForAddressesWithMultipleDataInOneField.size(); i++) {
-            switch (i) {
-                case 0 -> {
-                    input.append(testObject.getStreet());
-                }
-                case 1 -> {
-                    input.append(testObject.getZipCode());
-                }
-                case 2 -> {
-                    input.append(testObject.getState());
-                }
-                case 3 -> {
-                    input.append(testObject.getCity());
-                }
-                case 4 -> {
-                    input.append(testObject.getCountry());
-                }
-            }
-        }
-        String street = testObject.getStreet();
-        String zipCode = testObject.getZipCode();
-        String state = testObject.getState();
-        String city = testObject.getCity();
-        String country = testObject.getCountry();
-        switch (m) {
-            case 0 -> {
-                street = String.valueOf(input);
-            }
-            case 1 -> {
-                zipCode = String.valueOf(input);
-            }
-            case 2 -> {
-                state = String.valueOf(input);
-            }
-            case 3 -> {
-                city = String.valueOf(input);
-            }
-            case 4 -> {
-                country = String.valueOf(input);
-            }
-        }
-        return new TestObject(street, zipCode, state, city, country);
     }
 }
