@@ -2,12 +2,30 @@ package application.testData.util.testsGenerator;
 
 import application.testData.model.TestObject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import static application.constants.ConstantsUtil.*;
 
 /**
  * helpful class to generate multiple cases of wrong filled address
  */
 public class TestsGenerator {
+    static List<Integer> randomNumberList = new ArrayList<>(6);
+
+    public static void createRandomNumberList() {
+        Random rand = new Random();
+        for (int i = 0; i < 6; i++) {
+            int k = rand.nextInt(6);
+            while (randomNumberList.contains(k)) {
+                k = rand.nextInt(6);
+            }
+            randomNumberList.add(k);
+        }
+        System.out.println(randomNumberList);
+    }
+
     public static TestObject getAddressWithTwoDataInGivenField(TestObject testObject, String fieldName) {
         TestObject copy;
         try {
@@ -78,5 +96,33 @@ public class TestsGenerator {
             throw new RuntimeException(e);
         }
         return copy;
+    }
+
+    public static TestObject getRandomizedAddress(TestObject testObject) {
+        String street = null;
+        String zipCode = null;
+        String state = null;
+        String city = null;
+        String country = null;
+        for (int i = 0; i < randomNumberList.size(); i++) {
+            switch (i) {
+                case 0 -> {
+                    street = testObject.getStreet();
+                }
+                case 1 -> {
+                    zipCode = testObject.getZipCode();
+                }
+                case 2 -> {
+                    state = testObject.getState();
+                }
+                case 3 -> {
+                    city = testObject.getCity();
+                }
+                case 4 -> {
+                    country = testObject.getCountry();
+                }
+            }
+        }
+        return new TestObject(street, zipCode, state, city, country);
     }
 }

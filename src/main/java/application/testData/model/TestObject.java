@@ -106,6 +106,26 @@ public class TestObject implements Serializable, Cloneable {
         return EMPTY_STRING;
     }
 
+    public void setRandomField(String value, Integer integer) {
+        switch (integer) {
+            case 0 -> {
+                this.setStreet(value);
+            }
+            case 1 -> {
+                this.setZipCode(value);
+            }
+            case 2 -> {
+                this.setState(value);
+            }
+            case 3 -> {
+                this.setCity(value);
+            }
+            case 4 -> {
+                this.setCountry(value);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "{ " + "\nStreet: " + street + ",\nZip code: " + zipCode + ",\nState: " + state + ",\nCity: " + city + ",\nCountry: " + country + "\n}\n";
