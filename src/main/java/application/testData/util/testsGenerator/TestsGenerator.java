@@ -43,7 +43,7 @@ public class TestsGenerator {
         }
     }
 
-    private static void getNewInput(StringBuilder input, TestObject testObject, Integer integer) {
+    private static void updateInput(StringBuilder input, TestObject testObject, Integer integer) {
         switch (integer) {
             case 0 -> {
                 input.append(ONE_WHITESPACE).append(testObject.getStreet());
@@ -139,7 +139,7 @@ public class TestsGenerator {
         return copy;
     }
 
-    public static TestObject getAddressesWithAllFieldsFilledIncorrectly(TestObject testObject) {
+    public static TestObject getAddressWithAllFieldsFilledIncorrectly(TestObject testObject) {
         String street = null;
         String zipCode = null;
         String state = null;
@@ -167,19 +167,29 @@ public class TestsGenerator {
         return new TestObject(street, zipCode, state, city, country);
     }
 
-    public static TestObject getAddressesWithMultipleDataInOneField(TestObject testObject) {
+    public static TestObject getAddressWithMultipleDataInOneField(TestObject testObject) {
         StringBuilder input = new StringBuilder();
         try {
             TestObject testObject1 = (TestObject) testObject.clone();
             input.append(testObject.getValueForNoField(m));
 
             for (Integer integer : randomNumberListForAddressesWithMultipleDataInOneField) {
-                getNewInput(input, testObject1, integer);
+                updateInput(input, testObject1, integer);
             }
             testObject1.setValueForNoField(String.valueOf(input), m);
             return testObject1;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static TestObject getAddressWithAlternateName(TestObject testObject) {
+        //TODO
+        return testObject;
+    }
+
+    public static TestObject getAddressWithTypo(TestObject testObject) {
+        //TODO
+        return testObject;
     }
 }

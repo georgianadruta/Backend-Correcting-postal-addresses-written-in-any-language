@@ -32,7 +32,7 @@ public class Solution {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
-                TestObject testObjectToCorrect = TestsGenerator.getAddressesWithMultipleDataInOneField(testObject);
+                TestObject testObjectToCorrect = TestsGenerator.getAddressWithMultipleDataInOneField(testObject);
                 TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);
                 if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
                     number++;
