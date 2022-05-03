@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+import static application.constants.ConstantsUtil.*;
+
 /**
  * helpful method for modeling random addresses
  */
@@ -24,14 +26,89 @@ public class TestObject implements Serializable, Cloneable {
         this.country = country != null ? SolutionUtil.getCanonicalForm(new String[]{country.trim()})[0] : null;
     }
 
+    public TestObject() {
+        this.street = null;
+        this.state = null;
+        this.zipCode = null;
+        this.city = null;
+        this.country = null;
+    }
+
+    public void setTestObjectField(String fieldName, String input) {
+        switch (fieldName) {
+            case STREET -> {
+                this.setStreet(input);
+            }
+            case ZIP_CODE -> {
+                this.setZipCode(input);
+            }
+            case STATE -> {
+                this.setState(input);
+            }
+            case CITY -> {
+                this.setCity(input);
+            }
+            case COUNTRY -> {
+                this.setCountry(input);
+            }
+        }
+    }
+
+    public void moveAFieldToAnother(String fromField, String toField) {
+        try {
+            String input = getAndRemoveField(fromField);
+            switch (toField) {
+                case STREET -> {
+                    this.setStreet(this.getStreet() + ONE_WHITESPACE + input);
+                }
+                case ZIP_CODE -> {
+                    this.setZipCode(this.getZipCode() + ONE_WHITESPACE + input);
+                }
+                case STATE -> {
+                    this.setState(this.getState() + ONE_WHITESPACE + input);
+                }
+                case CITY -> {
+                    this.setCity(this.getCity() + ONE_WHITESPACE + input);
+                }
+                case COUNTRY -> {
+                    this.setCountry(this.getCountry() + ONE_WHITESPACE + input);
+                }
+            }
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getAndRemoveField(String fromField) throws CloneNotSupportedException {
+        TestObject copy = (TestObject) this.clone();
+        switch (fromField) {
+            case STREET -> {
+                this.setStreet(EMPTY_STRING);
+                return copy.getStreet();
+            }
+            case ZIP_CODE -> {
+                this.setZipCode(EMPTY_STRING);
+                return copy.getZipCode();
+            }
+            case STATE -> {
+                this.setState(EMPTY_STRING);
+                return copy.getState();
+            }
+            case CITY -> {
+                this.setCity(EMPTY_STRING);
+                return copy.getCity();
+            }
+            case COUNTRY -> {
+                this.setCountry(EMPTY_STRING);
+                return copy.getCountry();
+            }
+        }
+        return EMPTY_STRING;
+    }
+
     @Override
     public String toString() {
-        return "{ " +
-                "\nStreet: " + street +
-                ",\nZip code: " + zipCode +
-                ",\nState: " + state +
-                ",\nCity: " + city +
-                ",\nCountry: " + country + "\n}\n";
+        return "{ " + "\nStreet: " + street + ",\nZip code: " + zipCode + ",\nState: " + state + ",\nCity: " + city + ",\nCountry: " + country + "\n}\n";
     }
 
     /**

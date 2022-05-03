@@ -30,16 +30,16 @@ public class Solution {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
-                TestObject testObjectToCorrect = TestsGenerator.getAddressWithStateInStreetField(testObject);
-                if (testObject.getCity().equals("valcea")) {
-                    TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);
-                    if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
-                        number++;
-                    } else {
-                        System.out.println(testObjectToCorrect + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
-                    }
+                TestObject testObjectToCorrect = TestsGenerator.getAddressWithAWrongCompletedField(testObject, STATE);
+
+                TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);
+                if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
+                    number++;
+                } else {
+                    System.out.println(testObjectToCorrect + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
                 }
             }
+
         } catch (FileNotFoundException exception) {
             exception.printStackTrace();
         }
