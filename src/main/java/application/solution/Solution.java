@@ -26,12 +26,13 @@ public class Solution {
         try {
             File file = new File("./files/test/correctRandomAddresses/RO.txt");
             Scanner reader = new Scanner(file);
-            TestsGenerator.createRandomNumberList();
+            TestsGenerator.createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly();
+            TestsGenerator.createRandomNumberListForAddressesWithMultipleDataInOneField();
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
-                TestObject testObjectToCorrect = TestsGenerator.getRandomizedAddress(testObject);
+                TestObject testObjectToCorrect = TestsGenerator.getAddressesWithMultipleDataInOneField(testObject);
                 TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);
                 if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
                     number++;

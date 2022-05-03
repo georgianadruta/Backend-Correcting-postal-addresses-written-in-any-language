@@ -12,18 +12,32 @@ import static application.constants.ConstantsUtil.*;
  * helpful class to generate multiple cases of wrong filled address
  */
 public class TestsGenerator {
-    static List<Integer> randomNumberList = new ArrayList<>(6);
+    static List<Integer> randomNumberListForAddressesWithAllFieldsFilledIncorrectly = new ArrayList<>(6);
+    static List<Integer> randomNumberListForAddressesWithMultipleDataInOneField = new ArrayList<>();
+    static int m;
 
-    public static void createRandomNumberList() {
+    public static void createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly() {
         Random rand = new Random();
         for (int i = 0; i < 6; i++) {
             int k = rand.nextInt(6);
-            while (randomNumberList.contains(k)) {
+            while (randomNumberListForAddressesWithAllFieldsFilledIncorrectly.contains(k)) {
                 k = rand.nextInt(6);
             }
-            randomNumberList.add(k);
+            randomNumberListForAddressesWithAllFieldsFilledIncorrectly.add(k);
         }
-        System.out.println(randomNumberList);
+    }
+
+    public static void createRandomNumberListForAddressesWithMultipleDataInOneField() {
+        Random rand = new Random();
+        int n = rand.nextInt(6);
+        m = rand.nextInt(6);
+        for (int i = 0; i < n; i++) {
+            int k = rand.nextInt(6);
+            while (randomNumberListForAddressesWithMultipleDataInOneField.contains(k) && k != m) {
+                k = rand.nextInt(6);
+            }
+            randomNumberListForAddressesWithMultipleDataInOneField.add(k);
+        }
     }
 
     public static TestObject getAddressWithTwoDataInGivenField(TestObject testObject, String fieldName) {
@@ -98,13 +112,13 @@ public class TestsGenerator {
         return copy;
     }
 
-    public static TestObject getRandomizedAddress(TestObject testObject) {
+    public static TestObject getAddressesWithAllFieldsFilledIncorrectly(TestObject testObject) {
         String street = null;
         String zipCode = null;
         String state = null;
         String city = null;
         String country = null;
-        for (int i = 0; i < randomNumberList.size(); i++) {
+        for (int i = 0; i < randomNumberListForAddressesWithAllFieldsFilledIncorrectly.size(); i++) {
             switch (i) {
                 case 0 -> {
                     street = testObject.getStreet();
@@ -121,6 +135,69 @@ public class TestsGenerator {
                 case 4 -> {
                     country = testObject.getCountry();
                 }
+            }
+        }
+        return new TestObject(street, zipCode, state, city, country);
+    }
+
+    public static TestObject getAddressesWithMultipleDataInOneField(TestObject testObject) {
+        StringBuilder input = new StringBuilder();
+        switch (m) {
+            case 0 -> {
+                input.append(testObject.getStreet());
+            }
+            case 1 -> {
+                input.append(testObject.getZipCode());
+            }
+            case 2 -> {
+                input.append(testObject.getState());
+            }
+            case 3 -> {
+                input.append(testObject.getCity());
+            }
+            case 4 -> {
+                input.append(testObject.getCountry());
+            }
+        }
+        for (int i = 0; i < randomNumberListForAddressesWithMultipleDataInOneField.size(); i++) {
+            switch (i) {
+                case 0 -> {
+                    input.append(testObject.getStreet());
+                }
+                case 1 -> {
+                    input.append(testObject.getZipCode());
+                }
+                case 2 -> {
+                    input.append(testObject.getState());
+                }
+                case 3 -> {
+                    input.append(testObject.getCity());
+                }
+                case 4 -> {
+                    input.append(testObject.getCountry());
+                }
+            }
+        }
+        String street = testObject.getStreet();
+        String zipCode = testObject.getZipCode();
+        String state = testObject.getState();
+        String city = testObject.getCity();
+        String country = testObject.getCountry();
+        switch (m) {
+            case 0 -> {
+                street = String.valueOf(input);
+            }
+            case 1 -> {
+                zipCode = String.valueOf(input);
+            }
+            case 2 -> {
+                state = String.valueOf(input);
+            }
+            case 3 -> {
+                city = String.valueOf(input);
+            }
+            case 4 -> {
+                country = String.valueOf(input);
             }
         }
         return new TestObject(street, zipCode, state, city, country);
