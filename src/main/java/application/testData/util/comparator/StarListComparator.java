@@ -4,6 +4,9 @@ import java.util.Comparator;
 
 import static application.constants.ConstantsUtil.STAR;
 
+/**
+ * helpful method to order ehe elements without star first
+ */
 public class StarListComparator implements Comparator<String> {
     @Override
     public int compare(String first, String second) {

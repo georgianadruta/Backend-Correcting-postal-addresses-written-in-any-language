@@ -4,6 +4,9 @@ import org.apache.commons.math3.util.Pair;
 
 import java.util.Comparator;
 
+/**
+ * helpful class to compare two pairs after values
+ */
 public class PairComparator implements Comparator<Pair<String, Integer>> {
 
     @Override

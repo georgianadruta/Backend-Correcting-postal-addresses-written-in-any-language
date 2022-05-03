@@ -22,16 +22,6 @@ public class SolutionUtil {
      */
     public static ListMultimap<String, AbstractLocation> multimap = ArrayListMultimap.create();
 
-    public static TestObject getCanonicalFormTestObject(TestObject testObject) {
-        String street = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
-        String city = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
-        String state = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
-        String zipCode = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
-        String country = Arrays.toString(getCanonicalForm(new String[]{testObject.getStreet()}));
-
-        return new TestObject(street, zipCode, state, city, country);
-    }
-
     /**
      * helpful method to increase the precision of the algorithm
      * transform input in lowercase, remove diacritics and accents, remove special characters, transform nº in No and remove multiple white spaces
@@ -50,10 +40,13 @@ public class SolutionUtil {
      * check if the input is a phone number/zip code/country calling code
      * with other words the input does not have letters
      */
-    public static boolean isPhoneNumberOrZipCodeOrCountryCallingCode(String input) {
+    public static boolean isZipCode(String input) {
         return !input.contains("[a-zA-Z]+");
     }
 
+    /**
+     * save multimap to serialized file
+     */
     public static void saveMultimap() {
         try {
             FileOutputStream fileOut = new FileOutputStream(SERIALIZED_MAP_PATH);
@@ -146,13 +139,6 @@ public class SolutionUtil {
         mapWithFieldsValue.put(ZIP_CODE, getValuesFieldsFromTestObject(testObject.getZipCode(), new HashMap<>()));
         mapWithFieldsValue.put(COUNTRY, getValuesFieldsFromTestObject(testObject.getCountry(), new HashMap<>()));
         System.out.println(mapWithFieldsValue);
-
-//        System.out.println(STREET + "" + mapWithFieldsValue.get(STREET));
-//        System.out.println(CITY + "" + mapWithFieldsValue.get(CITY));
-//        System.out.println(STATE + "" + mapWithFieldsValue.get(STATE));
-//        System.out.println(ZIP_CODE + "" + mapWithFieldsValue.get(ZIP_CODE));
-//        System.out.println(COUNTRY + "" + mapWithFieldsValue.get(COUNTRY));
-//        System.out.println();
 
         return mapWithFieldsValue;
     }
