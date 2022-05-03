@@ -7,6 +7,7 @@ import application.testData.model.TestObject;
 import application.testData.util.TestObjectPairComparator;
 import application.testData.util.comparator.PairComparator;
 import application.testData.util.comparator.StarListComparator;
+import application.testData.util.testsGenerator.TestsGenerator;
 import org.apache.commons.math3.util.Pair;
 
 import java.io.File;
@@ -16,12 +17,12 @@ import java.util.*;
 import static application.constants.ConstantsUtil.*;
 
 public class Solution {
-    private static int number = 0;
 
     /**
-     * get the number of corrected addresses which correspond with the generated addresses from randomaddresses.com
+     * get the number of corrected addresses which correspond with the generated addresses from https://generate.plus/
      */
     public static int getNumberOfCorrectAddressesAfterCorrection() {
+        int number = 0;
         try {
             File file = new File("./files/test/correctRandomAddresses/RO.txt");
             Scanner reader = new Scanner(file);
@@ -29,11 +30,14 @@ public class Solution {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
-                TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
-                if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
-                    number++;
-                } else {
-                    System.out.println(testObject + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
+                TestObject testObjectToCorrect = TestsGenerator.getAddressWithStateInStreetField(testObject);
+                if (testObject.getCity().equals("valcea")) {
+                    TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);
+                    if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
+                        number++;
+                    } else {
+                        System.out.println(testObjectToCorrect + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
+                    }
                 }
             }
         } catch (FileNotFoundException exception) {
@@ -58,13 +62,12 @@ public class Solution {
 
         for (String key : map.keySet()) {
             for (String subKey : map.get(key).keySet()) {
-                if (key.equals(subKey)) {
-                    score += 1;
-                    if (subKey.equals(fieldName)) {
+                if (subKey.equals(fieldName)) {
+                    if (!map.get(key).get(subKey).isEmpty()) {
+                        orderedList.addAll(map.get(key).get(subKey));
+                    }
+                    if (key.equals(fieldName)) {
                         score += 1;
-                        if (!map.get(key).get(subKey).isEmpty()) {
-                            orderedList.addAll(map.get(key).get(subKey));
-                        }
                     }
                 }
             }
@@ -135,6 +138,8 @@ public class Solution {
      */
     private static TestObject getTheBestCorrectedAddress(TestObject testObject) {
         Map<String, Map<String, Set<String>>> mapWithFieldsValue = SolutionUtil.getMapWithFieldsValue(testObject);
+        System.out.println(mapWithFieldsValue);
+
         List<Pair<String, Integer>> scoredCountryList = getPairsForGivenField(COUNTRY, mapWithFieldsValue);
         List<Pair<String, Integer>> scoredStateList = getPairsForGivenField(STATE, mapWithFieldsValue);
         List<Pair<String, Integer>> scoredCityList = getPairsForGivenField(CITY, mapWithFieldsValue);

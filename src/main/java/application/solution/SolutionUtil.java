@@ -5,6 +5,7 @@ import application.dataset.structure.City;
 import application.dataset.structure.Country;
 import application.dataset.structure.State;
 import application.testData.model.TestObject;
+import application.testData.util.comparator.LengthComparator;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
@@ -96,10 +97,9 @@ public class SolutionUtil {
         if (input != null) {
             String[] set = input.trim().split(ONE_WHITESPACE);
             set = new LinkedHashSet<>(Arrays.asList(set)).toArray(new String[0]);
-            Set<String> subsetList = new LinkedHashSet<>();
-            subsetList.add(input);
             int n = set.length;
 
+            List<String> list = new ArrayList<>();
             for (int j = 0; j < set.length; j++) {
                 for (int i = j; i < (1 << n); i++) {
                     StringBuilder subset = new StringBuilder();
@@ -113,11 +113,12 @@ public class SolutionUtil {
                         }
                     }
                     if (!subset.isEmpty()) {
-                        subsetList.add(String.valueOf(subset));
+                        list.add(String.valueOf(subset));
                     }
                 }
             }
-            return subsetList;
+            list.sort(new LengthComparator());
+            return new LinkedHashSet<>(list);
         } else {
             return new LinkedHashSet<>();
         }
@@ -138,7 +139,6 @@ public class SolutionUtil {
         mapWithFieldsValue.put(STATE, getValuesFieldsFromTestObject(testObject.getState(), new HashMap<>()));
         mapWithFieldsValue.put(ZIP_CODE, getValuesFieldsFromTestObject(testObject.getZipCode(), new HashMap<>()));
         mapWithFieldsValue.put(COUNTRY, getValuesFieldsFromTestObject(testObject.getCountry(), new HashMap<>()));
-        System.out.println(mapWithFieldsValue);
 
         return mapWithFieldsValue;
     }
