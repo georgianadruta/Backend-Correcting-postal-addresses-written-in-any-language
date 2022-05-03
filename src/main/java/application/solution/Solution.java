@@ -4,8 +4,9 @@ import application.dataset.structure.AbstractLocation;
 import application.dataset.structure.Country;
 import application.dataset.structure.State;
 import application.testData.model.TestObject;
-import application.testData.util.PairComparator;
 import application.testData.util.TestObjectPairComparator;
+import application.testData.util.comparator.PairComparator;
+import application.testData.util.comparator.StarListComparator;
 import org.apache.commons.math3.util.Pair;
 
 import java.io.File;
@@ -22,19 +23,17 @@ public class Solution {
      */
     public static int getNumberOfCorrectAddressesAfterCorrection() {
         try {
-            File file = new File("./files/test/correctRandomAddresses/RO.txt"); // doar pt RO
+            File file = new File("./files/test/correctRandomAddresses/RO.txt");
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
-                if (testObject.getCity().equals("stejaru")) {
-                    TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
-                    if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
-                        number++;
-                    } else {
-                        System.out.println(testObject + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
-                    }
+                TestObject correctedTestObject = getTheBestCorrectedAddress(testObject);
+                if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
+                    number++;
+                } else {
+                    System.out.println(testObject + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
                 }
             }
         } catch (FileNotFoundException exception) {
@@ -53,27 +52,38 @@ public class Solution {
      */
     private static List<Pair<String, Integer>> getPairsForGivenField(String fieldName, Map<String, Map<String, Set<String>>> map) {
         List<Pair<String, Integer>> list = new ArrayList<>();
-        int score;
+        int score = 0;
+
+        List<String> orderedList = new ArrayList<>();
+
         for (String key : map.keySet()) {
             for (String subKey : map.get(key).keySet()) {
-                if (subKey.equals(fieldName) && !map.get(key).get(subKey).isEmpty()) {
-                    int length = map.get(key).get(subKey).size();
-                    for (String value : map.get(key).get(subKey)) {
-                        if (key.equals(fieldName)) {
-                            score = 5;
-                        } else {
-                            score = 0;
+                if (key.equals(subKey)) {
+                    score += 1;
+                    if (subKey.equals(fieldName)) {
+                        score += 1;
+                        if (!map.get(key).get(subKey).isEmpty()) {
+                            orderedList.addAll(map.get(key).get(subKey));
                         }
-                        if (subKey.equals(CITY) && isACityDifferentOfState(value)) {
-                            score += 3;
-                        }
-                        if (value.endsWith(STAR)) {
-                            score -= 3;
-                        }
-                        list.add(new Pair(value, score + length));
-                        length--;
                     }
                 }
+            }
+            orderedList.sort(new StarListComparator());
+            int length = orderedList.size();
+            for (String value : orderedList) {
+                if (key.equals(fieldName)) {
+                    score = 5;
+                } else {
+                    score = 0;
+                }
+                if (fieldName.equals(CITY) && isACityDifferentOfState(value)) {
+                    score += 3;
+                }
+                if (value.endsWith(STAR)) {
+                    score -= 3;
+                }
+                list.add(new Pair(value, score + length));
+                length--;
             }
         }
         return getMinimalList(list);
@@ -101,7 +111,7 @@ public class Solution {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = i + 1; j < list.size(); j++) {
                 if (getStringWithoutStar(list.get(i).getKey()).equals(getStringWithoutStar(list.get(j).getKey()))) {
-                    list.set(i, new Pair<>(list.get(i).getKey(), list.get(i).getValue() + list.get(j).getValue()));
+                    list.set(i, new Pair<>(list.get(i).getKey(), list.get(i).getValue() > list.get(j).getValue() ? list.get(i).getValue() : list.get(j).getValue()));
                     list.remove(j);
                     j--;
                 }

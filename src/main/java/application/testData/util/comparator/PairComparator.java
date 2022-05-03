@@ -1,4 +1,4 @@
-package application.testData.util;
+package application.testData.util.comparator;
 
 import org.apache.commons.math3.util.Pair;
 
