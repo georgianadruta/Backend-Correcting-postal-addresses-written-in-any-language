@@ -16,6 +16,11 @@ public class SolutionTest {
 
     @Before
     public void setUp() {
+
+//        DataStorage.createDataStorage();
+//        DataStorage.saveDataStorage();
+//        SolutionUtil.saveMultimaps();
+
         DataStorage.loadDataStorage();
         SolutionUtil.loadMultimaps();
     }
@@ -60,6 +65,15 @@ public class SolutionTest {
     public void addressWithAlternateNameTest() {
         int n = getNumberOfCorrectAddressesAfterCorrection("getAddressWithAlternateName");
         list.add(n);
+    }
+
+    @Test
+    public void test() {
+        for (var l : SolutionUtil.childNameParentMultimap.get("nucsoara"))
+            System.out.println(l.getKey() + " " + l.getValue().getName());
+
+        for (var l : SolutionUtil.nameAlternateNamesMultimap.get("nucsoara"))
+            System.out.println(l);
     }
 
 //    @Test

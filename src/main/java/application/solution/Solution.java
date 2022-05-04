@@ -23,6 +23,8 @@ public class Solution {
      */
     public static int getNumberOfCorrectAddressesAfterCorrection(String methodName) {
         int number = 0;
+        TestsGenerator.createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly();
+        TestsGenerator.createRandomNumberListForAddressesWithMultipleDataInOneField();
         try {
             File file = new File("./files/test/correctRandomAddresses/RO.txt");
             Scanner reader = new Scanner(file);
@@ -30,6 +32,7 @@ public class Solution {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
+//                if (testObject.getCity().equals("nucsoara") && testObject.getState().equals("arges")) {
                 TestObject testObjectToCorrect = getTestObjectToCorrect(testObject, methodName);
                 TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);
                 if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
@@ -37,6 +40,7 @@ public class Solution {
                 } else {
                     System.out.println(testObject + EMPTY_STRING + testObjectToCorrect + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
                 }
+//                }
             }
         } catch (FileNotFoundException exception) {
             exception.printStackTrace();
@@ -45,8 +49,6 @@ public class Solution {
     }
 
     private static TestObject getTestObjectToCorrect(TestObject testObject, String methodName) {
-        TestsGenerator.createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly();
-        TestsGenerator.createRandomNumberListForAddressesWithMultipleDataInOneField();
         switch (methodName) {
             case "getAddressWithTwoDataInGivenField" -> {
                 return TestsGenerator.getAddressWithTwoDataInGivenField(testObject, STREET);

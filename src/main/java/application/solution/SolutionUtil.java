@@ -12,6 +12,7 @@ import com.google.common.collect.SetMultimap;
 import java.io.*;
 import java.text.Normalizer;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static application.constants.ConstantsUtil.*;
 
@@ -233,12 +234,12 @@ public class SolutionUtil {
                     Set<Map.Entry<String, AbstractLocation>> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getValue().getName()));
                     for (Map.Entry<String, AbstractLocation> abstractLocation1 : secondList) {
                         if (abstractLocation1.getValue() instanceof State && !foundStates.contains(abstractLocation1.getValue().getName())) {
-                            foundStates.add(abstractLocation1.getValue().getName() + STAR);
+                            foundStates.add(abstractLocation1.getKey() + STAR);
                         }
                     }
                 } else {
                     if (abstractLocation.getValue() instanceof State && !foundStates.contains(abstractLocation.getValue().getName())) {
-                        foundStates.add(abstractLocation.getValue().getName() + STAR);
+                        foundStates.add(abstractLocation.getKey() + STAR);
                     }
                 }
             }
@@ -260,12 +261,12 @@ public class SolutionUtil {
                     Set<Map.Entry<String, AbstractLocation>> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getValue().getName()));
                     for (Map.Entry<String, AbstractLocation> abstractLocation1 : secondList) {
                         if (abstractLocation1.getValue() instanceof Country && !foundCountries.contains(abstractLocation1.getValue().getName())) {
-                            foundCountries.add(abstractLocation1.getValue().getName() + STAR);
+                            foundCountries.add(abstractLocation1.getKey() + STAR);
                         }
                     }
                 } else {
                     if (abstractLocation.getValue() instanceof Country && !foundCountries.contains(abstractLocation.getValue().getName())) {
-                        foundCountries.add(abstractLocation.getValue().getName() + STAR);
+                        foundCountries.add(abstractLocation.getKey() + STAR);
                     }
                 }
             }
@@ -279,7 +280,11 @@ public class SolutionUtil {
     public static void addAlternateNameInMap(String name, String asciiName, String[] alternateNames) {
         Set<String> list = new HashSet<>(List.of(alternateNames));
         list.addAll(List.of(name, asciiName));
-        for (String element : list) {
+        List<String> filtered = list.stream()
+                .distinct()
+                .filter(Objects::nonNull)
+                .filter(Predicate.not(String::isBlank)).toList();
+        for (String element : filtered) {
             Set<String> set = new HashSet<>();
             if (nameAlternateNamesMultimap.containsKey(element)) {
                 Set<List<String>> strings = nameAlternateNamesMultimap.get(element);
@@ -288,7 +293,7 @@ public class SolutionUtil {
                     set.addAll(stringList);
                 }
             }
-            set.addAll(list);
+            set.addAll(filtered);
             nameAlternateNamesMultimap.put(element, new ArrayList<>(set));
         }
     }
