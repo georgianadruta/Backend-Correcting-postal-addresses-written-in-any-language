@@ -4,7 +4,8 @@ import application.dataset.structure.AbstractLocation;
 import application.dataset.structure.State;
 import application.solution.SolutionUtil;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class DatasetLoader {
     public static void main(String[] args) {
@@ -17,9 +18,9 @@ public class DatasetLoader {
 //            System.out.println(DataStorage.calculateNumberOfLocationsInWorld(abstractLocation));
 //        }
 
-        List<AbstractLocation> multimap = (List<AbstractLocation>) SolutionUtil.childNameParentMultimap.get("Prahova");
-        for (AbstractLocation abstractLocation : multimap)
-            System.out.println(abstractLocation instanceof State);
+        Set<Map.Entry<String, AbstractLocation>> multimap = SolutionUtil.childNameParentMultimap.get("Prahova");
+        for (Map.Entry<String, AbstractLocation> abstractLocation : multimap)
+            System.out.println(abstractLocation.getValue() instanceof State);
 
 //        for (AbstractLocation abstractLocation : DataStorage.world.getSubRegions()) {
 //            for (AbstractLocation location : abstractLocation.getSubRegions()) {

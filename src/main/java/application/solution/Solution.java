@@ -21,30 +21,59 @@ public class Solution {
     /**
      * get the number of corrected addresses which correspond with the generated addresses from https://generate.plus/
      */
-    public static int getNumberOfCorrectAddressesAfterCorrection() {
+    public static int getNumberOfCorrectAddressesAfterCorrection(String methodName) {
         int number = 0;
         try {
             File file = new File("./files/test/correctRandomAddresses/RO.txt");
             Scanner reader = new Scanner(file);
-            TestsGenerator.createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly();
-            TestsGenerator.createRandomNumberListForAddressesWithMultipleDataInOneField();
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
-                TestObject testObjectToCorrect = TestsGenerator.getAddressWithMultipleDataInOneField(testObject);
+                TestObject testObjectToCorrect = getTestObjectToCorrect(testObject, methodName);
                 TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);
                 if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
                     number++;
                 } else {
-                    System.out.println(testObjectToCorrect + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
+                    System.out.println(testObject + EMPTY_STRING + testObjectToCorrect + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
                 }
             }
-
         } catch (FileNotFoundException exception) {
             exception.printStackTrace();
         }
         return number;
+    }
+
+    private static TestObject getTestObjectToCorrect(TestObject testObject, String methodName) {
+        TestsGenerator.createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly();
+        TestsGenerator.createRandomNumberListForAddressesWithMultipleDataInOneField();
+        switch (methodName) {
+            case "getAddressWithTwoDataInGivenField" -> {
+                return TestsGenerator.getAddressWithTwoDataInGivenField(testObject, STREET);
+            }
+            case "getAddressWithAGivenFieldToAnother" -> {
+                return TestsGenerator.getAddressWithAGivenFieldToAnother(testObject, STREET, CITY);
+            }
+            case "getAddressWithoutAGivenField" -> {
+                return TestsGenerator.getAddressWithoutAGivenField(testObject, STREET);
+            }
+            case "getAddressWithAllDataInOneField" -> {
+                return TestsGenerator.getAddressWithAllDataInOneField(testObject, STREET);
+            }
+            case "getAddressWithAWrongCompletedField" -> {
+                return TestsGenerator.getAddressWithAWrongCompletedField(testObject, STREET);
+            }
+            case "getAddressWithMultipleDataInOneField" -> {
+                return TestsGenerator.getAddressWithMultipleDataInOneField(testObject);
+            }
+            case "getAddressWithAlternateName" -> {
+                return TestsGenerator.getAddressWithAlternateName(testObject);
+            }
+            case "getAddressWithTypo" -> {
+                return TestsGenerator.getAddressWithTypo(testObject);
+            }
+        }
+        return testObject;
     }
 
     /**
@@ -57,8 +86,6 @@ public class Solution {
      */
     private static List<Pair<String, Integer>> getPairsForGivenField(String fieldName, Map<String, Map<String, Set<String>>> map) {
         List<Pair<String, Integer>> list = new ArrayList<>();
-        int score = 0;
-
         List<String> orderedList = new ArrayList<>();
 
         for (String key : map.keySet()) {
@@ -67,25 +94,12 @@ public class Solution {
                     if (!map.get(key).get(subKey).isEmpty()) {
                         orderedList.addAll(map.get(key).get(subKey));
                     }
-                    if (key.equals(fieldName)) {
-                        score += 1;
-                    }
                 }
             }
             orderedList.sort(new StarListComparator());
             int length = orderedList.size();
             for (String value : orderedList) {
-                if (key.equals(fieldName)) {
-                    score = 5;
-                } else {
-                    score = 0;
-                }
-                if (fieldName.equals(CITY) && isACityDifferentOfState(value)) {
-                    score += 3;
-                }
-                if (value.endsWith(STAR)) {
-                    score -= 3;
-                }
+                int score = getCorrespondentScore(key, fieldName, value);
                 list.add(new Pair(value, score + length));
                 length--;
             }
@@ -94,12 +108,29 @@ public class Solution {
     }
 
     /**
+     * helpful method to calculate the score
+     */
+    private static int getCorrespondentScore(String key, String fieldName, String value) {
+        int score = 0;
+        if (key.equals(fieldName)) {
+            score = 5;
+        }
+        if (fieldName.equals(CITY) && isACityDifferentOfState(value)) {
+            score += 3;
+        }
+        if (value.endsWith(STAR)) {
+            score -= 3;
+        }
+        return score;
+    }
+
+    /**
      * helpful method to check if a city has a different name of state where it is found
      */
     private static boolean isACityDifferentOfState(String value) {
-        Set<AbstractLocation> multimap = new HashSet<>(SolutionUtil.childNameParentMultimap.get(value));
-        for (AbstractLocation abstractLocation : multimap) {
-            if (abstractLocation.getName().equals(value)) {
+        Set<Map.Entry<String, AbstractLocation>> multimap = new HashSet<>(SolutionUtil.childNameParentMultimap.get(value));
+        for (Map.Entry<String, AbstractLocation> abstractLocation : multimap) {
+            if (abstractLocation.getValue().getName().equals(value)) {
                 return false;
             }
         }
@@ -178,10 +209,10 @@ public class Solution {
      * helpful method to check if a generated address is valid, correct
      */
     private static boolean isValidAddress(TestObject testObject) {
-        for (AbstractLocation abstractLocation : SolutionUtil.childNameParentMultimap.get(testObject.getCity())) {
-            if (abstractLocation instanceof State && testObject.getState().equals(abstractLocation.getName())) {
-                for (AbstractLocation abstractLocation1 : SolutionUtil.childNameParentMultimap.get(testObject.getState())) {
-                    if (abstractLocation1 instanceof Country && testObject.getCountry().equals(abstractLocation1.getName())) {
+        for (Map.Entry<String, AbstractLocation> abstractLocation : SolutionUtil.childNameParentMultimap.get(testObject.getCity())) {
+            if (abstractLocation.getValue() instanceof State && testObject.getState().equals(abstractLocation.getValue().getName())) {
+                for (Map.Entry<String, AbstractLocation> abstractLocation1 : SolutionUtil.childNameParentMultimap.get(testObject.getState())) {
+                    if (abstractLocation1.getValue() instanceof Country && testObject.getCountry().equals(abstractLocation1.getValue().getName())) {
                         return true;
                     }
                 }

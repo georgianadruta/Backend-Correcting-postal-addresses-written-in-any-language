@@ -21,7 +21,7 @@ public class SolutionUtil {
      * we have a better complexity for searching starting with the lowest level
      * we'll get the corresponding node from tree with searched the name(complexity O(1))
      */
-    public static SetMultimap<String, AbstractLocation> childNameParentMultimap = HashMultimap.create();
+    public static SetMultimap<String, Map.Entry<String, AbstractLocation>> childNameParentMultimap = HashMultimap.create();
     public static SetMultimap<String, List<String>> nameAlternateNamesMultimap = HashMultimap.create();
 
     /**
@@ -62,7 +62,7 @@ public class SolutionUtil {
     /**
      * save childParentMultimap to serialized file
      */
-    private static void saveChildParentMultimap(SetMultimap<String, AbstractLocation> childNameParentMultimap) throws IOException {
+    private static void saveChildParentMultimap(SetMultimap<String, Map.Entry<String, AbstractLocation>> childNameParentMultimap) throws IOException {
         FileOutputStream fileOut = new FileOutputStream(SERIALIZED_CHILD_PARENT_MULTIMAP_PATH);
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         out.writeObject(childNameParentMultimap);
@@ -99,7 +99,7 @@ public class SolutionUtil {
     private static void loadChildParentMultimap() throws IOException, ClassNotFoundException {
         FileInputStream fileIn = new FileInputStream(SERIALIZED_CHILD_PARENT_MULTIMAP_PATH);
         ObjectInputStream in = new ObjectInputStream(fileIn);
-        childNameParentMultimap = (SetMultimap<String, AbstractLocation>) in.readObject();
+        childNameParentMultimap = (SetMultimap<String, Map.Entry<String, AbstractLocation>>) in.readObject();
         in.close();
         fileIn.close();
     }
@@ -194,16 +194,16 @@ public class SolutionUtil {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(value);
         Set<String> foundLocations = new LinkedHashSet<>();
         for (String subsetFromValue : allSubsetsFromValue) {
-            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
-            for (AbstractLocation abstractLocation : list) {
+            Set<Map.Entry<String, AbstractLocation>> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
+            for (Map.Entry<String, AbstractLocation> abstractLocation : list) {
                 if (className == null) {
-                    if (abstractLocation == null) {
-                        foundLocations.add(subsetFromValue);
+                    if (abstractLocation.getValue() == null) {
+                        foundLocations.add(abstractLocation.getKey());
                     }
                     set.put(fieldName, foundLocations);
                 } else {
-                    if (Class.forName(className).isInstance(abstractLocation)) {
-                        foundLocations.add(subsetFromValue);
+                    if (Class.forName(className).isInstance(abstractLocation.getValue())) {
+                        foundLocations.add(abstractLocation.getKey());
                     }
                 }
             }
@@ -227,18 +227,18 @@ public class SolutionUtil {
     private static Set<String> addStatesNameWhichHaveTheGivenCityName(Set<String> foundStates, String cityName) {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(cityName);
         for (String subsetFromValue : allSubsetsFromValue) {
-            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
-            for (AbstractLocation abstractLocation : list) {
-                if (abstractLocation instanceof City) {
-                    Set<AbstractLocation> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getName()));
-                    for (AbstractLocation abstractLocation1 : secondList) {
-                        if (abstractLocation1 instanceof State && !foundStates.contains(abstractLocation1.getName())) {
-                            foundStates.add(abstractLocation1.getName() + STAR);
+            Set<Map.Entry<String, AbstractLocation>> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
+            for (Map.Entry<String, AbstractLocation> abstractLocation : list) {
+                if (abstractLocation.getValue() instanceof City) {
+                    Set<Map.Entry<String, AbstractLocation>> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getValue().getName()));
+                    for (Map.Entry<String, AbstractLocation> abstractLocation1 : secondList) {
+                        if (abstractLocation1.getValue() instanceof State && !foundStates.contains(abstractLocation1.getValue().getName())) {
+                            foundStates.add(abstractLocation1.getValue().getName() + STAR);
                         }
                     }
                 } else {
-                    if (abstractLocation instanceof State && !foundStates.contains(abstractLocation.getName())) {
-                        foundStates.add(abstractLocation.getName() + STAR);
+                    if (abstractLocation.getValue() instanceof State && !foundStates.contains(abstractLocation.getValue().getName())) {
+                        foundStates.add(abstractLocation.getValue().getName() + STAR);
                     }
                 }
             }
@@ -254,18 +254,18 @@ public class SolutionUtil {
     private static Set<String> addCountriesNameWhichHaveTheGivenLocation(Set<String> foundCountries, String locationName) {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(locationName);
         for (String subsetFromValue : allSubsetsFromValue) {
-            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
-            for (AbstractLocation abstractLocation : list) {
-                if (abstractLocation instanceof State) {
-                    Set<AbstractLocation> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getName()));
-                    for (AbstractLocation abstractLocation1 : secondList) {
-                        if (abstractLocation1 instanceof Country && !foundCountries.contains(abstractLocation1.getName())) {
-                            foundCountries.add(abstractLocation1.getName() + STAR);
+            Set<Map.Entry<String, AbstractLocation>> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
+            for (Map.Entry<String, AbstractLocation> abstractLocation : list) {
+                if (abstractLocation.getValue() instanceof State) {
+                    Set<Map.Entry<String, AbstractLocation>> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getValue().getName()));
+                    for (Map.Entry<String, AbstractLocation> abstractLocation1 : secondList) {
+                        if (abstractLocation1.getValue() instanceof Country && !foundCountries.contains(abstractLocation1.getValue().getName())) {
+                            foundCountries.add(abstractLocation1.getValue().getName() + STAR);
                         }
                     }
                 } else {
-                    if (abstractLocation instanceof Country && !foundCountries.contains(abstractLocation.getName())) {
-                        foundCountries.add(abstractLocation.getName() + STAR);
+                    if (abstractLocation.getValue() instanceof Country && !foundCountries.contains(abstractLocation.getValue().getName())) {
+                        foundCountries.add(abstractLocation.getValue().getName() + STAR);
                     }
                 }
             }

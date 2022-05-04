@@ -1,10 +1,12 @@
 package application.testData.util.testsGenerator;
 
+import application.solution.SolutionUtil;
 import application.testData.model.TestObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import static application.constants.ConstantsUtil.*;
 
@@ -184,7 +186,21 @@ public class TestsGenerator {
     }
 
     public static TestObject getAddressWithAlternateName(TestObject testObject) {
-        //TODO
+        try {
+            TestObject copy = (TestObject) testObject.clone();
+            Set<List<String>> list = SolutionUtil.nameAlternateNamesMultimap.get(copy.getCity());
+            for (List<String> sublist : list) {
+                for (String str : sublist) {
+                    if (!copy.getCity().equals(str)) {
+                        copy.setCity(str);
+                        return copy;
+                    }
+                }
+            }
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+
         return testObject;
     }
 

@@ -16,19 +16,19 @@ public class NameVariationsUtil {
      * helpful method to add in multimap the pairs [possible name, the corresponding node from tree]
      */
     public static void addAllVariationsOfAnAddress(String name, String asciiName, String[] alternateNames, AbstractLocation abstractLocation) {
-        addAlternateNamesInMap(new String[]{name, asciiName}, abstractLocation);
-        addAlternateNamesInMap(alternateNames, abstractLocation);
+        addAlternateNamesInMap(new String[]{name, asciiName}, name, abstractLocation);
+        addAlternateNamesInMap(alternateNames, name, abstractLocation);
         String[] strings = getMoreAlternateNames(name, asciiName, alternateNames);
-        addAlternateNamesInMap(strings, abstractLocation);
+        addAlternateNamesInMap(strings, name, abstractLocation);
     }
 
     /**
      * add in multimap each alternate name as key with the corresponding node from tree
      * note: the countries do not have parents -> parent = null
      */
-    public static void addAlternateNamesInMap(String[] alternateNames, AbstractLocation parent) {
+    public static void addAlternateNamesInMap(String[] alternateNames, String childName, AbstractLocation parent) {
         for (String alternateName : alternateNames) {
-            SolutionUtil.childNameParentMultimap.put(alternateName, parent);
+            SolutionUtil.childNameParentMultimap.put(alternateName, new AbstractMap.SimpleEntry<>(childName, parent));
         }
     }
 
