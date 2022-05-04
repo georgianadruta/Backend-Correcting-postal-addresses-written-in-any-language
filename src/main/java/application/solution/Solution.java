@@ -97,7 +97,7 @@ public class Solution {
      * helpful method to check if a city has a different name of state where it is found
      */
     private static boolean isACityDifferentOfState(String value) {
-        Set<AbstractLocation> multimap = new HashSet<>(SolutionUtil.multimap.get(value));
+        Set<AbstractLocation> multimap = new HashSet<>(SolutionUtil.childNameParentMultimap.get(value));
         for (AbstractLocation abstractLocation : multimap) {
             if (abstractLocation.getName().equals(value)) {
                 return false;
@@ -178,9 +178,9 @@ public class Solution {
      * helpful method to check if a generated address is valid, correct
      */
     private static boolean isValidAddress(TestObject testObject) {
-        for (AbstractLocation abstractLocation : SolutionUtil.multimap.get(testObject.getCity())) {
+        for (AbstractLocation abstractLocation : SolutionUtil.childNameParentMultimap.get(testObject.getCity())) {
             if (abstractLocation instanceof State && testObject.getState().equals(abstractLocation.getName())) {
-                for (AbstractLocation abstractLocation1 : SolutionUtil.multimap.get(testObject.getState())) {
+                for (AbstractLocation abstractLocation1 : SolutionUtil.childNameParentMultimap.get(testObject.getState())) {
                     if (abstractLocation1 instanceof Country && testObject.getCountry().equals(abstractLocation1.getName())) {
                         return true;
                     }

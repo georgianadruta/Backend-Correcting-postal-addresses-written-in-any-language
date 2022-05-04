@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import static application.constants.ConstantsUtil.INPUT_DATA_FILE;
-import static application.constants.ConstantsUtil.SERIALIZED_DATASTORAGE_PATH;
+import static application.constants.ConstantsUtil.SERIALIZED_DATA_STORAGE_PATH;
 
 /**
  * singleton pattern to prevent creating multiple databases
@@ -61,6 +61,7 @@ public class DataStorage implements Serializable {
                         asciiName = SolutionUtil.getCanonicalForm(new String[]{asciiName})[0];
                         alternateNames = SolutionUtil.getCanonicalForm(alternateNames);
                         NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
+                        SolutionUtil.addAlternateNameInMap(name, asciiName, alternateNames);
                         Country country = new Country(geoNameId, name, asciiName, alternateNames, code, admin1);
                         country.addStates(filePath, country); // add all the states from the current country
                         abstractLocationSet.add(country); // add the country in the data storage set
@@ -96,12 +97,12 @@ public class DataStorage implements Serializable {
      */
     public static void saveDataStorage() {
         try {
-            FileOutputStream fileOut = new FileOutputStream(SERIALIZED_DATASTORAGE_PATH);
+            FileOutputStream fileOut = new FileOutputStream(SERIALIZED_DATA_STORAGE_PATH);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(DataStorage.abstractLocationSet);
             out.close();
             fileOut.close();
-            System.out.println("Serialized data is saved at:" + SERIALIZED_DATASTORAGE_PATH);
+            System.out.println("Serialized data is saved at:" + SERIALIZED_DATA_STORAGE_PATH);
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -112,7 +113,7 @@ public class DataStorage implements Serializable {
      */
     public static void loadDataStorage() {
         try {
-            FileInputStream fileIn = new FileInputStream(SERIALIZED_DATASTORAGE_PATH);
+            FileInputStream fileIn = new FileInputStream(SERIALIZED_DATA_STORAGE_PATH);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             abstractLocationSet = (Set<AbstractLocation>) in.readObject();
             in.close();

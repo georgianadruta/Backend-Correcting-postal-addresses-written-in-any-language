@@ -17,7 +17,7 @@ public class DatasetLoader {
 //            System.out.println(DataStorage.calculateNumberOfLocationsInWorld(abstractLocation));
 //        }
 
-        List<AbstractLocation> multimap = SolutionUtil.multimap.get("Prahova");
+        List<AbstractLocation> multimap = (List<AbstractLocation>) SolutionUtil.childNameParentMultimap.get("Prahova");
         for (AbstractLocation abstractLocation : multimap)
             System.out.println(abstractLocation instanceof State);
 

@@ -6,8 +6,8 @@ import application.dataset.structure.Country;
 import application.dataset.structure.State;
 import application.testData.model.TestObject;
 import application.testData.util.comparator.LengthComparator;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 
 import java.io.*;
 import java.text.Normalizer;
@@ -21,7 +21,8 @@ public class SolutionUtil {
      * we have a better complexity for searching starting with the lowest level
      * we'll get the corresponding node from tree with searched the name(complexity O(1))
      */
-    public static ListMultimap<String, AbstractLocation> multimap = ArrayListMultimap.create();
+    public static SetMultimap<String, AbstractLocation> childNameParentMultimap = HashMultimap.create();
+    public static SetMultimap<String, List<String>> nameAlternateNamesMultimap = HashMultimap.create();
 
     /**
      * helpful method to increase the precision of the algorithm
@@ -31,7 +32,7 @@ public class SolutionUtil {
         List<String> newList = new ArrayList<>();
         for (String input : inputList) {
             input = input.toLowerCase();
-            input = Normalizer.normalize(input, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+            input = Normalizer.normalize(input, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", EMPTY_STRING);
             newList.add(input.replaceAll("(\\D)\\.(\\d)", "$1 $2").replaceAll("[!@€£¢$¥%^*\"`~><()\\-.=_;,\\\\+?{}\\[\\]:|\\s]+", ONE_WHITESPACE).replaceAll("[–\\-]+", ONE_WHITESPACE).replaceAll("#+", ONE_WHITESPACE).replaceAll("/+", ONE_WHITESPACE).replaceAll("&+", " and ").replaceAll("º+", "o ").replaceAll("[`']+", EMPTY_STRING).replaceAll("[.]+", ONE_WHITESPACE).replaceAll("\\s+", ONE_WHITESPACE).trim());
         }
         return newList.toArray(new String[0]);
@@ -46,48 +47,72 @@ public class SolutionUtil {
     }
 
     /**
-     * save multimap to serialized file
+     * save multimaps to serialized files
      */
-    public static void saveMultimap() {
+    public static void saveMultimaps() {
         try {
-            FileOutputStream fileOut = new FileOutputStream(SERIALIZED_MAP_PATH);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(multimap);
-            out.close();
-            fileOut.close();
-            System.out.println("Serialized multimap is saved at: " + SERIALIZED_MAP_PATH);
+            saveChildParentMultimap(SolutionUtil.childNameParentMultimap);
+            saveNameAlternateNamesMultimap(SolutionUtil.nameAlternateNamesMultimap);
+            System.out.println("Serialized multimaps are saved at: " + SERIALIZED_CHILD_PARENT_MULTIMAP_PATH + ONE_WHITESPACE + SERIALIZED_NAME_ALTERNATE_NAMES_MULTIMAP_PATH);
         } catch (IOException i) {
             i.printStackTrace();
         }
     }
 
     /**
-     * load multimap from serialized file
+     * save childParentMultimap to serialized file
      */
-    public static void loadMultimap() {
+    private static void saveChildParentMultimap(SetMultimap<String, AbstractLocation> childNameParentMultimap) throws IOException {
+        FileOutputStream fileOut = new FileOutputStream(SERIALIZED_CHILD_PARENT_MULTIMAP_PATH);
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(childNameParentMultimap);
+        out.close();
+        fileOut.close();
+    }
+
+    /**
+     * save nameAlternateNamesMultimap to serialized file
+     */
+    private static void saveNameAlternateNamesMultimap(SetMultimap<String, List<String>> childNameParentMultimap) throws IOException {
+        FileOutputStream fileOut = new FileOutputStream(SERIALIZED_NAME_ALTERNATE_NAMES_MULTIMAP_PATH);
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(childNameParentMultimap);
+        out.close();
+        fileOut.close();
+    }
+
+    /**
+     * load multimaps from serialized files
+     */
+    public static void loadMultimaps() {
         try {
-            FileInputStream fileIn = new FileInputStream(SERIALIZED_MAP_PATH);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            multimap = (ListMultimap<String, AbstractLocation>) in.readObject();
-            in.close();
-            fileIn.close();
+            loadChildParentMultimap();
+            loadNameAlternateNamesMultimap();
         } catch (IOException | ClassNotFoundException exception) {
             exception.printStackTrace();
         }
     }
 
     /**
-     * helpful method to check if the words from substring exist in string
+     * load childParentMultimap from serialized file
      */
-    public static boolean contains(String string, String substring) {
-        List<String> strings = List.of(string.split(ONE_WHITESPACE));
-        List<String> substrings = List.of(substring.split(ONE_WHITESPACE));
-        for (String substr : substrings) {
-            if (!strings.contains(substr)) {
-                return false;
-            }
-        }
-        return true;
+    private static void loadChildParentMultimap() throws IOException, ClassNotFoundException {
+        FileInputStream fileIn = new FileInputStream(SERIALIZED_CHILD_PARENT_MULTIMAP_PATH);
+        ObjectInputStream in = new ObjectInputStream(fileIn);
+        childNameParentMultimap = (SetMultimap<String, AbstractLocation>) in.readObject();
+        in.close();
+        fileIn.close();
+    }
+
+    /**
+     * load nameAlternateNamesMultimap from serialized file
+     */
+    private static void loadNameAlternateNamesMultimap() throws IOException, ClassNotFoundException {
+        FileInputStream fileIn = new FileInputStream(SERIALIZED_NAME_ALTERNATE_NAMES_MULTIMAP_PATH);
+        ObjectInputStream in = new ObjectInputStream(fileIn);
+        nameAlternateNamesMultimap = (SetMultimap<String, List<String>>) in.readObject();
+        in.close();
+        fileIn.close();
     }
 
     /**
@@ -169,7 +194,7 @@ public class SolutionUtil {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(value);
         Set<String> foundLocations = new LinkedHashSet<>();
         for (String subsetFromValue : allSubsetsFromValue) {
-            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.multimap.get(subsetFromValue));
+            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
             for (AbstractLocation abstractLocation : list) {
                 if (className == null) {
                     if (abstractLocation == null) {
@@ -202,10 +227,10 @@ public class SolutionUtil {
     private static Set<String> addStatesNameWhichHaveTheGivenCityName(Set<String> foundStates, String cityName) {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(cityName);
         for (String subsetFromValue : allSubsetsFromValue) {
-            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.multimap.get(subsetFromValue));
+            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
             for (AbstractLocation abstractLocation : list) {
                 if (abstractLocation instanceof City) {
-                    Set<AbstractLocation> secondList = new HashSet<>(SolutionUtil.multimap.get(abstractLocation.getName()));
+                    Set<AbstractLocation> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getName()));
                     for (AbstractLocation abstractLocation1 : secondList) {
                         if (abstractLocation1 instanceof State && !foundStates.contains(abstractLocation1.getName())) {
                             foundStates.add(abstractLocation1.getName() + STAR);
@@ -229,10 +254,10 @@ public class SolutionUtil {
     private static Set<String> addCountriesNameWhichHaveTheGivenLocation(Set<String> foundCountries, String locationName) {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(locationName);
         for (String subsetFromValue : allSubsetsFromValue) {
-            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.multimap.get(subsetFromValue));
+            Set<AbstractLocation> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
             for (AbstractLocation abstractLocation : list) {
                 if (abstractLocation instanceof State) {
-                    Set<AbstractLocation> secondList = new HashSet<>(SolutionUtil.multimap.get(abstractLocation.getName()));
+                    Set<AbstractLocation> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getName()));
                     for (AbstractLocation abstractLocation1 : secondList) {
                         if (abstractLocation1 instanceof Country && !foundCountries.contains(abstractLocation1.getName())) {
                             foundCountries.add(abstractLocation1.getName() + STAR);
@@ -246,5 +271,25 @@ public class SolutionUtil {
             }
         }
         return foundCountries;
+    }
+
+    /**
+     * helpful method to add for a name in multimap a list of alternate names
+     */
+    public static void addAlternateNameInMap(String name, String asciiName, String[] alternateNames) {
+        Set<String> list = new HashSet<>(List.of(alternateNames));
+        list.addAll(List.of(name, asciiName));
+        for (String element : list) {
+            Set<String> set = new HashSet<>();
+            if (nameAlternateNamesMultimap.containsKey(element)) {
+                Set<List<String>> strings = nameAlternateNamesMultimap.get(element);
+                for (List<String> stringList : strings) {
+                    nameAlternateNamesMultimap.remove(element, stringList);
+                    set.addAll(stringList);
+                }
+            }
+            set.addAll(list);
+            nameAlternateNamesMultimap.put(element, new ArrayList<>(set));
+        }
     }
 }

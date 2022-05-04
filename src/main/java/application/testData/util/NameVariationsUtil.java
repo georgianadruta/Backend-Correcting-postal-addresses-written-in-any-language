@@ -5,6 +5,7 @@ import application.solution.SolutionUtil;
 
 import java.util.*;
 
+import static application.constants.ConstantsUtil.EMPTY_STRING;
 import static application.constants.ConstantsUtil.VOWELS;
 
 /**
@@ -17,7 +18,8 @@ public class NameVariationsUtil {
     public static void addAllVariationsOfAnAddress(String name, String asciiName, String[] alternateNames, AbstractLocation abstractLocation) {
         addAlternateNamesInMap(new String[]{name, asciiName}, abstractLocation);
         addAlternateNamesInMap(alternateNames, abstractLocation);
-        addAlternateNamesInMap(getMoreAlternateNames(name, asciiName, alternateNames), abstractLocation);
+        String[] strings = getMoreAlternateNames(name, asciiName, alternateNames);
+        addAlternateNamesInMap(strings, abstractLocation);
     }
 
     /**
@@ -26,7 +28,7 @@ public class NameVariationsUtil {
      */
     public static void addAlternateNamesInMap(String[] alternateNames, AbstractLocation parent) {
         for (String alternateName : alternateNames) {
-            SolutionUtil.multimap.put(alternateName, parent);
+            SolutionUtil.childNameParentMultimap.put(alternateName, parent);
         }
     }
 
@@ -47,10 +49,18 @@ public class NameVariationsUtil {
      */
     public static List<String> getNamesWithoutDuplicateCharacters(String name, String asciiName, String[] alternateNames) {
         List<String> list = new ArrayList<>();
-        list.add(removeDuplicateCharacters(name));
-        list.add(removeDuplicateCharacters(asciiName));
+        String str = removeDuplicateCharacters(name);
+        if (str != null) {
+            list.add(str);
+        }
+        str = removeDuplicateCharacters(asciiName);
+        if (str != null) {
+            list.add(str);
+        }
         for (String alternateName : alternateNames) {
-            list.add(removeDuplicateCharacters(alternateName));
+            str = removeDuplicateCharacters(alternateName);
+            if (str != null)
+                list.add(str);
         }
         return list;
     }
@@ -82,10 +92,10 @@ public class NameVariationsUtil {
         List<String> vowelSubset = getAllSubsetsFromAString(VOWELS);
         for (String vowels : vowelSubset) {
             String regex = "[" + vowels + "]";
-            allNamesVariationsWithoutVowels.add(name.replaceAll(regex, ""));
-            allNamesVariationsWithoutVowels.add(asciiName.replaceAll(regex, ""));
+            allNamesVariationsWithoutVowels.add(name.replaceAll(regex, EMPTY_STRING));
+            allNamesVariationsWithoutVowels.add(asciiName.replaceAll(regex, EMPTY_STRING));
             for (String alternateName : alternateNames) {
-                allNamesVariationsWithoutVowels.add(alternateName.replaceAll(regex, ""));
+                allNamesVariationsWithoutVowels.add(alternateName.replaceAll(regex, EMPTY_STRING));
             }
         }
         return new ArrayList<>(allNamesVariationsWithoutVowels);
@@ -142,8 +152,8 @@ public class NameVariationsUtil {
         for (String word : words) {
             if (word.length() <= 3) {
                 sw = true;
-                newWords.add(input.replace(word, ""));
-                input = input.replace(word, "");
+                newWords.add(input.replace(word, EMPTY_STRING));
+                input = input.replace(word, EMPTY_STRING);
             }
         }
         newWords.add(input);

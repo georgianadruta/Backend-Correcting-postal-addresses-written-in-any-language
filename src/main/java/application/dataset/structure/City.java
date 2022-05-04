@@ -1,5 +1,6 @@
 package application.dataset.structure;
 
+import application.solution.SolutionUtil;
 import application.testData.util.NameVariationsUtil;
 
 public class City extends AbstractLocation {
@@ -9,6 +10,7 @@ public class City extends AbstractLocation {
         super(geoNameId, name, asciiName, alternateNames, code, admin1);
         this.stateRoot = stateRoot;
         NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, stateRoot);
+        SolutionUtil.addAlternateNameInMap(name, asciiName, alternateNames);
     }
 
     @Override

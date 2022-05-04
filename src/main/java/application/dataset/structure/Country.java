@@ -66,6 +66,7 @@ public class Country extends AbstractLocation {
                     asciiName = SolutionUtil.getCanonicalForm(new String[]{asciiName})[0];
                     alternateNames = SolutionUtil.getCanonicalForm(alternateNames);
                     NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, countryRoot);
+                    SolutionUtil.addAlternateNameInMap(name, asciiName, alternateNames);
                     State state = new State(countryRoot, geoNameId, name, asciiName, alternateNames, code, admin1);
                     countryRoot.addSubRegion(state);
                     state.addCity(filePath, state);

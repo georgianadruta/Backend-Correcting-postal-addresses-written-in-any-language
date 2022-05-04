@@ -6,19 +6,21 @@ import java.util.Date;
 
 public class SolutionLoader {
     public static void main(String[] args) {
-//        DataStorage.createDataStorage();
-//        DataStorage.saveDataStorage();
-//        SolutionUtil.saveMultimap();
+        DataStorage.createDataStorage();
+        DataStorage.saveDataStorage();
+        SolutionUtil.saveMultimaps();
 
         Date startDate = new Date();// contorizare timp
 
         DataStorage.loadDataStorage();
-        SolutionUtil.loadMultimap();
+        SolutionUtil.loadMultimaps();
 
         System.out.println(Solution.getNumberOfCorrectAddressesAfterCorrection() + "/100");
 
         Date endDate = new Date();
         int numSeconds = (int) ((endDate.getTime() - startDate.getTime()) / 1000);
         System.out.println(numSeconds); //afisare timp creare db
+
+        System.out.println(SolutionUtil.nameAlternateNamesMultimap.get("bucuresti"));
     }
 }
