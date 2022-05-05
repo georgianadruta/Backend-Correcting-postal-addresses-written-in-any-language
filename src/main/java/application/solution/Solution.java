@@ -21,18 +21,18 @@ public class Solution {
     /**
      * get the number of corrected addresses which correspond with the generated addresses from https://generate.plus/
      */
-    public static int getNumberOfCorrectAddressesAfterCorrection(String methodName) {
+    public static int getNumberOfCorrectAddressesAfterCorrection(String path, String methodName) {
         int number = 0;
         TestsGenerator.createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly();
         TestsGenerator.createRandomNumberListForAddressesWithMultipleDataInOneField();
         try {
-            File file = new File("./files/test/correctRandomAddresses/RO.txt");
+            File file = new File(path);
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
-//                if (testObject.getCity().equals("nucsoara") && testObject.getState().equals("arges")) {
+//                if (testObject.getCity().equals("stefanestii de sus")) {
                 TestObject testObjectToCorrect = getTestObjectToCorrect(testObject, methodName);
                 TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);
                 if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {

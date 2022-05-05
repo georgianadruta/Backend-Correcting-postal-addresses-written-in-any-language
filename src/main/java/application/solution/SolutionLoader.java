@@ -15,7 +15,7 @@ public class SolutionLoader {
         DataStorage.loadDataStorage();
         SolutionUtil.loadMultimaps();
 
-        System.out.println(Solution.getNumberOfCorrectAddressesAfterCorrection("getAddressWithTwoDataInGivenField") + "/100");
+        System.out.println(Solution.getNumberOfCorrectAddressesAfterCorrection("./files/test/correctRandomAddresses/RO.txt", "getAddressWithTwoDataInGivenField") + "/100");
 
         Date endDate = new Date();
         int numSeconds = (int) ((endDate.getTime() - startDate.getTime()) / 1000);

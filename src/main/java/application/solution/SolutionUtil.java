@@ -199,7 +199,7 @@ public class SolutionUtil {
             for (Map.Entry<String, AbstractLocation> abstractLocation : list) {
                 if (className == null) {
                     if (abstractLocation.getValue() == null) {
-                        foundLocations.add(abstractLocation.getKey());
+                        foundLocations.add(subsetFromValue);
                     }
                     set.put(fieldName, foundLocations);
                 } else {
@@ -234,12 +234,12 @@ public class SolutionUtil {
                     Set<Map.Entry<String, AbstractLocation>> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getValue().getName()));
                     for (Map.Entry<String, AbstractLocation> abstractLocation1 : secondList) {
                         if (abstractLocation1.getValue() instanceof State && !foundStates.contains(abstractLocation1.getValue().getName())) {
-                            foundStates.add(abstractLocation1.getKey() + STAR);
+                            foundStates.add(abstractLocation1.getValue().getName() + STAR);
                         }
                     }
                 } else {
                     if (abstractLocation.getValue() instanceof State && !foundStates.contains(abstractLocation.getValue().getName())) {
-                        foundStates.add(abstractLocation.getKey() + STAR);
+                        foundStates.add(abstractLocation.getValue().getName() + STAR);
                     }
                 }
             }
@@ -261,12 +261,12 @@ public class SolutionUtil {
                     Set<Map.Entry<String, AbstractLocation>> secondList = new HashSet<>(SolutionUtil.childNameParentMultimap.get(abstractLocation.getValue().getName()));
                     for (Map.Entry<String, AbstractLocation> abstractLocation1 : secondList) {
                         if (abstractLocation1.getValue() instanceof Country && !foundCountries.contains(abstractLocation1.getValue().getName())) {
-                            foundCountries.add(abstractLocation1.getKey() + STAR);
+                            foundCountries.add(abstractLocation1.getValue().getName() + STAR);
                         }
                     }
                 } else {
                     if (abstractLocation.getValue() instanceof Country && !foundCountries.contains(abstractLocation.getValue().getName())) {
-                        foundCountries.add(abstractLocation.getKey() + STAR);
+                        foundCountries.add(abstractLocation.getValue().getName() + STAR);
                     }
                 }
             }

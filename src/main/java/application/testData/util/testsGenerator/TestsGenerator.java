@@ -208,8 +208,8 @@ public class TestsGenerator {
     public static TestObject getAddressWithoutPrepositions(TestObject testObject) {
         try { //pt city
             TestObject copy = (TestObject) testObject.clone();
-            List<String> newCityNames = NameVariationsUtil.removePreposition(testObject.getCity());
-            if (newCityNames != null) {
+            List<String> newCityNames = NameVariationsUtil.getNamesWithoutPrepositions(List.of(testObject.getCity()));
+            if (!newCityNames.isEmpty()) {
                 int rnd = new Random().nextInt(newCityNames.size());
                 copy.setCity(newCityNames.get(rnd));
             }
@@ -220,12 +220,30 @@ public class TestsGenerator {
     }
 
     public static TestObject getAddressWithoutDuplicateCharacters(TestObject testObject) {
-        //TODO
-        return testObject;
+        try { //pt city
+            TestObject copy = (TestObject) testObject.clone();
+            List<String> newCityNames = NameVariationsUtil.getNamesWithoutDuplicateCharacters(List.of(testObject.getCity()));
+            if (!newCityNames.isEmpty()) {
+                int rnd = new Random().nextInt(newCityNames.size());
+                copy.setCity(newCityNames.get(rnd));
+            }
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static TestObject getAddressWithoutVowels(TestObject testObject) {
-        //TODO
-        return testObject;
+        try { //pt city
+            TestObject copy = (TestObject) testObject.clone();
+            List<String> newCityNames = NameVariationsUtil.getAllNamesVariationsWithoutVowels(List.of(testObject.getCity()));
+            if (!newCityNames.isEmpty()) {
+                int rnd = new Random().nextInt(newCityNames.size());
+                copy.setCity(newCityNames.get(rnd));
+            }
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

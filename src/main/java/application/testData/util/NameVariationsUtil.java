@@ -52,8 +52,7 @@ public class NameVariationsUtil {
         List<String> list = new ArrayList<>();
         for (String name : givenList) {
             String str = removeDuplicateCharacters(name);
-            if (str != null)
-                list.add(getStringWithoutMultipleWhitespaces(str));
+            if (str != null) list.add(String.valueOf(getStringWithoutMultipleWhitespaces(List.of(str))));
         }
         return list;
     }
@@ -86,7 +85,7 @@ public class NameVariationsUtil {
         for (String vowels : vowelSubset) {
             String regex = "[" + vowels + "]";
             for (String alternateName : givenList) {
-                allNamesVariationsWithoutVowels.add(getStringWithoutMultipleWhitespaces(alternateName.replaceAll(regex, EMPTY_STRING)));
+                allNamesVariationsWithoutVowels.add(String.valueOf(getStringWithoutMultipleWhitespaces(List.of(alternateName.replaceAll(regex, EMPTY_STRING)))));
             }
         }
         return new ArrayList<>(allNamesVariationsWithoutVowels);
@@ -112,7 +111,7 @@ public class NameVariationsUtil {
     public static List<String> getNamesWithoutPrepositions(List<String> givenList) {
         List<String> newNameList = new ArrayList<>();
         for (String name : givenList) {
-            addNonNullElement(newNameList, removePreposition(name));
+            addNonNullElement(newNameList, getStringWithoutMultipleWhitespaces(Objects.requireNonNull(removePreposition(name))));
         }
         return newNameList;
     }
@@ -121,7 +120,7 @@ public class NameVariationsUtil {
      * helpful method to prevent the adding of null elements
      */
     public static void addNonNullElement(List<String> list, List<String> inputList) {
-        if (inputList != null) {
+        if (inputList != null && !inputList.isEmpty()) {
             for (String input : inputList) {
                 if (input != null) {
                     list.add(input);
@@ -137,19 +136,24 @@ public class NameVariationsUtil {
     public static List<String> removePreposition(String input) {
         List<String> newWords = new ArrayList<>();
         String[] words = input.split("\\s+");
-        boolean sw = false;
         for (String word : words) {
             if (word.length() <= 3) {
-                sw = true;
-                newWords.add(input.replace(word, EMPTY_STRING));
-                input = input.replace(word, EMPTY_STRING);
+                List<String> list = getStringWithoutMultipleWhitespaces(List.of(input.replace(word, EMPTY_STRING)));
+                if (!list.isEmpty()) {
+                    input = list.get(0);
+                    newWords.add(input);
+                }
             }
         }
         newWords.add(input);
-        return sw ? newWords : null;
+        return newWords;
     }
 
-    private static String getStringWithoutMultipleWhitespaces(String name) {
-        return name.trim().replaceAll(MULTIPLE_WHITESPACES, ONE_WHITESPACE);
+    private static List<String> getStringWithoutMultipleWhitespaces(List<String> nameList) {
+        List<String> newList = new ArrayList<>();
+        for (String name : nameList) {
+            newList.add(name.trim().replaceAll(MULTIPLE_WHITESPACES, ONE_WHITESPACE));
+        }
+        return newList;
     }
 }
