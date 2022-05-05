@@ -10,8 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
 
-import static application.constants.ConstantsUtil.SEPARATOR_DB_FILES;
-import static application.constants.ConstantsUtil.TAB;
+import static application.constants.ConstantsUtil.*;
 
 @Getter
 @Setter
@@ -42,7 +41,7 @@ public class State extends AbstractLocation {
                 String featureClass = splitData[6];
                 String code = splitData[8];
                 String admin1 = splitData[10];
-                if (code.equals(stateCode) && admin1.equals(stateAdmin1) && (featureClass.equals("P") || featureClass.equals("A"))) {
+                if (code.equals(stateCode) && admin1.equals(stateAdmin1) && (featureClass.equals(P_CODE) || featureClass.equals(A_CODE))) {
                     name = SolutionUtil.getCanonicalForm(List.of(name)).get(0);
                     asciiName = SolutionUtil.getCanonicalForm(List.of(asciiName)).get(0);
                     alternateNames = SolutionUtil.getCanonicalForm(alternateNames);
@@ -53,7 +52,7 @@ public class State extends AbstractLocation {
                 }
             }
         } catch (FileNotFoundException exception) {
-            System.out.println("ERROR! File at given path was not found!");
+            exception.printStackTrace();
         }
     }
 

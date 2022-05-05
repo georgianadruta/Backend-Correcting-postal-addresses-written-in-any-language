@@ -29,6 +29,11 @@ public final class ConstantsUtil {
 
     public static final String SEPARATOR_CONVENTION = ", ";
     public static final String SEPARATOR_DB_FILES = ",";
+    public static final String A_CODE = "A";
+    public static final String P_CODE = "P";
+    public static final String PCLI_CODE = "PCLI";
+    public static final String ADM1_CODE = "ADM1";
+    public static final String COUNTRY_DIRECTORY_PATH = "./files/dataset/countries/";
     public static final String VOWELS = "aeiou";
 
     public static final int FIELDS_NUMBER = 5;

@@ -191,7 +191,7 @@ public class Solution {
             return null;
         } else {
             List<Pair<TestObject, Integer>> scoredCorrectedAddresses = getScoredAllPossibleCorrectAddresses(scoredCountryList, scoredStateList, scoredCityList);
-            System.out.println("country" + scoredCountryList + "\nstate" + scoredStateList + "\ncity" + scoredCityList);
+            System.out.println(COUNTRY + scoredCountryList + NEW_LINE + STATE + scoredStateList + NEW_LINE + CITY + scoredCityList);
             return new TestObject(null, null, scoredCorrectedAddresses.get(0).getKey().getState(), scoredCorrectedAddresses.get(0).getKey().getCity(), scoredCorrectedAddresses.get(0).getKey().getCountry());
         }
     }

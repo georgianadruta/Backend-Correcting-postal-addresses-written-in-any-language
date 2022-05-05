@@ -50,7 +50,7 @@ public class DataStorage implements Serializable {
                     String featureCode = splitData[7];
                     String code = splitData[8];
                     String admin1 = splitData[10];
-                    if (featureClass.equals("A") && featureCode.equals("PCLI")) { // is country
+                    if (featureClass.equals(A_CODE) && featureCode.equals(PCLI_CODE)) { // is country
                         name = SolutionUtil.getCanonicalForm(List.of(name)).get(0);
                         asciiName = SolutionUtil.getCanonicalForm(List.of(asciiName)).get(0);
                         alternateNames = SolutionUtil.getCanonicalForm(alternateNames);
@@ -72,13 +72,13 @@ public class DataStorage implements Serializable {
      */
     public static void addAllCountriesInToDoFile() {
         try {
-            File countriesFolder = new File("./files/dataset/countries");
+            File countriesFolder = new File(COUNTRY_DIRECTORY_PATH);
             new FileWriter(INPUT_DATA_FILE, false).close();
             for (File fileEntry : Objects.requireNonNull(countriesFolder.listFiles())) {
                 FileWriter fw = new FileWriter(INPUT_DATA_FILE, true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw);
-                out.println("./files/dataset/countries/" + fileEntry.getName());
+                out.println(COUNTRY_DIRECTORY_PATH + fileEntry.getName());
                 out.close();
             }
         } catch (Exception e) {

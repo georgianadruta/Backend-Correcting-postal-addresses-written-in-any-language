@@ -47,7 +47,7 @@ public class Country extends AbstractLocation {
      * search the state with the given id from admin1CodesAscii file in the country file then it added to country
      * and add cities in the found state
      */
-    private void searchStateInCountryFile(String filePath, Country countryRoot, String givenAdmin1) { // cauta in RO.txt judetul cu admin1
+    private void searchStateInCountryFile(String filePath, Country countryRoot, String givenAdmin1) {
         try {
             File file = new File(filePath);
             Scanner reader = new Scanner(file);
@@ -62,7 +62,7 @@ public class Country extends AbstractLocation {
                 String featureCode = splitData[7];
                 String code = splitData[8];
                 String admin1 = splitData[10];
-                if (code.equals(countryRoot.getCode()) && admin1.equals(givenAdmin1) && featureClass.equals("A") && featureCode.equals("ADM1")) {
+                if (code.equals(countryRoot.getCode()) && admin1.equals(givenAdmin1) && featureClass.equals(A_CODE) && featureCode.equals(ADM1_CODE)) {
                     name = SolutionUtil.getCanonicalForm(List.of(name)).get(0);
                     asciiName = SolutionUtil.getCanonicalForm(List.of(asciiName)).get(0);
                     alternateNames = SolutionUtil.getCanonicalForm(alternateNames);
@@ -75,7 +75,7 @@ public class Country extends AbstractLocation {
                 }
             }
         } catch (FileNotFoundException exception) {
-            System.out.println("ERROR! File at given path was not found!");
+            exception.printStackTrace();
         }
     }
 
