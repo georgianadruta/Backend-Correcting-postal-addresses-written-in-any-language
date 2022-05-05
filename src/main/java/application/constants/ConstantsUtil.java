@@ -28,6 +28,7 @@ public final class ConstantsUtil {
     public static final String STAR = "*";
 
     public static final String SEPARATOR_CONVENTION = ", ";
+    public static final String SEPARATOR_DB_FILES = ",";
     public static final String VOWELS = "aeiou";
 
     public static final int FIELDS_NUMBER = 5;

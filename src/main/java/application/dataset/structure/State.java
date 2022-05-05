@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
 
+import static application.constants.ConstantsUtil.SEPARATOR_DB_FILES;
 import static application.constants.ConstantsUtil.TAB;
 
 @Getter
@@ -37,7 +38,7 @@ public class State extends AbstractLocation {
                 int geoNameId = Integer.parseInt(splitData[0]);
                 String name = splitData[1];
                 String asciiName = splitData[2];
-                List<String> alternateNames = List.of(splitData[3].split(","));
+                List<String> alternateNames = List.of(splitData[3].split(SEPARATOR_DB_FILES));
                 String featureClass = splitData[6];
                 String code = splitData[8];
                 String admin1 = splitData[10];

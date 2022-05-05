@@ -44,18 +44,6 @@ public abstract class AbstractLocation implements Serializable {
         }
     }
 
-    /**
-     * helpful method to check if it exists at least one element with given name in subregion list for current location
-     */
-    public boolean contains(String locationName) {
-        for (AbstractLocation abstractLocation : subRegions) {
-            if (abstractLocation.getName().equals(locationName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

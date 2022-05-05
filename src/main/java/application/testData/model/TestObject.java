@@ -150,8 +150,8 @@ public class TestObject implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "{ " + NEW_LINE + "Street: " + street + "," + NEW_LINE + "Zip code: " + zipCode + "," + NEW_LINE + "State: "
-                + state + "," + NEW_LINE + "City: " + city + "," + NEW_LINE + "Country: " + country + NEW_LINE + "}" + NEW_LINE;
+        return "{ " + NEW_LINE + "Street: " + street + SEPARATOR_DB_FILES + NEW_LINE + "Zip code: " + zipCode + SEPARATOR_DB_FILES + NEW_LINE + "State: "
+                + state + SEPARATOR_DB_FILES + NEW_LINE + "City: " + city + SEPARATOR_DB_FILES + NEW_LINE + "Country: " + country + NEW_LINE + "}" + NEW_LINE;
     }
 
     /**

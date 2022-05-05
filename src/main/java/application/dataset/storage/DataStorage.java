@@ -47,7 +47,7 @@ public class DataStorage implements Serializable {
                     int geoNameId = Integer.parseInt(splitData[0]);
                     String name = splitData[1];
                     String asciiName = splitData[2];
-                    List<String> alternateNames = List.of(splitData[3].split(","));
+                    List<String> alternateNames = List.of(splitData[3].split(SEPARATOR_DB_FILES));
                     String featureClass = splitData[6];
                     String featureCode = splitData[7];
                     String code = splitData[8];
