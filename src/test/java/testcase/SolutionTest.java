@@ -2,6 +2,7 @@ package testcase;
 
 import application.dataset.storage.DataStorage;
 import application.solution.SolutionUtil;
+import application.testData.util.testsGenerator.TestsGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,9 +10,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static application.constants.ConstantsUtil.RO_PATH;
+import static application.constants.ConstantsUtil.*;
 import static application.solution.Solution.getNumberOfCorrectAddressesAfterCorrection;
-import static org.junit.Assert.assertEquals;
 
 public class SolutionTest {
     List<Integer> list = new ArrayList<>();
@@ -25,48 +25,45 @@ public class SolutionTest {
 
         DataStorage.loadDataStorage();
         SolutionUtil.loadMultimaps();
+
+        TestsGenerator.createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly();
+        TestsGenerator.createRandomNumberListForAddressesWithMultipleDataInOneField();
     }
 
     @Test
     public void addressWithTwoDataInGivenField_RO() {
-        int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithTwoDataInGivenField");
+        int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithTwoDataInGivenField", STREET);
         list.add(n);
-        assertEquals(98, n);
     }
 
     @Test
     public void addressWithAGivenFieldToAnother_RO() {
-        int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithAGivenFieldToAnother");
+        int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithAGivenFieldToAnother", STREET, CITY);
         list.add(n);
-        assertEquals(97, n);
     }
 
     @Test
     public void addressWithAllDataInOneField_RO() {
-        int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithoutAGivenField");
+        int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithoutAGivenField", STREET);
         list.add(n);
-        assertEquals(98, n);
     }
 
     @Test
     public void addressWithAWrongCompletedField_RO() {
-        int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithAWrongCompletedField");
+        int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithAWrongCompletedField", STREET);
         list.add(n);
-        assertEquals(98, n);
     }
 
     @Test
     public void addressWithAllFieldsFilledIncorrectly_RO() {
         int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithAllFieldsFilledIncorrectly");
         list.add(n);
-        assertEquals(91, n);
     }
 
     @Test
     public void addressWithAlternateName_RO() {
         int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithAlternateName");
         list.add(n);
-        assertEquals(92, n);
     }
 
     @Test

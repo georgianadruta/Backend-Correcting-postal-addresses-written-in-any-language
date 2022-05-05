@@ -71,9 +71,9 @@ public class TestsGenerator {
         }
     }
 
-    public static TestObject getAddressWithTwoDataInGivenField(TestObject testObject, String fieldName) {
+    public static TestObject getAddressWithTwoDataInGivenField(TestObject testObject, String... fieldNames) {
         TestObject copy = (TestObject) testObject.clone();
-        switch (fieldName) {
+        switch (fieldNames[0]) {
             case STATE -> copy.setState(testObject.getState() + ONE_WHITESPACE + " iasi");
             case CITY -> copy.setCity(testObject.getCity() + ONE_WHITESPACE + " tecuci");
             case COUNTRY -> copy.setCountry(testObject.getCountry() + ONE_WHITESPACE + " germany");
@@ -81,28 +81,28 @@ public class TestsGenerator {
         return copy;
     }
 
-    public static TestObject getAddressWithAGivenFieldToAnother(TestObject testObject, String fromField, String toField) {
+    public static TestObject getAddressWithAGivenFieldToAnother(TestObject testObject, String... fieldNames) {
         TestObject copy = (TestObject) testObject.clone();
-        copy.moveAFieldToAnother(fromField, toField);
+        copy.moveAFieldToAnother(fieldNames[0], fieldNames[1]);
         return copy;
     }
 
-    public static TestObject getAddressWithoutAGivenField(TestObject testObject, String fieldName) {
+    public static TestObject getAddressWithoutAGivenField(TestObject testObject, String... fieldNames) {
         TestObject copy = (TestObject) testObject.clone();
-        copy.setTestObjectField(fieldName, EMPTY_STRING);
+        copy.setTestObjectField(fieldNames[0], EMPTY_STRING);
         return copy;
     }
 
-    public static TestObject getAddressWithAllDataInOneField(TestObject testObject, String fieldName) {
+    public static TestObject getAddressWithAllDataInOneField(TestObject testObject, String... fieldNames) {
         TestObject copy = new TestObject();
         String input = testObject.getStreet() + ONE_WHITESPACE + testObject.getZipCode() + ONE_WHITESPACE + testObject.getState() + ONE_WHITESPACE + testObject.getCity() + ONE_WHITESPACE + testObject.getCountry() + ONE_WHITESPACE;
-        copy.setTestObjectField(fieldName, input);
+        copy.setTestObjectField(fieldNames[0], input);
         return copy;
     }
 
-    public static TestObject getAddressWithAWrongCompletedField(TestObject testObject, String fieldName) {
+    public static TestObject getAddressWithAWrongCompletedField(TestObject testObject, String... fieldNames) {
         TestObject copy = (TestObject) testObject.clone();
-        switch (fieldName) {
+        switch (fieldNames[0]) {
             case STATE -> copy.setState("iasi");
             case CITY -> copy.setCity("tecuci");
             case COUNTRY -> copy.setCountry("germany");
@@ -110,7 +110,7 @@ public class TestsGenerator {
         return copy;
     }
 
-    public static TestObject getAddressWithAllFieldsFilledIncorrectly(TestObject testObject) {
+    public static TestObject getAddressWithAllFieldsFilledIncorrectly(TestObject testObject, String... fieldNames) {
         String street = null;
         String zipCode = null;
         String state = null;
@@ -128,7 +128,7 @@ public class TestsGenerator {
         return new TestObject(street, zipCode, state, city, country);
     }
 
-    public static TestObject getAddressWithMultipleDataInOneField(TestObject testObject) {
+    public static TestObject getAddressWithMultipleDataInOneField(TestObject testObject, String... fieldNames) {
         StringBuilder input = new StringBuilder();
         TestObject testObject1 = (TestObject) testObject.clone();
         input.append(testObject.getValueForNoField(m));
@@ -140,7 +140,7 @@ public class TestsGenerator {
         return testObject1;
     }
 
-    public static TestObject getAddressWithAlternateName(TestObject testObject) {
+    public static TestObject getAddressWithAlternateName(TestObject testObject, String... fieldNames) {
         TestObject copy = (TestObject) testObject.clone();
         Set<List<String>> list = SolutionUtil.nameAlternateNamesMultimap.get(copy.getCity());
         for (List<String> sublist : list) {
@@ -155,7 +155,7 @@ public class TestsGenerator {
         return testObject;
     }
 
-    public static TestObject getAddressWithoutPrepositions(TestObject testObject) {
+    public static TestObject getAddressWithoutPrepositions(TestObject testObject, String... fieldNames) {
         //pt city
         TestObject copy = (TestObject) testObject.clone();
         List<String> newCityNames = NameVariationsUtil.getNamesWithoutPrepositions(List.of(testObject.getCity()));
@@ -166,7 +166,7 @@ public class TestsGenerator {
         return copy;
     }
 
-    public static TestObject getAddressWithoutDuplicateCharacters(TestObject testObject) {
+    public static TestObject getAddressWithoutDuplicateCharacters(TestObject testObject, String... fieldNames) {
         //pt city
         TestObject copy = (TestObject) testObject.clone();
         List<String> newCityNames = NameVariationsUtil.getNamesWithoutDuplicateCharacters(List.of(testObject.getCity()));
@@ -177,7 +177,7 @@ public class TestsGenerator {
         return copy;
     }
 
-    public static TestObject getAddressWithoutVowels(TestObject testObject) {
+    public static TestObject getAddressWithoutVowels(TestObject testObject, String... fieldNames) {
         //pt city
         TestObject copy = (TestObject) testObject.clone();
         List<String> newCityNames = NameVariationsUtil.getAllNamesVariationsWithoutVowels(List.of(testObject.getCity()));

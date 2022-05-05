@@ -12,6 +12,7 @@ import org.apache.commons.math3.util.Pair;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 import static application.constants.ConstantsUtil.*;
@@ -21,10 +22,8 @@ public class Solution {
     /**
      * get the number of corrected addresses which correspond with the generated addresses from <a href="https://generate.plus/">https://generate.plus/</a>
      */
-    public static int getNumberOfCorrectAddressesAfterCorrection(String path, String methodName) {
+    public static int getNumberOfCorrectAddressesAfterCorrection(String path, String methodName, String... fieldNames) {
         int number = 0;
-        TestsGenerator.createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly();
-        TestsGenerator.createRandomNumberListForAddressesWithMultipleDataInOneField();
         try {
             File file = new File(path);
             Scanner reader = new Scanner(file);
@@ -32,15 +31,13 @@ public class Solution {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
-//                if (testObject.getCity().equals("stefanestii de sus")) {
-                TestObject testObjectToCorrect = getTestObjectToCorrect(testObject, methodName);
+                TestObject testObjectToCorrect = getTestObjectToCorrect(testObject, methodName, fieldNames);
                 TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);
                 if (correctedTestObject != null && testObject.getCity().equals(correctedTestObject.getCity()) && testObject.getState().equals(correctedTestObject.getState()) && testObject.getCountry().equals(correctedTestObject.getCountry())) {
                     number++;
                 } else {
                     System.out.println(testObject + EMPTY_STRING + testObjectToCorrect + EMPTY_STRING + correctedTestObject); // display the corrected addresses which are different from the initial addresses
                 }
-//                }
             }
         } catch (FileNotFoundException exception) {
             exception.printStackTrace();
@@ -48,42 +45,14 @@ public class Solution {
         return number;
     }
 
-    private static TestObject getTestObjectToCorrect(TestObject testObject, String methodName) {
-        switch (methodName) {
-            case "getAddressWithTwoDataInGivenField" -> {
-                return TestsGenerator.getAddressWithTwoDataInGivenField(testObject, STREET);
-            }
-            case "getAddressWithAGivenFieldToAnother" -> {
-                return TestsGenerator.getAddressWithAGivenFieldToAnother(testObject, STREET, CITY);
-            }
-            case "getAddressWithoutAGivenField" -> {
-                return TestsGenerator.getAddressWithoutAGivenField(testObject, STREET);
-            }
-            case "getAddressWithAllDataInOneField" -> {
-                return TestsGenerator.getAddressWithAllDataInOneField(testObject, STREET);
-            }
-            case "getAddressWithAWrongCompletedField" -> {
-                return TestsGenerator.getAddressWithAWrongCompletedField(testObject, STREET);
-            }
-            case "getAddressWithMultipleDataInOneField" -> {
-                return TestsGenerator.getAddressWithMultipleDataInOneField(testObject);
-            }
-            case "getAddressWithAllFieldsFilledIncorrectly" -> {
-                return TestsGenerator.getAddressWithAllFieldsFilledIncorrectly(testObject);
-            }
-            case "getAddressWithAlternateName" -> {
-                return TestsGenerator.getAddressWithAlternateName(testObject);
-            }
-            case "getAddressWithoutPrepositions" -> {
-                return TestsGenerator.getAddressWithoutPrepositions(testObject);
-            }
-            case "getAddressWithoutDuplicateCharacters" -> {
-                return TestsGenerator.getAddressWithoutDuplicateCharacters(testObject);
-            }
-            case "getAddressWithoutVowels" -> {
-                return TestsGenerator.getAddressWithoutVowels(testObject);
-            }
+    private static TestObject getTestObjectToCorrect(TestObject testObject, String methodName, String... fieldNames) {
+        try {
+            Method method = Class.forName("application.testData.util.testsGenerator.TestsGenerator").getDeclaredMethod(methodName, TestObject.class, String[].class);
+            return (TestObject) method.invoke(new TestsGenerator(), testObject, fieldNames);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
+
         return testObject;
     }
 

@@ -274,16 +274,16 @@ public class SolutionUtil {
 
     /**
      * helpful method to add for a name in multimap a list of alternate names
-     * TODO improve complexity
      */
     public static void addAlternateNameInMap(String name, String asciiName, List<String> alternateNames) {
-        Set<String> list = new HashSet<>(alternateNames);
+        List<String> list = new ArrayList<>(alternateNames);
         list.addAll(List.of(name, asciiName));
-        List<String> filtered = list.stream()
+        List<String> filteredList = list.stream()
                 .distinct()
                 .filter(Objects::nonNull)
-                .filter(Predicate.not(String::isBlank)).toList();
-        for (String element : filtered) {
+                .filter(Predicate.not(String::isBlank))
+                .toList();
+        for (String element : filteredList) {
             Set<String> set = new HashSet<>();
             if (nameAlternateNamesMultimap.containsKey(element)) {
                 Set<List<String>> strings = nameAlternateNamesMultimap.get(element);
@@ -292,7 +292,7 @@ public class SolutionUtil {
                     set.addAll(stringList);
                 }
             }
-            set.addAll(filtered);
+            set.addAll(filteredList);
             nameAlternateNamesMultimap.put(element, new ArrayList<>(set));
         }
     }
