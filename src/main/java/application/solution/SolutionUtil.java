@@ -274,6 +274,7 @@ public class SolutionUtil {
 
     /**
      * helpful method to add for a name in multimap a list of alternate names
+     * TODO improve complexity
      */
     public static void addAlternateNameInMap(String name, String asciiName, List<String> alternateNames) {
         Set<String> list = new HashSet<>(alternateNames);
