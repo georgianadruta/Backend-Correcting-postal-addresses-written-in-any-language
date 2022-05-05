@@ -68,18 +68,10 @@ public class SolutionTest {
     }
 
     @Test
-    public void test() {
-        for (var l : SolutionUtil.childNameParentMultimap.get("nucsoara"))
-            System.out.println(l.getKey() + " " + l.getValue().getName());
-
-        for (var l : SolutionUtil.nameAlternateNamesMultimap.get("nucsoara"))
-            System.out.println(l);
+    public void addressWithoutPrepositions() {
+        int n = getNumberOfCorrectAddressesAfterCorrection("getAddressWithoutPrepositions");
+        list.add(n);
     }
-
-//    @Test
-//    public void addressWithTypoTest() {
-//        System.out.println(getNumberOfCorrectAddressesAfterCorrection("getAddressWithTypo"));
-//    }
 
     @After
     public void displayNumberOfCorrectedAddressesForEachCase() {

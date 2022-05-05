@@ -7,14 +7,17 @@ import lombok.Setter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
+
+import static application.constants.ConstantsUtil.TAB;
 
 @Getter
 @Setter
 public class State extends AbstractLocation {
     final Country countryRoot;
 
-    public State(Country countryRoot, int geoNameId, String name, String asciiName, String[] alternateNames, String code, String admin1) {
+    public State(Country countryRoot, int geoNameId, String name, String asciiName, List<String> alternateNames, String code, String admin1) {
         super(geoNameId, name, asciiName, alternateNames, code, admin1);
         this.countryRoot = countryRoot;
     }
@@ -30,17 +33,17 @@ public class State extends AbstractLocation {
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();
-                String[] splitData = dataFromFile.split("\t");
+                String[] splitData = dataFromFile.split(TAB);
                 int geoNameId = Integer.parseInt(splitData[0]);
                 String name = splitData[1];
                 String asciiName = splitData[2];
-                String[] alternateNames = splitData[3].split(",");
+                List<String> alternateNames = List.of(splitData[3].split(","));
                 String featureClass = splitData[6];
                 String code = splitData[8];
                 String admin1 = splitData[10];
                 if (code.equals(stateCode) && admin1.equals(stateAdmin1) && (featureClass.equals("P") || featureClass.equals("A"))) {
-                    name = SolutionUtil.getCanonicalForm(new String[]{name})[0];
-                    asciiName = SolutionUtil.getCanonicalForm(new String[]{asciiName})[0];
+                    name = SolutionUtil.getCanonicalForm(List.of(name)).get(0);
+                    asciiName = SolutionUtil.getCanonicalForm(List.of(asciiName)).get(0);
                     alternateNames = SolutionUtil.getCanonicalForm(alternateNames);
                     NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, stateRoot);
                     SolutionUtil.addAlternateNameInMap(name, asciiName, alternateNames);

@@ -5,8 +5,7 @@ import application.solution.SolutionUtil;
 
 import java.util.*;
 
-import static application.constants.ConstantsUtil.EMPTY_STRING;
-import static application.constants.ConstantsUtil.VOWELS;
+import static application.constants.ConstantsUtil.*;
 
 /**
  * helpful class to create more names for a better precision
@@ -15,18 +14,17 @@ public class NameVariationsUtil {
     /**
      * helpful method to add in multimap the pairs [possible name, the corresponding node from tree]
      */
-    public static void addAllVariationsOfAnAddress(String name, String asciiName, String[] alternateNames, AbstractLocation abstractLocation) {
-        addAlternateNamesInMap(new String[]{name, asciiName}, name, abstractLocation);
+    public static void addAllVariationsOfAnAddress(String name, String asciiName, List<String> alternateNames, AbstractLocation abstractLocation) {
+        addAlternateNamesInMap(List.of(name, asciiName), name, abstractLocation);
         addAlternateNamesInMap(alternateNames, name, abstractLocation);
-        String[] strings = getMoreAlternateNames(name, asciiName, alternateNames);
-        addAlternateNamesInMap(strings, name, abstractLocation);
+        addAlternateNamesInMap(getMoreAlternateNames(name, asciiName, alternateNames), name, abstractLocation);
     }
 
     /**
      * add in multimap each alternate name as key with the corresponding node from tree
      * note: the countries do not have parents -> parent = null
      */
-    public static void addAlternateNamesInMap(String[] alternateNames, String childName, AbstractLocation parent) {
+    public static void addAlternateNamesInMap(List<String> alternateNames, String childName, AbstractLocation parent) {
         for (String alternateName : alternateNames) {
             SolutionUtil.childNameParentMultimap.put(alternateName, new AbstractMap.SimpleEntry<>(childName, parent));
         }
@@ -36,15 +34,15 @@ public class NameVariationsUtil {
      * helpful method to create more variations of names
      * like names without prepositions, names without duplicate characters, names without vowels
      */
-    public static String[] getMoreAlternateNames(String name, String asciiName, String[] alternateNames) {
+    public static List<String> getMoreAlternateNames(String name, String asciiName, List<String> alternateNames) {
         Set<String> set = new HashSet<>();
-        List<String> list = new ArrayList<>(List.of(alternateNames));
+        List<String> list = new ArrayList<>(alternateNames);
         list.addAll(List.of(name, asciiName));
 
         set.addAll(getNamesWithoutPrepositions(list));
         set.addAll(getNamesWithoutDuplicateCharacters(list));
         set.addAll(getAllNamesVariationsWithoutVowels(list));
-        return set.toArray(new String[0]);
+        return new ArrayList<>(set);
     }
 
     /**
@@ -55,7 +53,7 @@ public class NameVariationsUtil {
         for (String name : givenList) {
             String str = removeDuplicateCharacters(name);
             if (str != null)
-                list.add(str);
+                list.add(getStringWithoutMultipleWhitespaces(str));
         }
         return list;
     }
@@ -88,7 +86,7 @@ public class NameVariationsUtil {
         for (String vowels : vowelSubset) {
             String regex = "[" + vowels + "]";
             for (String alternateName : givenList) {
-                allNamesVariationsWithoutVowels.add(alternateName.replaceAll(regex, EMPTY_STRING));
+                allNamesVariationsWithoutVowels.add(getStringWithoutMultipleWhitespaces(alternateName.replaceAll(regex, EMPTY_STRING)));
             }
         }
         return new ArrayList<>(allNamesVariationsWithoutVowels);
@@ -149,5 +147,9 @@ public class NameVariationsUtil {
         }
         newWords.add(input);
         return sw ? newWords : null;
+    }
+
+    private static String getStringWithoutMultipleWhitespaces(String name) {
+        return name.trim().replaceAll(MULTIPLE_WHITESPACES, ONE_WHITESPACE);
     }
 }

@@ -24,11 +24,11 @@ public abstract class AbstractLocation implements Serializable {
 
     public abstract AbstractLocation getRoot();
 
-    public AbstractLocation(int geoNameId, String name, String asciiName, String[] alternateNames, String code, String admin1) {
+    public AbstractLocation(int geoNameId, String name, String asciiName, List<String> alternateNames, String code, String admin1) {
         this.geoNameId = geoNameId;
         this.name = name;
         this.asciiName = asciiName;
-        this.alternateNames = List.of(alternateNames);
+        this.alternateNames = alternateNames;
         this.code = code;
         this.admin1 = admin1;
         this.subRegions = new HashSet<>();

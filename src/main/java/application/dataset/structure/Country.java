@@ -7,14 +7,16 @@ import lombok.Setter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 import static application.constants.ConstantsUtil.ADMIN_1_CODES_FILE_ASCII;
+import static application.constants.ConstantsUtil.TAB;
 
 @Getter
 @Setter
 public class Country extends AbstractLocation {
-    public Country(int geoNameId, String name, String asciiName, String[] alternateNames, String code, String admin1) {
+    public Country(int geoNameId, String name, String asciiName, List<String> alternateNames, String code, String admin1) {
         super(geoNameId, name, asciiName, alternateNames, code, admin1);
     }
 
@@ -29,7 +31,7 @@ public class Country extends AbstractLocation {
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();
-                String[] splitData = dataFromFile.split("\t");
+                String[] splitData = dataFromFile.split(TAB);
                 String[] codeAndAdmin1 = splitData[0].split("\\.");
                 String code = codeAndAdmin1[0];
                 String admin1 = codeAndAdmin1[1];
@@ -52,18 +54,18 @@ public class Country extends AbstractLocation {
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();
-                String[] splitData = dataFromFile.split("\t");
+                String[] splitData = dataFromFile.split(TAB);
                 int geoNameId = Integer.parseInt(splitData[0]);
                 String name = splitData[1];
                 String asciiName = splitData[2];
-                String[] alternateNames = splitData[3].split(",");
+                List<String> alternateNames = List.of(splitData[3].split(","));
                 String featureClass = splitData[6];
                 String featureCode = splitData[7];
                 String code = splitData[8];
                 String admin1 = splitData[10];
                 if (code.equals(countryRoot.getCode()) && admin1.equals(givenAdmin1) && featureClass.equals("A") && featureCode.equals("ADM1")) {
-                    name = SolutionUtil.getCanonicalForm(new String[]{name})[0];
-                    asciiName = SolutionUtil.getCanonicalForm(new String[]{asciiName})[0];
+                    name = SolutionUtil.getCanonicalForm(List.of(name)).get(0);
+                    asciiName = SolutionUtil.getCanonicalForm(List.of(asciiName)).get(0);
                     alternateNames = SolutionUtil.getCanonicalForm(alternateNames);
                     NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, countryRoot);
                     SolutionUtil.addAlternateNameInMap(name, asciiName, alternateNames);

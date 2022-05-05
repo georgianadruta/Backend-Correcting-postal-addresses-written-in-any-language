@@ -17,12 +17,18 @@ public final class ConstantsUtil {
 
     public static final String COUNTRY = "country";
     public static final String ONE_WHITESPACE = " ";
+
+    public static final String MULTIPLE_WHITESPACES = " +";
     public static final String EMPTY_STRING = "";
 
     public static final String NEW_LINE = "\n";
+
+    public static final String TAB = "\t";
 
     public static final String STAR = "*";
 
     public static final String SEPARATOR_CONVENTION = ", ";
     public static final String VOWELS = "aeiou";
+
+    public static final int FIELDS_NUMBER = 5;
 }

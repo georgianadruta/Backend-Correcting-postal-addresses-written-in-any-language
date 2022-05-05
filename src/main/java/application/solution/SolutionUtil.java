@@ -29,14 +29,14 @@ public class SolutionUtil {
      * helpful method to increase the precision of the algorithm
      * transform input in lowercase, remove diacritics and accents, remove special characters, transform nº in No and remove multiple white spaces
      */
-    public static String[] getCanonicalForm(String[] inputList) {
+    public static List<String> getCanonicalForm(List<String> inputList) {
         List<String> newList = new ArrayList<>();
         for (String input : inputList) {
             input = input.toLowerCase();
             input = Normalizer.normalize(input, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", EMPTY_STRING);
             newList.add(input.replaceAll("(\\D)\\.(\\d)", "$1 $2").replaceAll("[!@€£¢$¥%^*\"`~><()\\-.=_;,\\\\+?{}\\[\\]:|\\s]+", ONE_WHITESPACE).replaceAll("[–\\-]+", ONE_WHITESPACE).replaceAll("#+", ONE_WHITESPACE).replaceAll("/+", ONE_WHITESPACE).replaceAll("&+", " and ").replaceAll("º+", "o ").replaceAll("[`']+", EMPTY_STRING).replaceAll("[.]+", ONE_WHITESPACE).replaceAll("\\s+", ONE_WHITESPACE).trim());
         }
-        return newList.toArray(new String[0]);
+        return newList;
     }
 
     /**
@@ -277,8 +277,8 @@ public class SolutionUtil {
     /**
      * helpful method to add for a name in multimap a list of alternate names
      */
-    public static void addAlternateNameInMap(String name, String asciiName, String[] alternateNames) {
-        Set<String> list = new HashSet<>(List.of(alternateNames));
+    public static void addAlternateNameInMap(String name, String asciiName, List<String> alternateNames) {
+        Set<String> list = new HashSet<>(alternateNames);
         list.addAll(List.of(name, asciiName));
         List<String> filtered = list.stream()
                 .distinct()

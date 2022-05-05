@@ -6,13 +6,9 @@ import application.solution.SolutionUtil;
 import application.testData.util.NameVariationsUtil;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
-import static application.constants.ConstantsUtil.INPUT_DATA_FILE;
-import static application.constants.ConstantsUtil.SERIALIZED_DATA_STORAGE_PATH;
+import static application.constants.ConstantsUtil.*;
 
 /**
  * singleton pattern to prevent creating multiple databases
@@ -47,18 +43,18 @@ public class DataStorage implements Serializable {
                 Scanner currentReader = new Scanner(currentFile);
                 while (currentReader.hasNext()) { // read line by line from the current country file
                     String dataFromFile = currentReader.nextLine();
-                    String[] splitData = dataFromFile.split("\t");
+                    String[] splitData = dataFromFile.split(TAB);
                     int geoNameId = Integer.parseInt(splitData[0]);
                     String name = splitData[1];
                     String asciiName = splitData[2];
-                    String[] alternateNames = splitData[3].split(",");
+                    List<String> alternateNames = List.of(splitData[3].split(","));
                     String featureClass = splitData[6];
                     String featureCode = splitData[7];
                     String code = splitData[8];
                     String admin1 = splitData[10];
                     if (featureClass.equals("A") && featureCode.equals("PCLI")) { // is country
-                        name = SolutionUtil.getCanonicalForm(new String[]{name})[0];
-                        asciiName = SolutionUtil.getCanonicalForm(new String[]{asciiName})[0];
+                        name = SolutionUtil.getCanonicalForm(List.of(name)).get(0);
+                        asciiName = SolutionUtil.getCanonicalForm(List.of(asciiName)).get(0);
                         alternateNames = SolutionUtil.getCanonicalForm(alternateNames);
                         NameVariationsUtil.addAllVariationsOfAnAddress(name, asciiName, alternateNames, null);
                         SolutionUtil.addAlternateNameInMap(name, asciiName, alternateNames);

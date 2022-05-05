@@ -71,8 +71,14 @@ public class Solution {
             case "getAddressWithAlternateName" -> {
                 return TestsGenerator.getAddressWithAlternateName(testObject);
             }
-            case "getAddressWithTypo" -> {
-                return TestsGenerator.getAddressWithTypo(testObject);
+            case "getAddressWithoutPrepositions" -> {
+                return TestsGenerator.getAddressWithoutPrepositions(testObject);
+            }
+            case "getAddressWithoutDuplicateCharacters" -> {
+                return TestsGenerator.getAddressWithoutDuplicateCharacters(testObject);
+            }
+            case "getAddressWithoutVowels" -> {
+                return TestsGenerator.getAddressWithoutVowels(testObject);
             }
         }
         return testObject;

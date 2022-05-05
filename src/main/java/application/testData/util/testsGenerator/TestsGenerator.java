@@ -2,6 +2,7 @@ package application.testData.util.testsGenerator;
 
 import application.solution.SolutionUtil;
 import application.testData.model.TestObject;
+import application.testData.util.NameVariationsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,16 @@ import static application.constants.ConstantsUtil.*;
  * helpful class to generate multiple cases of wrong filled address
  */
 public class TestsGenerator {
-    static List<Integer> randomNumberListForAddressesWithAllFieldsFilledIncorrectly = new ArrayList<>(5);
+    static List<Integer> randomNumberListForAddressesWithAllFieldsFilledIncorrectly = new ArrayList<>(FIELDS_NUMBER);
     static List<Integer> randomNumberListForAddressesWithMultipleDataInOneField = new ArrayList<>();
     static int m;
 
     public static void createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly() {
         Random rand = new Random();
-        for (int i = 0; i < 5; i++) {
-            int k = rand.nextInt(5);
+        for (int i = 0; i < FIELDS_NUMBER; i++) {
+            int k = rand.nextInt(FIELDS_NUMBER);
             while (randomNumberListForAddressesWithAllFieldsFilledIncorrectly.contains(k)) {
-                k = rand.nextInt(5);
+                k = rand.nextInt(FIELDS_NUMBER);
             }
             randomNumberListForAddressesWithAllFieldsFilledIncorrectly.add(k);
         }
@@ -31,15 +32,15 @@ public class TestsGenerator {
 
     public static void createRandomNumberListForAddressesWithMultipleDataInOneField() {
         Random rand = new Random();
-        int n = rand.nextInt(5);
+        int n = rand.nextInt(FIELDS_NUMBER);
         while (n < 2) {
-            n = rand.nextInt(5);
+            n = rand.nextInt(FIELDS_NUMBER);
         }
-        m = rand.nextInt(5);
+        m = rand.nextInt(FIELDS_NUMBER);
         for (int i = 0; i < n; i++) {
-            int k = rand.nextInt(5);
+            int k = rand.nextInt(FIELDS_NUMBER);
             while (randomNumberListForAddressesWithMultipleDataInOneField.contains(k) || k == m) {
-                k = rand.nextInt(5);
+                k = rand.nextInt(FIELDS_NUMBER);
             }
             randomNumberListForAddressesWithMultipleDataInOneField.add(k);
         }
@@ -204,7 +205,26 @@ public class TestsGenerator {
         return testObject;
     }
 
-    public static TestObject getAddressWithTypo(TestObject testObject) {
+    public static TestObject getAddressWithoutPrepositions(TestObject testObject) {
+        try { //pt city
+            TestObject copy = (TestObject) testObject.clone();
+            List<String> newCityNames = NameVariationsUtil.removePreposition(testObject.getCity());
+            if (newCityNames != null) {
+                int rnd = new Random().nextInt(newCityNames.size());
+                copy.setCity(newCityNames.get(rnd));
+            }
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static TestObject getAddressWithoutDuplicateCharacters(TestObject testObject) {
+        //TODO
+        return testObject;
+    }
+
+    public static TestObject getAddressWithoutVowels(TestObject testObject) {
         //TODO
         return testObject;
     }

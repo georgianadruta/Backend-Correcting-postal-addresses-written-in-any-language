@@ -4,6 +4,7 @@ import application.solution.SolutionUtil;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 import static application.constants.ConstantsUtil.*;
 
@@ -19,11 +20,11 @@ public class TestObject implements Serializable, Cloneable {
     private String country;
 
     public TestObject(String street, String zipCode, String state, String city, String country) {
-        this.street = street != null ? SolutionUtil.getCanonicalForm(new String[]{street.trim()})[0] : null;
-        this.state = state != null ? SolutionUtil.getCanonicalForm(new String[]{state.trim()})[0] : null;
+        this.street = street != null ? SolutionUtil.getCanonicalForm(List.of(street.trim())).get(0) : null;
+        this.state = state != null ? SolutionUtil.getCanonicalForm(List.of(state.trim())).get(0) : null;
         this.zipCode = zipCode != null ? zipCode.trim() : null;
-        this.city = city != null ? SolutionUtil.getCanonicalForm(new String[]{city.trim()})[0] : null;
-        this.country = country != null ? SolutionUtil.getCanonicalForm(new String[]{country.trim()})[0] : null;
+        this.city = city != null ? SolutionUtil.getCanonicalForm(List.of(city.trim())).get(0) : null;
+        this.country = country != null ? SolutionUtil.getCanonicalForm(List.of(country.trim())).get(0) : null;
     }
 
     public TestObject() {
