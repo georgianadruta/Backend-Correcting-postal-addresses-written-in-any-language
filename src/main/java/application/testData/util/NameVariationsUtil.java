@@ -38,27 +38,22 @@ public class NameVariationsUtil {
      */
     public static String[] getMoreAlternateNames(String name, String asciiName, String[] alternateNames) {
         Set<String> set = new HashSet<>();
-        set.addAll(getNamesWithoutPrepositions(name, asciiName, alternateNames));
-        set.addAll(getNamesWithoutDuplicateCharacters(name, asciiName, alternateNames));
-        set.addAll(getAllNamesVariationsWithoutVowels(name, asciiName, alternateNames));
+        List<String> list = new ArrayList<>(List.of(alternateNames));
+        list.addAll(List.of(name, asciiName));
+
+        set.addAll(getNamesWithoutPrepositions(list));
+        set.addAll(getNamesWithoutDuplicateCharacters(list));
+        set.addAll(getAllNamesVariationsWithoutVowels(list));
         return set.toArray(new String[0]);
     }
 
     /**
      * helpful method to return the list of names after removing duplicate characters
      */
-    public static List<String> getNamesWithoutDuplicateCharacters(String name, String asciiName, String[] alternateNames) {
+    public static List<String> getNamesWithoutDuplicateCharacters(List<String> givenList) {
         List<String> list = new ArrayList<>();
-        String str = removeDuplicateCharacters(name);
-        if (str != null) {
-            list.add(str);
-        }
-        str = removeDuplicateCharacters(asciiName);
-        if (str != null) {
-            list.add(str);
-        }
-        for (String alternateName : alternateNames) {
-            str = removeDuplicateCharacters(alternateName);
+        for (String name : givenList) {
+            String str = removeDuplicateCharacters(name);
             if (str != null)
                 list.add(str);
         }
@@ -87,14 +82,12 @@ public class NameVariationsUtil {
     /**
      * helpful method to get the list of names without vowels
      */
-    public static List<String> getAllNamesVariationsWithoutVowels(String name, String asciiName, String[] alternateNames) {
+    public static List<String> getAllNamesVariationsWithoutVowels(List<String> givenList) {
         Set<String> allNamesVariationsWithoutVowels = new HashSet<>();
         List<String> vowelSubset = getAllSubsetsFromAString(VOWELS);
         for (String vowels : vowelSubset) {
             String regex = "[" + vowels + "]";
-            allNamesVariationsWithoutVowels.add(name.replaceAll(regex, EMPTY_STRING));
-            allNamesVariationsWithoutVowels.add(asciiName.replaceAll(regex, EMPTY_STRING));
-            for (String alternateName : alternateNames) {
+            for (String alternateName : givenList) {
                 allNamesVariationsWithoutVowels.add(alternateName.replaceAll(regex, EMPTY_STRING));
             }
         }
@@ -118,12 +111,10 @@ public class NameVariationsUtil {
     /**
      * helpful method to get the list of names after removing the prepositions
      */
-    public static List<String> getNamesWithoutPrepositions(String name, String asciiName, String[] alternateNames) {
+    public static List<String> getNamesWithoutPrepositions(List<String> givenList) {
         List<String> newNameList = new ArrayList<>();
-        addNonNullElement(newNameList, removePreposition(name));
-        addNonNullElement(newNameList, removePreposition(asciiName));
-        for (String alternateName : alternateNames) {
-            addNonNullElement(newNameList, removePreposition(alternateName));
+        for (String name : givenList) {
+            addNonNullElement(newNameList, removePreposition(name));
         }
         return newNameList;
     }
