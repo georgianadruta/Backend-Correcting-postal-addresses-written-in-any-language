@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static application.constants.ConstantsUtil.*;
@@ -74,8 +75,12 @@ public class SolutionTest {
 
     @Test
     public void addressWithoutPrepositions_RO() {
+        Date startDate = new Date();
         int n = getNumberOfCorrectAddressesAfterCorrection(RO_PATH, "getAddressWithoutPrepositions");
         list.add(n);
+        Date endDate = new Date();
+        int numSeconds = (int) ((endDate.getTime() - startDate.getTime()) / 1000);
+        System.out.println(numSeconds);
     }
 
     @Test

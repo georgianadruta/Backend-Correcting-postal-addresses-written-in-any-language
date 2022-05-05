@@ -110,7 +110,7 @@ public class Solution {
     private static boolean isACityDifferentOfState(String value) {
         Set<Map.Entry<String, AbstractLocation>> multimap = new HashSet<>(SolutionUtil.childNameParentMultimap.get(value));
         for (Map.Entry<String, AbstractLocation> abstractLocation : multimap) {
-            if (abstractLocation.getValue().getName().equals(value)) {
+            if (abstractLocation.getValue() != null && abstractLocation.getValue().getName().equals(value)) {
                 return false;
             }
         }
