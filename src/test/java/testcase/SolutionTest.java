@@ -28,49 +28,49 @@ public class SolutionTest {
     }
 
     @Test
-    public void addressWithTwoDataInGivenFieldTest_RO() {
+    public void addressWithTwoDataInGivenField_RO() {
         int n = getNumberOfCorrectAddressesAfterCorrection(ROpath, "getAddressWithTwoDataInGivenField");
         list.add(n);
         assertEquals(98, n);
     }
 
     @Test
-    public void addressWithAGivenFieldToAnotherTest_RO() {
+    public void addressWithAGivenFieldToAnother_RO() {
         int n = getNumberOfCorrectAddressesAfterCorrection(ROpath, "getAddressWithAGivenFieldToAnother");
         list.add(n);
         assertEquals(97, n);
     }
 
     @Test
-    public void addressWithAllDataInOneFieldTest_RO() {
+    public void addressWithAllDataInOneField_RO() {
         int n = getNumberOfCorrectAddressesAfterCorrection(ROpath, "getAddressWithoutAGivenField");
         list.add(n);
         assertEquals(98, n);
     }
 
     @Test
-    public void addressWithAWrongCompletedFieldTest_RO() {
+    public void addressWithAWrongCompletedField_RO() {
         int n = getNumberOfCorrectAddressesAfterCorrection(ROpath, "getAddressWithAWrongCompletedField");
         list.add(n);
         assertEquals(98, n);
     }
 
     @Test
-    public void addressWithAllFieldsFilledIncorrectlyTest_RO() {
-        int n = getNumberOfCorrectAddressesAfterCorrection(ROpath, "getAddressWithAllDataInOneField");
+    public void addressWithAllFieldsFilledIncorrectly_RO() {
+        int n = getNumberOfCorrectAddressesAfterCorrection(ROpath, "getAddressWithAllFieldsFilledIncorrectly");
         list.add(n);
         assertEquals(91, n);
     }
 
     @Test
-    public void addressWithAlternateNameTest_RO() {
+    public void addressWithAlternateName_RO() {
         int n = getNumberOfCorrectAddressesAfterCorrection(ROpath, "getAddressWithAlternateName");
         list.add(n);
         assertEquals(92, n);
     }
 
     @Test
-    public void addressWithMultipleDataInOneFieldTest_RO() {
+    public void addressWithMultipleDataInOneField_RO() {
         int n = getNumberOfCorrectAddressesAfterCorrection(ROpath, "getAddressWithMultipleDataInOneField");
         list.add(n);
     }

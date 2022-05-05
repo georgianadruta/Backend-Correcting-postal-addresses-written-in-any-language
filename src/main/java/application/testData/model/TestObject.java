@@ -37,21 +37,11 @@ public class TestObject implements Serializable, Cloneable {
 
     public void setTestObjectField(String fieldName, String input) {
         switch (fieldName) {
-            case STREET -> {
-                this.setStreet(input);
-            }
-            case ZIP_CODE -> {
-                this.setZipCode(input);
-            }
-            case STATE -> {
-                this.setState(input);
-            }
-            case CITY -> {
-                this.setCity(input);
-            }
-            case COUNTRY -> {
-                this.setCountry(input);
-            }
+            case STREET -> this.setStreet(input);
+            case ZIP_CODE -> this.setZipCode(input);
+            case STATE -> this.setState(input);
+            case CITY -> this.setCity(input);
+            case COUNTRY -> this.setCountry(input);
         }
     }
 
@@ -59,21 +49,11 @@ public class TestObject implements Serializable, Cloneable {
         try {
             String input = getAndRemoveField(fromField);
             switch (toField) {
-                case STREET -> {
-                    this.setStreet(this.getStreet() + ONE_WHITESPACE + input);
-                }
-                case ZIP_CODE -> {
-                    this.setZipCode(this.getZipCode() + ONE_WHITESPACE + input);
-                }
-                case STATE -> {
-                    this.setState(this.getState() + ONE_WHITESPACE + input);
-                }
-                case CITY -> {
-                    this.setCity(this.getCity() + ONE_WHITESPACE + input);
-                }
-                case COUNTRY -> {
-                    this.setCountry(this.getCountry() + ONE_WHITESPACE + input);
-                }
+                case STREET -> this.setStreet(this.getStreet() + ONE_WHITESPACE + input);
+                case ZIP_CODE -> this.setZipCode(this.getZipCode() + ONE_WHITESPACE + input);
+                case STATE -> this.setState(this.getState() + ONE_WHITESPACE + input);
+                case CITY -> this.setCity(this.getCity() + ONE_WHITESPACE + input);
+                case COUNTRY -> this.setCountry(this.getCountry() + ONE_WHITESPACE + input);
             }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -130,21 +110,11 @@ public class TestObject implements Serializable, Cloneable {
 
     public void setValueForNoField(String value, Integer integer) {
         switch (integer) {
-            case 0 -> {
-                this.street = value;
-            }
-            case 1 -> {
-                this.zipCode = value;
-            }
-            case 2 -> {
-                state = value;
-            }
-            case 3 -> {
-                city = value;
-            }
-            case 4 -> {
-                country = value;
-            }
+            case 0 -> street = value;
+            case 1 -> zipCode = value;
+            case 2 -> state = value;
+            case 3 -> city = value;
+            case 4 -> country = value;
         }
     }
 

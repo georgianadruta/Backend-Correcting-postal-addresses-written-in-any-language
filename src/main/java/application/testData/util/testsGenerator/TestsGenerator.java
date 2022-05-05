@@ -76,15 +76,9 @@ public class TestsGenerator {
         try {
             copy = (TestObject) testObject.clone();
             switch (fieldName) {
-                case STATE -> {
-                    copy.setState(testObject.getState() + ONE_WHITESPACE + " iasi");
-                }
-                case CITY -> {
-                    copy.setCity(testObject.getCity() + ONE_WHITESPACE + " tecuci");
-                }
-                case COUNTRY -> {
-                    copy.setCountry(testObject.getCountry() + ONE_WHITESPACE + " germany");
-                }
+                case STATE -> copy.setState(testObject.getState() + ONE_WHITESPACE + " iasi");
+                case CITY -> copy.setCity(testObject.getCity() + ONE_WHITESPACE + " tecuci");
+                case COUNTRY -> copy.setCountry(testObject.getCountry() + ONE_WHITESPACE + " germany");
             }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -126,15 +120,9 @@ public class TestsGenerator {
         try {
             copy = (TestObject) testObject.clone();
             switch (fieldName) {
-                case STATE -> {
-                    copy.setState("iasi");
-                }
-                case CITY -> {
-                    copy.setCity("tecuci");
-                }
-                case COUNTRY -> {
-                    copy.setCountry("germany");
-                }
+                case STATE -> copy.setState("iasi");
+                case CITY -> copy.setCity("tecuci");
+                case COUNTRY -> copy.setCountry("germany");
             }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -150,21 +138,11 @@ public class TestsGenerator {
         String country = null;
         for (int i = 0; i < randomNumberListForAddressesWithAllFieldsFilledIncorrectly.size(); i++) {
             switch (i) {
-                case 0 -> {
-                    street = testObject.getStreet();
-                }
-                case 1 -> {
-                    zipCode = testObject.getZipCode();
-                }
-                case 2 -> {
-                    state = testObject.getState();
-                }
-                case 3 -> {
-                    city = testObject.getCity();
-                }
-                case 4 -> {
-                    country = testObject.getCountry();
-                }
+                case 0 -> street = testObject.getStreet();
+                case 1 -> zipCode = testObject.getZipCode();
+                case 2 -> state = testObject.getState();
+                case 3 -> city = testObject.getCity();
+                case 4 -> country = testObject.getCountry();
             }
         }
         return new TestObject(street, zipCode, state, city, country);

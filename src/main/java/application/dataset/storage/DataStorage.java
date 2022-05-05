@@ -14,8 +14,6 @@ import static application.constants.ConstantsUtil.*;
  * singleton pattern to prevent creating multiple databases
  */
 public class DataStorage implements Serializable {
-    private static final DataStorage dataStorage = new DataStorage();
-
     public static Set<AbstractLocation> abstractLocationSet = new HashSet<>();
     public static Set<Integer> foundGeoNameIds;
 

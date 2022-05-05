@@ -19,7 +19,7 @@ import static application.constants.ConstantsUtil.*;
 public class Solution {
 
     /**
-     * get the number of corrected addresses which correspond with the generated addresses from https://generate.plus/
+     * get the number of corrected addresses which correspond with the generated addresses from <a href="https://generate.plus/">https://generate.plus/</a>
      */
     public static int getNumberOfCorrectAddressesAfterCorrection(String path, String methodName) {
         int number = 0;
@@ -67,6 +67,9 @@ public class Solution {
             }
             case "getAddressWithMultipleDataInOneField" -> {
                 return TestsGenerator.getAddressWithMultipleDataInOneField(testObject);
+            }
+            case "getAddressWithAllFieldsFilledIncorrectly" -> {
+                return TestsGenerator.getAddressWithAllFieldsFilledIncorrectly(testObject);
             }
             case "getAddressWithAlternateName" -> {
                 return TestsGenerator.getAddressWithAlternateName(testObject);

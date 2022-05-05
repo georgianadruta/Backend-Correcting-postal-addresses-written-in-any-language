@@ -225,7 +225,7 @@ public class SolutionUtil {
      * eg: for bran will add states: iasi*, brasov*
      * note: each new data will be finished with '*' because is not explicit data from user
      */
-    private static Set<String> addStatesNameWhichHaveTheGivenCityName(Set<String> foundStates, String cityName) {
+    private static void addStatesNameWhichHaveTheGivenCityName(Set<String> foundStates, String cityName) {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(cityName);
         for (String subsetFromValue : allSubsetsFromValue) {
             Set<Map.Entry<String, AbstractLocation>> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
@@ -244,7 +244,6 @@ public class SolutionUtil {
                 }
             }
         }
-        return foundStates;
     }
 
     /**
@@ -252,7 +251,7 @@ public class SolutionUtil {
      * eg: for iasi will add country: romania*
      * note: each new data will be finished with '*' because is not explicit data from user
      */
-    private static Set<String> addCountriesNameWhichHaveTheGivenLocation(Set<String> foundCountries, String locationName) {
+    private static void addCountriesNameWhichHaveTheGivenLocation(Set<String> foundCountries, String locationName) {
         Set<String> allSubsetsFromValue = getAllSubsetsFromString(locationName);
         for (String subsetFromValue : allSubsetsFromValue) {
             Set<Map.Entry<String, AbstractLocation>> list = new HashSet<>(SolutionUtil.childNameParentMultimap.get(subsetFromValue));
@@ -271,7 +270,6 @@ public class SolutionUtil {
                 }
             }
         }
-        return foundCountries;
     }
 
     /**

@@ -6,10 +6,6 @@ import java.util.Date;
 
 public class SolutionLoader {
     public static void main(String[] args) {
-//        DataStorage.createDataStorage();
-//        DataStorage.saveDataStorage();
-//        SolutionUtil.saveMultimaps();
-
         Date startDate = new Date();// contorizare timp
 
         DataStorage.loadDataStorage();
