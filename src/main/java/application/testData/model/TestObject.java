@@ -128,7 +128,12 @@ public class TestObject implements Serializable, Cloneable {
      * helpful method to create an exact copy of an object
      */
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException exception) {
+            exception.printStackTrace();
+        }
+        return new TestObject();
     }
 }

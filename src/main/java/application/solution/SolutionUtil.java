@@ -55,8 +55,8 @@ public class SolutionUtil {
             saveChildParentMultimap(SolutionUtil.childNameParentMultimap);
             saveNameAlternateNamesMultimap(SolutionUtil.nameAlternateNamesMultimap);
             System.out.println("Serialized multimaps are saved at: " + SERIALIZED_CHILD_PARENT_MULTIMAP_PATH + ONE_WHITESPACE + SERIALIZED_NAME_ALTERNATE_NAMES_MULTIMAP_PATH);
-        } catch (IOException i) {
-            i.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 

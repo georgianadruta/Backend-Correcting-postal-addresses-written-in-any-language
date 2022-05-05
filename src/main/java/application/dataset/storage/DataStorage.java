@@ -63,7 +63,7 @@ public class DataStorage implements Serializable {
                 }
             }
         } catch (FileNotFoundException exception) {
-            System.out.println("ERROR! File at given path was not found!");
+            exception.printStackTrace();
         }
     }
 
@@ -81,8 +81,8 @@ public class DataStorage implements Serializable {
                 out.println(COUNTRY_DIRECTORY_PATH + fileEntry.getName());
                 out.close();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -97,8 +97,8 @@ public class DataStorage implements Serializable {
             out.close();
             fileOut.close();
             System.out.println("Serialized data is saved at:" + SERIALIZED_DATA_STORAGE_PATH);
-        } catch (IOException i) {
-            i.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 

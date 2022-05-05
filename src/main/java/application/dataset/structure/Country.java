@@ -39,7 +39,7 @@ public class Country extends AbstractLocation {
                 }
             }
         } catch (FileNotFoundException exception) {
-            System.out.println("ERROR! File at given path was not found!");
+            exception.printStackTrace();
         }
     }
 

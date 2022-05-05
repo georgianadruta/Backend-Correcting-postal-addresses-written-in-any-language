@@ -34,6 +34,8 @@ public final class ConstantsUtil {
     public static final String PCLI_CODE = "PCLI";
     public static final String ADM1_CODE = "ADM1";
     public static final String COUNTRY_DIRECTORY_PATH = "./files/dataset/countries/";
+
+    public static final String RO_PATH = "./files/test/correctRandomAddresses/RO.txt";
     public static final String VOWELS = "aeiou";
 
     public static final int FIELDS_NUMBER = 5;

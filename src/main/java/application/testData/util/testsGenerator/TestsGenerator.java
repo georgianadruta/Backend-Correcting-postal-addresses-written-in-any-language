@@ -72,39 +72,24 @@ public class TestsGenerator {
     }
 
     public static TestObject getAddressWithTwoDataInGivenField(TestObject testObject, String fieldName) {
-        TestObject copy;
-        try {
-            copy = (TestObject) testObject.clone();
-            switch (fieldName) {
-                case STATE -> copy.setState(testObject.getState() + ONE_WHITESPACE + " iasi");
-                case CITY -> copy.setCity(testObject.getCity() + ONE_WHITESPACE + " tecuci");
-                case COUNTRY -> copy.setCountry(testObject.getCountry() + ONE_WHITESPACE + " germany");
-            }
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+        TestObject copy = (TestObject) testObject.clone();
+        switch (fieldName) {
+            case STATE -> copy.setState(testObject.getState() + ONE_WHITESPACE + " iasi");
+            case CITY -> copy.setCity(testObject.getCity() + ONE_WHITESPACE + " tecuci");
+            case COUNTRY -> copy.setCountry(testObject.getCountry() + ONE_WHITESPACE + " germany");
         }
         return copy;
     }
 
     public static TestObject getAddressWithAGivenFieldToAnother(TestObject testObject, String fromField, String toField) {
-        TestObject copy;
-        try {
-            copy = (TestObject) testObject.clone();
-            copy.moveAFieldToAnother(fromField, toField);
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
+        TestObject copy = (TestObject) testObject.clone();
+        copy.moveAFieldToAnother(fromField, toField);
         return copy;
     }
 
     public static TestObject getAddressWithoutAGivenField(TestObject testObject, String fieldName) {
-        TestObject copy;
-        try {
-            copy = (TestObject) testObject.clone();
-            copy.setTestObjectField(fieldName, EMPTY_STRING);
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
+        TestObject copy = (TestObject) testObject.clone();
+        copy.setTestObjectField(fieldName, EMPTY_STRING);
         return copy;
     }
 
@@ -116,16 +101,11 @@ public class TestsGenerator {
     }
 
     public static TestObject getAddressWithAWrongCompletedField(TestObject testObject, String fieldName) {
-        TestObject copy;
-        try {
-            copy = (TestObject) testObject.clone();
-            switch (fieldName) {
-                case STATE -> copy.setState("iasi");
-                case CITY -> copy.setCity("tecuci");
-                case COUNTRY -> copy.setCountry("germany");
-            }
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+        TestObject copy = (TestObject) testObject.clone();
+        switch (fieldName) {
+            case STATE -> copy.setState("iasi");
+            case CITY -> copy.setCity("tecuci");
+            case COUNTRY -> copy.setCountry("germany");
         }
         return copy;
     }
@@ -150,78 +130,61 @@ public class TestsGenerator {
 
     public static TestObject getAddressWithMultipleDataInOneField(TestObject testObject) {
         StringBuilder input = new StringBuilder();
-        try {
-            TestObject testObject1 = (TestObject) testObject.clone();
-            input.append(testObject.getValueForNoField(m));
+        TestObject testObject1 = (TestObject) testObject.clone();
+        input.append(testObject.getValueForNoField(m));
 
-            for (Integer integer : randomNumberListForAddressesWithMultipleDataInOneField) {
-                updateInput(input, testObject1, integer);
-            }
-            testObject1.setValueForNoField(String.valueOf(input), m);
-            return testObject1;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+        for (Integer integer : randomNumberListForAddressesWithMultipleDataInOneField) {
+            updateInput(input, testObject1, integer);
         }
+        testObject1.setValueForNoField(String.valueOf(input), m);
+        return testObject1;
     }
 
     public static TestObject getAddressWithAlternateName(TestObject testObject) {
-        try {
-            TestObject copy = (TestObject) testObject.clone();
-            Set<List<String>> list = SolutionUtil.nameAlternateNamesMultimap.get(copy.getCity());
-            for (List<String> sublist : list) {
-                for (String str : sublist) {
-                    if (!copy.getCity().equals(str)) {
-                        copy.setCity(str);
-                        return copy;
-                    }
+        TestObject copy = (TestObject) testObject.clone();
+        Set<List<String>> list = SolutionUtil.nameAlternateNamesMultimap.get(copy.getCity());
+        for (List<String> sublist : list) {
+            for (String str : sublist) {
+                if (!copy.getCity().equals(str)) {
+                    copy.setCity(str);
+                    return copy;
                 }
             }
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
         }
 
         return testObject;
     }
 
     public static TestObject getAddressWithoutPrepositions(TestObject testObject) {
-        try { //pt city
-            TestObject copy = (TestObject) testObject.clone();
-            List<String> newCityNames = NameVariationsUtil.getNamesWithoutPrepositions(List.of(testObject.getCity()));
-            if (!newCityNames.isEmpty()) {
-                int rnd = new Random().nextInt(newCityNames.size());
-                copy.setCity(newCityNames.get(rnd));
-            }
-            return copy;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+        //pt city
+        TestObject copy = (TestObject) testObject.clone();
+        List<String> newCityNames = NameVariationsUtil.getNamesWithoutPrepositions(List.of(testObject.getCity()));
+        if (!newCityNames.isEmpty()) {
+            int rnd = new Random().nextInt(newCityNames.size());
+            copy.setCity(newCityNames.get(rnd));
         }
+        return copy;
     }
 
     public static TestObject getAddressWithoutDuplicateCharacters(TestObject testObject) {
-        try { //pt city
-            TestObject copy = (TestObject) testObject.clone();
-            List<String> newCityNames = NameVariationsUtil.getNamesWithoutDuplicateCharacters(List.of(testObject.getCity()));
-            if (!newCityNames.isEmpty()) {
-                int rnd = new Random().nextInt(newCityNames.size());
-                copy.setCity(newCityNames.get(rnd));
-            }
-            return copy;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+        //pt city
+        TestObject copy = (TestObject) testObject.clone();
+        List<String> newCityNames = NameVariationsUtil.getNamesWithoutDuplicateCharacters(List.of(testObject.getCity()));
+        if (!newCityNames.isEmpty()) {
+            int rnd = new Random().nextInt(newCityNames.size());
+            copy.setCity(newCityNames.get(rnd));
         }
+        return copy;
     }
 
     public static TestObject getAddressWithoutVowels(TestObject testObject) {
-        try { //pt city
-            TestObject copy = (TestObject) testObject.clone();
-            List<String> newCityNames = NameVariationsUtil.getAllNamesVariationsWithoutVowels(List.of(testObject.getCity()));
-            if (!newCityNames.isEmpty()) {
-                int rnd = new Random().nextInt(newCityNames.size());
-                copy.setCity(newCityNames.get(rnd));
-            }
-            return copy;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+        //pt city
+        TestObject copy = (TestObject) testObject.clone();
+        List<String> newCityNames = NameVariationsUtil.getAllNamesVariationsWithoutVowels(List.of(testObject.getCity()));
+        if (!newCityNames.isEmpty()) {
+            int rnd = new Random().nextInt(newCityNames.size());
+            copy.setCity(newCityNames.get(rnd));
         }
+        return copy;
     }
 }
