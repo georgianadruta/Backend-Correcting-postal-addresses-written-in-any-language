@@ -37,6 +37,7 @@ public class DataStorage implements Serializable {
             Scanner reader = new Scanner(file);
             while (reader.hasNext()) { // read line by line from countries paths file
                 String filePath = reader.nextLine();
+                System.out.println(filePath);
                 File currentFile = new File(filePath);
                 Scanner currentReader = new Scanner(currentFile);
                 while (currentReader.hasNext()) { // read line by line from the current country file

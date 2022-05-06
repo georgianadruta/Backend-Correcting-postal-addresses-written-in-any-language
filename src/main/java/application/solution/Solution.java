@@ -30,6 +30,7 @@ public class Solution {
             while (reader.hasNext()) {
                 String dataFromFile = reader.nextLine();
                 String[] splitData = dataFromFile.split(SEPARATOR_CONVENTION);
+                System.out.println(dataFromFile);
                 TestObject testObject = new TestObject(splitData[0], splitData[1], splitData[2], splitData[3], splitData[4]);
                 TestObject testObjectToCorrect = getTestObjectToCorrect(testObject, methodName, fieldNames);
                 TestObject correctedTestObject = getTheBestCorrectedAddress(testObjectToCorrect);

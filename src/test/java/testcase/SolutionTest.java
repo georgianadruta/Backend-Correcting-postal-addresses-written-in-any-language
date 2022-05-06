@@ -19,10 +19,15 @@ public class SolutionTest {
 
     @Before
     public void setUp() {
-
+//        Date startDate = new Date();
+//
 //        DataStorage.createDataStorage();
 //        DataStorage.saveDataStorage();
 //        SolutionUtil.saveMultimaps();
+//
+//        Date endDate = new Date();
+//        int numSeconds = (int) ((endDate.getTime() - startDate.getTime()) / 1000);
+//        System.out.println(numSeconds);
 
         DataStorage.loadDataStorage();
         SolutionUtil.loadMultimaps();
