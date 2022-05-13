@@ -35,6 +35,9 @@ public class TestObject implements Serializable, Cloneable {
         this.country = null;
     }
 
+    /**
+     * helpful method to set a new value for the specified field
+     */
     public void setTestObjectField(String fieldName, String input) {
         switch (fieldName) {
             case STREET -> this.setStreet(input);
@@ -45,6 +48,9 @@ public class TestObject implements Serializable, Cloneable {
         }
     }
 
+    /**
+     * helpful method to move the value from a specified field to the second one
+     */
     public void moveAFieldToAnother(String fromField, String toField) {
         try {
             String input = getAndRemoveField(fromField);
@@ -60,6 +66,9 @@ public class TestObject implements Serializable, Cloneable {
         }
     }
 
+    /**
+     * helpful method to get the value for a specified field and to set it to empty
+     */
     private String getAndRemoveField(String fromField) throws CloneNotSupportedException {
         TestObject copy = (TestObject) this.clone();
         switch (fromField) {
@@ -82,27 +91,6 @@ public class TestObject implements Serializable, Cloneable {
             case COUNTRY -> {
                 this.setCountry(EMPTY_STRING);
                 return copy.getCountry();
-            }
-        }
-        return EMPTY_STRING;
-    }
-
-    public String getValueForNoField(Integer integer) {
-        switch (integer) {
-            case 0 -> {
-                return this.street;
-            }
-            case 1 -> {
-                return this.zipCode;
-            }
-            case 2 -> {
-                return state;
-            }
-            case 3 -> {
-                return city;
-            }
-            case 4 -> {
-                return country;
             }
         }
         return EMPTY_STRING;
@@ -145,5 +133,54 @@ public class TestObject implements Serializable, Cloneable {
             case STATE -> this.state = value;
             case COUNTRY -> this.country = value;
         }
+    }
+
+
+    /**
+     * helpful method to get the correspondent value for specified field
+     */
+    public String getCorrespondentValue(String fieldName) {
+        switch (fieldName) {
+            case STREET -> {
+                return this.street;
+            }
+            case ZIP_CODE -> {
+                return this.zipCode;
+            }
+            case STATE -> {
+                return this.state;
+            }
+            case CITY -> {
+                return this.city;
+            }
+            case COUNTRY -> {
+                return this.country;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * helpful method to get the correspondent value for the field with the given order number
+     */
+    public String getCorrespondentValueForNumberField(Integer integer) {
+        switch (integer) {
+            case 0 -> {
+                return this.street;
+            }
+            case 1 -> {
+                return this.zipCode;
+            }
+            case 2 -> {
+                return this.state;
+            }
+            case 3 -> {
+                return this.city;
+            }
+            case 4 -> {
+                return this.country;
+            }
+        }
+        return null;
     }
 }

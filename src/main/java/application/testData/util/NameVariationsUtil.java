@@ -144,6 +144,9 @@ public class NameVariationsUtil {
         return newWords;
     }
 
+    /**
+     * helpful method to remove multiple white spaces for each string from a string
+     */
     private static List<String> getStringWithoutMultipleWhitespaces(List<String> nameList) {
         List<String> newList = new ArrayList<>();
         for (String name : nameList) {

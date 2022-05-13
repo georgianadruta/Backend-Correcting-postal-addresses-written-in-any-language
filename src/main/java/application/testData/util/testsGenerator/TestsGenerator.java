@@ -128,7 +128,7 @@ public class TestsGenerator {
     }
 
     private static void setValues(TestObject testObjectToCorrect, TestObject testObject, int i, Integer integer) {
-        String value = getCorrespondentValue(testObject, integer);
+        String value = testObject.getCorrespondentValueForNumberField(integer);
         switch (i) {
             case 0 -> testObjectToCorrect.setStreet(value);
             case 1 -> testObjectToCorrect.setZipCode(value);
@@ -138,52 +138,13 @@ public class TestsGenerator {
         }
     }
 
-    private static String getCorrespondentValue(TestObject testObject, Integer integer) {
-        switch (integer) {
-            case 0 -> {
-                return testObject.getStreet();
-            }
-            case 1 -> {
-                return testObject.getZipCode();
-            }
-            case 2 -> {
-                return testObject.getState();
-            }
-            case 3 -> {
-                return testObject.getCity();
-            }
-            case 4 -> {
-                return testObject.getCountry();
-            }
-        }
-        return null;
-    }
-
-    private static String getCorrespondentValue(TestObject testObject, String fieldName) {
-        switch (fieldName) {
-            case STREET -> {
-                return testObject.getStreet();
-            }
-            case ZIP_CODE -> {
-                return testObject.getZipCode();
-            }
-            case STATE -> {
-                return testObject.getState();
-            }
-            case CITY -> {
-                return testObject.getCity();
-            }
-            case COUNTRY -> {
-                return testObject.getCountry();
-            }
-        }
-        return null;
-    }
-
+    /**
+     * helpful method to get the new address with multiple data in specified field
+     */
     public static TestObject getAddressWithMultipleDataInOneField(TestObject testObject, String... fieldNames) {
         StringBuilder input = new StringBuilder();
         TestObject testObject1 = (TestObject) testObject.clone();
-        input.append(getCorrespondentValue(testObject, fieldNames[0]));
+        input.append(testObject.getCorrespondentValue(fieldNames[0]));
 
         for (Integer integer : randomNumberListForAddressesWithMultipleDataInOneField) {
             updateInput(input, testObject1, integer, fieldNames[0]);
@@ -192,6 +153,9 @@ public class TestsGenerator {
         return testObject1;
     }
 
+    /**
+     * helpful method to get the new address with alternate name for the specified field
+     */
     public static TestObject getAddressWithAlternateName(TestObject testObject, String... fieldNames) {
         TestObject copy = (TestObject) testObject.clone();
         Set<List<String>> list = getAlternateNameForGivenField(testObject, fieldNames[0]);
@@ -205,6 +169,9 @@ public class TestsGenerator {
         return testObject;
     }
 
+    /**
+     * helpful method to set a new value for the specified field
+     */
     private static boolean setNewValueForGivenField(TestObject copy, String fieldName, String str) {
         boolean isModified = false;
         if (fieldName.equals(CITY) && !copy.getCity().equals(str)) {
@@ -222,6 +189,9 @@ public class TestsGenerator {
         return isModified;
     }
 
+    /**
+     * helpful method to get the alternate name list for a specified field
+     */
     private static Set<List<String>> getAlternateNameForGivenField(TestObject testObject, String fieldName) {
         if (fieldName.equals(CITY)) {
             return SolutionUtil.nameAlternateNamesMultimap.get(testObject.getCity());
@@ -235,6 +205,9 @@ public class TestsGenerator {
         return new HashSet<>();
     }
 
+    /**
+     * helpful method to get the new address without prepositions for the specified field
+     */
     public static TestObject getAddressWithoutPrepositions(TestObject testObject, String... fieldNames) {
         TestObject copy = (TestObject) testObject.clone();
         List<String> newNames = getNameListWithoutPrepositionsForGivenField(testObject, fieldNames[0]);
@@ -245,6 +218,9 @@ public class TestsGenerator {
         return copy;
     }
 
+    /**
+     * helpful method to get the name list without prepositions for a specified field
+     */
     private static List<String> getNameListWithoutPrepositionsForGivenField(TestObject testObject, String fieldName) {
         switch (fieldName) {
             case CITY -> {
@@ -260,6 +236,9 @@ public class TestsGenerator {
         return new ArrayList<>();
     }
 
+    /**
+     * helpful method to get the new address without duplicate characters for the specified field
+     */
     public static TestObject getAddressWithoutDuplicateCharacters(TestObject testObject, String... fieldNames) {
         TestObject copy = (TestObject) testObject.clone();
         List<String> newNames = getNameListWithoutDuplicateCharactersForGivenField(testObject, fieldNames[0]);
@@ -270,6 +249,9 @@ public class TestsGenerator {
         return copy;
     }
 
+    /**
+     * helpful method to get the name list without duplicate characters for a specified field
+     */
     private static List<String> getNameListWithoutDuplicateCharactersForGivenField(TestObject testObject, String fieldName) {
         switch (fieldName) {
             case CITY -> {
@@ -285,6 +267,9 @@ public class TestsGenerator {
         return new ArrayList<>();
     }
 
+    /**
+     * helpful method to get the new address without vowels for the specified field
+     */
     public static TestObject getAddressWithoutVowels(TestObject testObject, String... fieldNames) {
         TestObject copy = (TestObject) testObject.clone();
         List<String> newNames = getNameListWithoutVowelsForGivenField(testObject, fieldNames[0]);
@@ -295,6 +280,9 @@ public class TestsGenerator {
         return copy;
     }
 
+    /**
+     * helpful method to get the name list without vowels for a specified field
+     */
     private static List<String> getNameListWithoutVowelsForGivenField(TestObject testObject, String fieldName) {
         switch (fieldName) {
             case CITY -> {
