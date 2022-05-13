@@ -144,7 +144,7 @@ public class TestsGenerator {
     public static TestObject getAddressWithMultipleDataInOneField(TestObject testObject, String... fieldNames) {
         StringBuilder input = new StringBuilder();
         TestObject testObject1 = (TestObject) testObject.clone();
-        input.append(testObject.getCorrespondentValue(fieldNames[0]));
+        input.append(testObject.getCorrespondentValueForGivenField(fieldNames[0]));
 
         for (Integer integer : randomNumberListForAddressesWithMultipleDataInOneField) {
             updateInput(input, testObject1, integer, fieldNames[0]);

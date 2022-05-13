@@ -106,25 +106,6 @@ public class TestObject implements Serializable, Cloneable {
         }
     }
 
-    @Override
-    public String toString() {
-        return "{ " + NEW_LINE + "Street: " + street + SEPARATOR_DB_FILES + NEW_LINE + "Zip code: " + zipCode + SEPARATOR_DB_FILES + NEW_LINE + "State: "
-                + state + SEPARATOR_DB_FILES + NEW_LINE + "City: " + city + SEPARATOR_DB_FILES + NEW_LINE + "Country: " + country + NEW_LINE + "}" + NEW_LINE;
-    }
-
-    /**
-     * helpful method to create an exact copy of an object
-     */
-    @Override
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException exception) {
-            exception.printStackTrace();
-        }
-        return new TestObject();
-    }
-
     public void setValueForGivenField(String value, String fieldName) {
         switch (fieldName) {
             case STREET -> this.street = value;
@@ -135,11 +116,10 @@ public class TestObject implements Serializable, Cloneable {
         }
     }
 
-
     /**
      * helpful method to get the correspondent value for specified field
      */
-    public String getCorrespondentValue(String fieldName) {
+    public String getCorrespondentValueForGivenField(String fieldName) {
         switch (fieldName) {
             case STREET -> {
                 return this.street;
@@ -182,5 +162,24 @@ public class TestObject implements Serializable, Cloneable {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "{ " + NEW_LINE + "Street: " + street + SEPARATOR_DB_FILES + NEW_LINE + "Zip code: " + zipCode + SEPARATOR_DB_FILES + NEW_LINE + "State: "
+                + state + SEPARATOR_DB_FILES + NEW_LINE + "City: " + city + SEPARATOR_DB_FILES + NEW_LINE + "Country: " + country + NEW_LINE + "}" + NEW_LINE;
+    }
+
+    /**
+     * helpful method to create an exact copy of an object
+     */
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException exception) {
+            exception.printStackTrace();
+        }
+        return new TestObject();
     }
 }
