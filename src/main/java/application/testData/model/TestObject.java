@@ -96,7 +96,10 @@ public class TestObject implements Serializable, Cloneable {
         return EMPTY_STRING;
     }
 
-    public void setValueForNoField(String value, Integer integer) {
+    /**
+     * helpful method to set the value for the correspondent field with the given order number
+     */
+    public void setValueForNumberField(String value, Integer integer) {
         switch (integer) {
             case 0 -> street = value;
             case 1 -> zipCode = value;
@@ -106,6 +109,9 @@ public class TestObject implements Serializable, Cloneable {
         }
     }
 
+    /**
+     * helpful method to set the value for specified field
+     */
     public void setValueForGivenField(String value, String fieldName) {
         switch (fieldName) {
             case STREET -> this.street = value;
@@ -170,9 +176,6 @@ public class TestObject implements Serializable, Cloneable {
                 + state + SEPARATOR_DB_FILES + NEW_LINE + "City: " + city + SEPARATOR_DB_FILES + NEW_LINE + "Country: " + country + NEW_LINE + "}" + NEW_LINE;
     }
 
-    /**
-     * helpful method to create an exact copy of an object
-     */
     @Override
     public Object clone() {
         try {

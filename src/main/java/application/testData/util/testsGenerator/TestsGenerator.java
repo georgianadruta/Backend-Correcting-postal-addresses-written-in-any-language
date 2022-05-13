@@ -18,6 +18,13 @@ public class TestsGenerator {
     static List<Integer> randomNumberListForAddressesWithMultipleDataInOneField = new ArrayList<>();
     static int m;
 
+    /**
+     * helpful method to create an array for generating addresses with all fields filled incorrectly.
+     * eg: [1, 4, 0, 2, 3]
+     * the index of array represents the number of field: 0 -> street, 1 -> zip code, 2 -> state, 3 -> city, 4 -> country
+     * the value of array represents the number of field's value for the field with index number
+     * for first value: 1 -> the street field will contain the zip code's value
+     */
     public static void createRandomNumberListForAddressesWithAllFieldsFilledIncorrectly() {
         Random rand = new Random();
         for (int i = 0; i < FIELDS_NUMBER; i++) {
@@ -29,6 +36,10 @@ public class TestsGenerator {
         }
     }
 
+    /**
+     * helpful method to create an array with random order field numbers
+     * eg [1, 2, 0] -> the given fie
+     */
     public static void createRandomNumberListForAddressesWithMultipleDataInOneField() {
         Random rand = new Random();
         int n = rand.nextInt(FIELDS_NUMBER);
