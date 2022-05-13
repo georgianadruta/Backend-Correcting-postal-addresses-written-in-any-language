@@ -52,7 +52,7 @@ public class NameVariationsUtil {
         List<String> list = new ArrayList<>();
         for (String name : givenList) {
             String str = removeDuplicateCharacters(name);
-            if (str != null) list.add(String.valueOf(getStringWithoutMultipleWhitespaces(List.of(str))));
+            list.add(String.valueOf(getStringWithoutMultipleWhitespaces(List.of(str))).replace(RIGHT_BRACKET, EMPTY_STRING).replace(LEFT_BRACKET, EMPTY_STRING));
         }
         return list;
     }
@@ -61,19 +61,14 @@ public class NameVariationsUtil {
      * helpful method to return the given input without duplicate characters
      */
     public static String removeDuplicateCharacters(String input) {
-        char[] characterList = input.toCharArray();
-        int n = characterList.length;
-        if (n < 2) {
-            return null;
+        StringBuilder answer = new StringBuilder(EMPTY_STRING);
+        int i = 0;
+        while (i < input.length()) {
+            char c = input.charAt(i);
+            answer.append(c);
+            while (i < input.length() && input.charAt(i) == c) ++i;
         }
-        int j = 0;
-        for (int i = 1; i < n; i++) {
-            if (characterList[j] != characterList[i]) {
-                j++;
-                characterList[j] = characterList[i];
-            }
-        }
-        return String.valueOf(Arrays.copyOfRange(characterList, 0, j + 1));
+        return answer.toString();
     }
 
     /**
@@ -83,9 +78,9 @@ public class NameVariationsUtil {
         Set<String> allNamesVariationsWithoutVowels = new HashSet<>();
         List<String> vowelSubset = getAllSubsetsFromAString(VOWELS);
         for (String vowels : vowelSubset) {
-            String regex = "[" + vowels + "]";
+            String regex = LEFT_BRACKET + vowels + RIGHT_BRACKET;
             for (String alternateName : givenList) {
-                allNamesVariationsWithoutVowels.add(String.valueOf(getStringWithoutMultipleWhitespaces(List.of(alternateName.replaceAll(regex, EMPTY_STRING)))));
+                allNamesVariationsWithoutVowels.add(String.valueOf(getStringWithoutMultipleWhitespaces(List.of(alternateName.replaceAll(regex, EMPTY_STRING)))).replace(RIGHT_BRACKET, EMPTY_STRING).replace(LEFT_BRACKET, EMPTY_STRING));
             }
         }
         return new ArrayList<>(allNamesVariationsWithoutVowels);

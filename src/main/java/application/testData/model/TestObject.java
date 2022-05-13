@@ -136,4 +136,14 @@ public class TestObject implements Serializable, Cloneable {
         }
         return new TestObject();
     }
+
+    public void setValueForGivenField(String value, String fieldName) {
+        switch (fieldName) {
+            case STREET -> this.street = value;
+            case ZIP_CODE -> this.zipCode = value;
+            case CITY -> this.city = value;
+            case STATE -> this.state = value;
+            case COUNTRY -> this.country = value;
+        }
+    }
 }

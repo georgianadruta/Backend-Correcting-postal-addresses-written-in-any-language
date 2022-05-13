@@ -48,8 +48,12 @@ public class Solution {
 
     private static TestObject getTestObjectToCorrect(TestObject testObject, String methodName, String... fieldNames) {
         try {
-            Method method = Class.forName("application.testData.util.testsGenerator.TestsGenerator").getDeclaredMethod(methodName, TestObject.class, String[].class);
-            return (TestObject) method.invoke(new TestsGenerator(), testObject, fieldNames);
+            if (!methodName.equals("getCorrectAddress")) {
+                Method method = TestsGenerator.class.getDeclaredMethod(methodName, TestObject.class, String[].class);
+                return (TestObject) method.invoke(new TestsGenerator(), testObject, fieldNames);
+            } else {
+                return testObject;
+            }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
