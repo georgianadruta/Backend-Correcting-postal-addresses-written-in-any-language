@@ -38,6 +38,7 @@ public final class ConstantsUtil {
     public static final String RO_PATH = "./files/test/correctRandomAddresses/RO.txt";
 
     public static final String DE_PATH = "./files/test/correctRandomAddresses/DE.txt";
+    public static final String JP_PATH = "./files/test/correctRandomAddresses/JP.txt";
     public static final String VOWELS = "aeiou";
 
     public static final int FIELDS_NUMBER = 5;
